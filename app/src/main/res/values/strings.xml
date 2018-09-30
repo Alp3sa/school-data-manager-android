@@ -1,0 +1,40 @@
+<resources>
+    <!--MainActivity-->
+    <string name="app_name">Gestor de datos | I.E.S. El Rincón</string>
+    <string name="iniciarSesion">Iniciar sesión:</string>
+    <string name="nombreUsuario">Nombre de usuario</string>
+    <string name="contraseña">Contraseña</string>
+    <string name="signup">Sign up</string>
+    <string name="login">Log in</string>
+    <string name="recordarContraseña">Recordar contraseña</string>
+    <string name="fondoBlanco">Fondo blanco</string>
+    <string name="fondoOriginal">Fondo original</string>
+
+    <string name="errorNombreUsuarioVacio">Introduzca su nombre de usuario</string>
+    <string name="errorNombreUsuarioInvalido">Nombre inválido</string>
+    <string name="errorContraseñaVacia">Introduzca su contraseña</string>
+    <string name="errorContraseñaInvalida">Contraseña inválida</string>
+
+    <!--SignUp-->
+    <string name="nombre">Nombre</string>
+    <string name="primerApellido">Primer apellido</string>
+    <string name="segundoApellido">Segundo apellido</string>
+    <string name="genero">Género</string>
+    <string name="hombre">Hombre</string>
+    <string name="mujer">Mujer</string>
+    <string name="miembro">Miembro del</string>
+    <string name="alumnado">Alumnado</string>
+    <string name="profesorado">Profesorado</string>
+    <string name="dni">DNI</string>
+    <string name="codigoActivacion">Código de activación</string>
+    <string name="nuevaContraseña">Nueva contraseña</string>
+    <string name="repetirContraseña">Repetir contraseña</string>
+    <string name="crearCuenta">Crear cuenta</string>
+    <string name="volver">Volver</string>
+
+    <!--CRUD-->
+    <string name="insertar">Insertar</string>
+    <string name="borrar">Borrar</string>
+    <string name="actualizar">Actualizar</string>
+    <string name="consultar">Consultar</string>
+</resources>

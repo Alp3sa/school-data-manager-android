@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/toast_layout_loginScreen"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.gestordedatos.gestordedatos.MainActivity"
+    tools:layout_editor_absoluteY="81dp">
+
+
+
+    <ImageView
+        android:id="@+id/imagenFondo"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:contentDescription="@string/app_name"
+        android:scaleType="fitXY"
+        android:src="@mipmap/ic_launcher_foreground"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ImageView
+        android:id="@+id/imagenBaseFormulario"
+        android:layout_width="269dp"
+        android:layout_height="315dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:src="@android:color/background_light"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imagenFondo"
+        app:layout_constraintVertical_bias="0.13" />
+
+    <TextView
+        android:id="@+id/textViewIniciarSesion"
+        android:layout_width="168dp"
+        android:layout_height="37dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/iniciarSesion"
+        android:textColor="@color/colorBlack"
+        android:textSize="25dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/imagenBaseFormulario"
+        app:layout_constraintHorizontal_bias="0.34"
+        app:layout_constraintStart_toStartOf="@+id/imagenBaseFormulario"
+        app:layout_constraintTop_toTopOf="@+id/imagenBaseFormulario" />
+
+    <EditText
+        android:id="@+id/editTextNombreUsuario"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="@string/nombreUsuario"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="@+id/imagenBaseFormulario"
+        app:layout_constraintHorizontal_bias="0.527"
+        app:layout_constraintStart_toStartOf="@+id/imagenBaseFormulario"
+        app:layout_constraintTop_toBottomOf="@+id/textViewIniciarSesion" />
+
+    <EditText
+        android:id="@+id/editTextPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:hint="@string/contraseña"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="@+id/imagenBaseFormulario"
+        app:layout_constraintHorizontal_bias="0.48"
+        app:layout_constraintStart_toStartOf="@+id/imagenBaseFormulario"
+        app:layout_constraintTop_toBottomOf="@+id/editTextNombreUsuario" />
+
+    <Button
+        android:id="@+id/botonSignup"
+        android:layout_width="105dp"
+        android:layout_height="46dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:background="@drawable/ic_button"
+        android:fontFamily="arial"
+        android:shadowColor="@color/colorBlack"
+        android:text="@string/signup"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/imagenBaseFormulario"
+        app:layout_constraintStart_toStartOf="@+id/imagenBaseFormulario" />
+
+    <Button
+        android:id="@+id/botonLogin"
+        android:layout_width="105dp"
+        android:layout_height="49dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@drawable/ic_button"
+        android:fontFamily="arial"
+        android:shadowColor="@color/colorBlack"
+        android:text="@string/login"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/imagenBaseFormulario"
+        app:layout_constraintEnd_toEndOf="@+id/imagenBaseFormulario" />
+
+    <RadioGroup
+        android:id="@+id/fondoPantallaLogueo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/imagenFondo">
+
+        <RadioButton
+            android:id="@+id/radioButtonFondoBlanco"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:text="@string/fondoBlanco"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/radioButtonFondoOriginal"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <RadioButton
+            android:id="@+id/radioButtonFondoOriginal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:text="@string/fondoOriginal"
+            android:checked="true"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </RadioGroup>
+
+    <CheckBox
+        android:id="@+id/checkBox"
+        android:layout_width="213dp"
+        android:layout_height="24dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/recordarContraseña"
+        app:layout_constraintBottom_toTopOf="@+id/botonSignup"
+        app:layout_constraintEnd_toEndOf="@+id/imagenBaseFormulario"
+        app:layout_constraintStart_toStartOf="@+id/imagenBaseFormulario"
+        app:layout_constraintTop_toBottomOf="@+id/editTextPassword" />
+
+
+</android.support.constraint.ConstraintLayout>
