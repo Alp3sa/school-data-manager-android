@@ -25,10 +25,12 @@
     <string name="miembro">Miembro del</string>
     <string name="alumnado">Alumnado</string>
     <string name="profesorado">Profesorado</string>
+    <string name="edad">Edad</string>
     <string name="dni">DNI</string>
     <string name="codigoActivacion">Código de activación</string>
     <string name="nuevaContraseña">Nueva contraseña</string>
     <string name="repetirContraseña">Repetir contraseña</string>
+    <string name="continuar">Continuar</string>
     <string name="crearCuenta">Crear cuenta</string>
     <string name="volver">Volver</string>
 
@@ -37,4 +39,18 @@
     <string name="borrar">Borrar</string>
     <string name="actualizar">Actualizar</string>
     <string name="consultar">Consultar</string>
+    <string name="title_activity_main_menu">MainMenu</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+    <string name="tab_text_3">Tab 3</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="title_activity_nav_header_main_menu">nav_header_main_menu</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="title_activity_navigation_bar">NavigationBar</string>
+    <string name="title_activity_prueba">prueba</string>
 </resources>

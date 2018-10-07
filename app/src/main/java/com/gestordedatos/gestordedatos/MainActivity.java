@@ -2,22 +2,15 @@ package com.gestordedatos.gestordedatos;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.media.Image;
-import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
 import android.text.style.RelativeSizeSpan;
 import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Button;
 import android.widget.Toast;
@@ -53,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         buttonSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
-                Intent intent = new Intent(contexto,SignUp.class);
+                Intent intent = new Intent(contexto,SignUpNick.class);
                 startActivity(intent);
             }
         });
@@ -190,14 +183,14 @@ public class MainActivity extends AppCompatActivity {
 
         connection con = new connection(contexto);
         con.execute(nombreUsuario,password);
-
-        //Ejemplo de pasar objeto entre actividades
-        user user = new user(nombreUsuario);
-        Intent intent = new Intent(contexto, Menu.class);
-        intent.putExtra("user", user);
         */
+        //Ejemplo de pasar objeto entre actividades
+        user user = new user(nombreUsuario,null,null,null,null,null,null,null);
+        Intent intent = new Intent(contexto, MainMenu.class);
+        intent.putExtra("user", user);
 
-        //startActivity(intent);
+
+        startActivity(intent);
 
         //Añadir en destino
         //user user = getIntent().getExtras().getParcelable("user");
