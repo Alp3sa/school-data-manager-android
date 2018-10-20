@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    tools:context="com.gestordedatos.gestordedatos.FormListClassrooms">
+
+    <Button
+        android:id="@+id/buttonConsult"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/consult"
+        app:layout_constraintBottom_toTopOf="@+id/buttonInsert"
+        app:layout_constraintStart_toStartOf="@+id/imageViewFondo" />
+
+    <Button
+        android:id="@+id/buttonInsert"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/insert"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewFondo"
+        app:layout_constraintStart_toStartOf="@+id/imageViewFondo" />
+
+    <Button
+        android:id="@+id/buttonDelete"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:layout_marginRight="32dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/delete"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewFondo"
+        app:layout_constraintEnd_toEndOf="@+id/imageViewFondo" />
+
+    <Button
+        android:id="@+id/buttonUpdate"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:layout_marginRight="32dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/update"
+        app:layout_constraintBottom_toTopOf="@+id/buttonDelete"
+        app:layout_constraintEnd_toEndOf="@+id/imageViewFondo" />
+
+    <ImageView
+        android:id="@+id/imageViewFondo"
+        android:layout_width="349dp"
+        android:layout_height="174dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:contentDescription="@string/background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@color/colorWhite" />
+
+    <TextView
+        android:id="@+id/textViewClassroom"
+        android:layout_width="130dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginBottom="8dp"
+        android:gravity="center_vertical"
+        android:text="@string/classroom"
+        android:textColor="@color/colorBlack"
+        android:textStyle="bold"
+        android:paddingLeft="5dp"
+        app:layout_constraintBottom_toTopOf="@+id/buttonConsult"
+        app:layout_constraintStart_toStartOf="@+id/imageViewFondo" />
+
+    <EditText
+        android:id="@+id/editTextClassroom"
+        android:layout_width="130dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginRight="32dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/ic_border_edit_text"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text=""
+        app:layout_constraintBottom_toTopOf="@+id/buttonUpdate"
+        app:layout_constraintEnd_toEndOf="@+id/imageViewFondo" />
+
+</android.support.constraint.ConstraintLayout>
