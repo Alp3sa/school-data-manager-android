@@ -1,12 +1,16 @@
 package com.gestordedatos.gestordedatos;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableStringBuilder;
 import android.text.style.RelativeSizeSpan;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -16,6 +20,7 @@ import android.widget.Toast;
 
 public class SignUpTypeMember extends AppCompatActivity {
     Activity contexto;
+    user user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,7 +28,8 @@ public class SignUpTypeMember extends AppCompatActivity {
 
         contexto=this;
 
-        final user user = getIntent().getExtras().getParcelable("user");
+        //user = getIntent().getExtras().getParcelable("user");
+        user = ((application) getApplicationContext()).user;
 
         final CheckBox alumnado = (CheckBox) findViewById(R.id.checkBoxAlumnado);
         final CheckBox profesorado = (CheckBox) findViewById(R.id.checkBoxProfesorado);
@@ -71,15 +77,15 @@ public class SignUpTypeMember extends AppCompatActivity {
                 String toast="";
 
                 if(alumnado.isChecked()){
-                    tipoMiembro="alumno";
+                    tipoMiembro="0";
                     checkTipoMiembro=true;
                 }
                 else if(profesorado.isChecked()){
-                    tipoMiembro="profesor";
+                    tipoMiembro="1";
                     checkTipoMiembro=true;
                 }
                 else{
-                    toast = "Introduzca si es alumno o docente";
+                    toast = getResources().getString(R.string.toastErrorEmptyMember);
 
                     SpannableStringBuilder biggerText = new SpannableStringBuilder(toast);
                     biggerText.setSpan(new RelativeSizeSpan(1.5f), 0, toast.length(), 0);
@@ -93,10 +99,50 @@ public class SignUpTypeMember extends AppCompatActivity {
                 if(checkTipoMiembro==true) {
                     Intent intent = new Intent(contexto, SignUpPasswords.class);
                     user.setTipoDeMiembro(tipoMiembro);
-                    intent.putExtra("user", user);
+                    //intent.putExtra("user", user);
+                    ((application) getApplicationContext()).user=user;
                     startActivity(intent);
                 }
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        /*if (id == R.id.action_settings) {
+            return true;
+        }
+        else*/
+        if(id == R.id.action_help){
+            showHelp();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    public void showHelp() {
+        new AlertDialog.Builder(SignUpTypeMember.this)
+                .setTitle(getResources().getString(R.string.helpTitle))
+                .setMessage(getResources().getString(R.string.helpSignUpTypeMember))
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                }).show();
     }
 }

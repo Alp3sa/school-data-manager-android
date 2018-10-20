@@ -1,12 +1,16 @@
 package com.gestordedatos.gestordedatos;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
 import android.text.style.RelativeSizeSpan;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -152,20 +156,20 @@ public class MainActivity extends AppCompatActivity {
 
         if(nombreUsuario.trim().equals("") || nombreUsuario.trim().length()<4){
             if (nombreUsuario.trim().equals("")) {
-                editTextNombreUsuario.setError(getString(R.string.errorNombreUsuarioVacio));
+                editTextNombreUsuario.setError(getString(R.string.errorEmptyUsername));
             }
             else if (nombreUsuario.trim().length() < 4) {
-                editTextNombreUsuario.setError(getString(R.string.errorNombreUsuarioInvalido));
+                editTextNombreUsuario.setError(getString(R.string.errorInvalidUsername));
             }
             editTextNombreUsuario.requestFocus();
             return;
         }
         if(password.trim().equals("") || password.trim().length()<8){
             if(password.trim().equals("")){
-                editTextPassword.setError(getString(R.string.errorContraseñaVacia));
+                editTextPassword.setError(getString(R.string.errorEmptyPassword));
             }
             else if(password.trim().length()<8){
-                editTextPassword.setError(getString(R.string.errorContraseñaInvalida));
+                editTextPassword.setError(getString(R.string.errorInvalidPassword));
             }
             editTextPassword.requestFocus();
             return;
@@ -187,8 +191,8 @@ public class MainActivity extends AppCompatActivity {
         //Ejemplo de pasar objeto entre actividades
         user user = new user(nombreUsuario,null,null,null,null,null,null,null);
         Intent intent = new Intent(contexto, MainMenu.class);
-        intent.putExtra("user", user);
-
+        //intent.putExtra("user", user);
+        ((application) getApplicationContext()).user=user;
 
         startActivity(intent);
 
@@ -197,5 +201,44 @@ public class MainActivity extends AppCompatActivity {
         //...o si pasamos la variable nombreUsuario en vez de un objeto
         //Intent intent = this.getIntent();
         //String nombreUsuario = intent.getExtras().getString("nombreUsuario");
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        /*if (id == R.id.action_settings) {
+            return true;
+        }
+        else */
+        if(id == R.id.action_help){
+            showHelp();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    public void showHelp() {
+        new AlertDialog.Builder(MainActivity.this)
+                .setTitle(getResources().getString(R.string.helpTitle))
+                .setMessage(getResources().getString(R.string.helpLogin))
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                }).show();
     }
 }

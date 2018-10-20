@@ -8,8 +8,6 @@
     tools:context="com.gestordedatos.gestordedatos.MainActivity"
     tools:layout_editor_absoluteY="81dp">
 
-
-
     <ImageView
         android:id="@+id/imagenFondo"
         android:layout_width="0dp"
@@ -56,7 +54,7 @@
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="20dp"
-        android:text="@string/iniciarSesion"
+        android:text="@string/loginTitle"
         android:textColor="@color/colorBlack"
         android:textSize="25dp"
         android:textStyle="bold"
@@ -75,7 +73,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:ems="10"
-        android:hint="@string/nombreUsuario"
+        android:hint="@string/username"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="@+id/imagenBaseFormulario"
         app:layout_constraintHorizontal_bias="0.527"
@@ -92,7 +90,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:ems="10"
-        android:hint="@string/contraseña"
+        android:hint="@string/password"
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="@+id/imagenBaseFormulario"
         app:layout_constraintHorizontal_bias="0.48"
@@ -147,7 +145,7 @@
             android:layout_marginBottom="8dp"
             android:layout_marginLeft="16dp"
             android:layout_marginStart="16dp"
-            android:text="@string/fondoBlanco"
+            android:text="@string/whiteBackground"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/radioButtonFondoOriginal"
             app:layout_constraintStart_toStartOf="parent" />
@@ -159,7 +157,7 @@
             android:layout_marginBottom="16dp"
             android:layout_marginLeft="16dp"
             android:layout_marginStart="16dp"
-            android:text="@string/fondoOriginal"
+            android:text="@string/originalBackground"
             android:checked="true"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -177,7 +175,7 @@
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="@string/recordarContraseña"
+        android:text="@string/rememberPass"
         app:layout_constraintBottom_toTopOf="@+id/botonSignup"
         app:layout_constraintEnd_toEndOf="@+id/imagenBaseFormulario"
         app:layout_constraintStart_toStartOf="@+id/imagenBaseFormulario"

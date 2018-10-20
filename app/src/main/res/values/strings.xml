@@ -1,48 +1,73 @@
 <resources>
     <!--MainActivity-->
     <string name="app_name">Gestor de datos | I.E.S. El Rincón</string>
-    <string name="iniciarSesion">Iniciar sesión:</string>
-    <string name="nombreUsuario">Nombre de usuario</string>
-    <string name="contraseña">Contraseña</string>
+    <string name="loginTitle">Iniciar sesión:</string>
+    <string name="username">Nombre de usuario</string>
+    <string name="password">Contraseña</string>
     <string name="signup">Sign up</string>
     <string name="login">Log in</string>
-    <string name="recordarContraseña">Recordar contraseña</string>
-    <string name="fondoBlanco">Fondo blanco</string>
-    <string name="fondoOriginal">Fondo original</string>
+    <string name="rememberPass">Recordar contraseña</string>
+    <string name="whiteBackground">Fondo blanco</string>
+    <string name="originalBackground">Fondo original</string>
 
-    <string name="errorNombreUsuarioVacio">Introduzca su nombre de usuario</string>
-    <string name="errorNombreUsuarioInvalido">Nombre inválido</string>
-    <string name="errorContraseñaVacia">Introduzca su contraseña</string>
-    <string name="errorContraseñaInvalida">Contraseña inválida</string>
+    <!--Errors-->
+
+    <string name="errorEmptyUsername">Introduzca su nombre de usuario</string>
+    <string name="errorInvalidUsername">Nombre inválido</string>
+    <string name="errorEmptyPassword">Introduzca su contraseña</string>
+    <string name="errorInvalidPassword">Contraseña inválida</string>
+
+    <string name="toastErrorEmptyUsername">Introduzca un nombre de usuario</string>
+    <string name="toastErrorShortUsername">Introduzca un nombre de usuario de al menos 4 caracteres</string>
+    <string name="toastErrorName">Introduzca su nombre</string>
+    <string name="toastErrorSurname">Introduzca su primer apellido</string>
+    <string name="toastErrorSecondSurname">Introduzca su segundo apellido</string>
+    <string name="toastErrorEmptyAge">Introduzca su edad</string>
+    <string name="toastErrorInvalidAge">La edad debe estar comprendida entre 0 y 99</string>
+    <string name="toastErrorNotIntAge">La edad introducida no es un número entero</string>
+    <string name="toastErrorEmptyDNI">Introduzca su DNI</string>
+    <string name="toastErrorShortDNI">El DNI está compuesto por 9 caracteres</string>
+    <string name="toastErrorInvalidDNI">El DNI introducido no es válido</string>
+
+    <string name="toastErrorEmptyGender">Introduzca su género</string>
+
+    <string name="toastErrorEmptyMember">Introduzca si es alumno o docente</string>
+
+    <string name="toastErrorEmptyActivationCode">Introduzca el código de activación</string>
+    <string name="toastErrorInvalidActivationCode">El código de activación está compuesto por 4 caracteres</string>
+    <string name="toastErrorEmptyNewPassword">Introduzca su contraseña</string>
+    <string name="toastErrorInvalidNewPassword">Introduzca una contraseña de al menos 8 caracteres</string>
+    <string name="toastErrorEmptyRepeatPassword">Introduzca de nuevo la contraseña</string>
+    <string name="toastErrorInvalidRepeatPassword">Las contraseñas introducidas no coinciden</string>
 
     <!--SignUp-->
-    <string name="nombre">Nombre</string>
-    <string name="primerApellido">Primer apellido</string>
-    <string name="segundoApellido">Segundo apellido</string>
-    <string name="genero">Género</string>
-    <string name="hombre">Hombre</string>
-    <string name="mujer">Mujer</string>
-    <string name="miembro">Miembro del</string>
-    <string name="alumnado">Alumnado</string>
-    <string name="profesorado">Profesorado</string>
-    <string name="edad">Edad</string>
+    <string name="name">Nombre</string>
+    <string name="surname">Primer apellido</string>
+    <string name="secondSurname">Segundo apellido</string>
+    <string name="gender">Género</string>
+    <string name="male">Hombre</string>
+    <string name="female">Mujer</string>
+    <string name="member">Miembro del</string>
+    <string name="studentBody">Alumnado</string>
+    <string name="teacherBody">Profesorado</string>
+    <string name="age">Edad</string>
     <string name="dni">DNI</string>
-    <string name="codigoActivacion">Código de activación</string>
-    <string name="nuevaContraseña">Nueva contraseña</string>
-    <string name="repetirContraseña">Repetir contraseña</string>
-    <string name="continuar">Continuar</string>
-    <string name="crearCuenta">Crear cuenta</string>
-    <string name="volver">Volver</string>
+    <string name="activationCode">Código de activación</string>
+    <string name="newPassword">Nueva contraseña</string>
+    <string name="repeatPassword">Repetir contraseña</string>
+    <string name="continueTitle">Continuar</string>
+    <string name="createAccount">Crear cuenta</string>
+    <string name="back">Volver</string>
 
     <!--CRUD-->
-    <string name="insertar">Insertar</string>
-    <string name="borrar">Borrar</string>
-    <string name="actualizar">Actualizar</string>
-    <string name="consultar">Consultar</string>
+    <string name="insert">Insertar</string>
+    <string name="delete">Borrar</string>
+    <string name="update">Actualizar</string>
+    <string name="consult">Consultar</string>
     <string name="title_activity_main_menu">MainMenu</string>
-    <string name="tab_text_1">Tab 1</string>
-    <string name="tab_text_2">Tab 2</string>
-    <string name="tab_text_3">Tab 3</string>
+    <string name="tab_text_1">Nuestro centro</string>
+    <string name="tab_text_2">Alumnado</string>
+    <string name="tab_text_3">Profesorado</string>
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="title_activity_nav_header_main_menu">nav_header_main_menu</string>
@@ -52,5 +77,53 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="title_activity_navigation_bar">NavigationBar</string>
-    <string name="title_activity_prueba">prueba</string>
+    <string name="title_activity_main_menu2">MainMenu2</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="background">Fondo</string>
+
+    <!--Menus-->
+    <string name="home">Inicio</string>
+    <string name="myProfile">Mi perfil</string>
+    <string name="logout">Cerrar sesión</string>
+    <string name="closeApp">Cerrar aplicación</string>
+    <string name="help">Ayuda</string>
+    <string name="mainMenu">Menú principal</string>
+    <string name="titleSections">Secciones</string>
+
+    <!--Help-->
+    <string name="helpTitle">Ayuda</string>
+    <string name="helpLogin">El nombre del usuario debe tener al menos 4 caracteres y la contraseña al menos 8.</string>
+    <string name="helpSignUpNick">El nombre del usuario debe tener al menos 4 caracteres.</string>
+    <string name="helpSignUpPersonalData">Introduzca sus datos personales. En el campo edad debe introducir un número entero válido. El DNI será validado por lo que debe ser real.</string>
+    <string name="helpSignUpGender">Debe elegir una opción de las alternativas.</string>
+    <string name="helpSignUpTypeMember">Debe elegir una opción de las alternativas.</string>
+    <string name="helpSignUpPassword">El código de activación consta de 4 dígitos. La contraseña debe contener al menos 8 caracteres.</string>
+    <string name="helpMainMenu">Acceda a los diferentes apartados desde las pestañas o desde el panel lateral de navegación. Desde este último podrá también cerrar sesión.</string>
+    <string name="helpFormListClassrooms">Asegúrese que los datos introducidos sean válidos.</string>
+    <string name="helpFormListSubjects">Asegúrese que los datos introducidos sean válidos.</string>
+    <string name="helpFormListTutorships">Asegúrese que los datos introducidos sean válidos.</string>
+
+    <!--Fragments-->
+    <string name="fragmentTextClassrooms">Mantenga actualizado el listado de aulas a las que asiste.</string>
+    <string name="fragmentButtonClassrooms">Aulas</string>
+    <string name="fragmentTextSubjects">Toda la información sobre sus asignaturas.</string>
+    <string name="fragmentButtonSubjects">Asignaturas</string>
+    <string name="fragmentTextTutorships">Añada, consulte, actualice y elimine toda la información acerca de sus tutorías.</string>
+    <string name="fragmentButtonTutorships">Tutorías</string>
+
+    <!--FormList-->
+    <string name="titleClassrooms">Aulas</string>
+    <string name="subject">Asignatura</string>
+    <string name="teacher">Docente</string>
+    <string name="classroom">Aula</string>
+    <string name="startTime">Hora de comienzo</string>
+    <string name="endingTime">Hora de finalización</string>
+    <string name="errorEmptySubject">Introduzca el nombre de la asignatura</string>
+    <string name="errorEmptyTeacher">Introduzca el nombre del docente</string>
+    <string name="errorEmptyClassroom">Introduzca el nombre del aula</string>
+
+
+    <string name="titleSubjects">Asignaturas</string>
+    <string name="titleTutorships">Tutorías</string>
+
 </resources>

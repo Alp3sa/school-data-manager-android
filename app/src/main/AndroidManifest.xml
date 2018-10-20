@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:name=".application"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -18,16 +19,56 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SignUpNick" />
-        <activity android:name=".SignUpPersonalData" />
-        <activity android:name=".SignUpGender" />
-        <activity android:name=".SignUpTypeMember" />
-        <activity android:name=".SignUpPasswords" />
-
+        <activity android:name=".SignUpNick">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.gestordedatos.gestordedatos.MainActivity" />
+        </activity>
+        <activity android:name=".SignUpPersonalData">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.gestordedatos.gestordedatos.SignUpNick" />
+        </activity>
+        <activity android:name=".SignUpGender">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.gestordedatos.gestordedatos.SignUpPersonalData" />
+        </activity>
+        <activity android:name=".SignUpTypeMember">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.gestordedatos.gestordedatos.SignUpGender" />
+        </activity>
+        <activity android:name=".SignUpPasswords">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.gestordedatos.gestordedatos.SignUpTypeMember" />
+        </activity>
         <activity
             android:name=".MainMenu"
-            android:label="@string/title_activity_main_menu"
+            android:label="@string/mainMenu"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".FormListClassrooms"
+            android:label="@string/titleClassrooms">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.gestordedatos.gestordedatos.MainMenu" />
+        </activity>
+        <activity
+            android:name=".FormListSubjects"
+            android:label="@string/titleSubjects">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.gestordedatos.gestordedatos.MainMenu" />
+        </activity>
+        <activity
+            android:name=".FormListTutorships"
+            android:label="@string/titleTutorships">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.gestordedatos.gestordedatos.MainMenu" />
+        </activity>
     </application>
 
 </manifest>

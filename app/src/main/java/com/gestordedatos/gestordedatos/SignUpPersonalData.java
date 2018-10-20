@@ -1,12 +1,16 @@
 package com.gestordedatos.gestordedatos;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableStringBuilder;
 import android.text.style.RelativeSizeSpan;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -16,6 +20,7 @@ import android.widget.Toast;
 
 public class SignUpPersonalData extends AppCompatActivity {
     Activity contexto;
+    user user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,7 +28,8 @@ public class SignUpPersonalData extends AppCompatActivity {
 
         contexto=this;
 
-        final user user = getIntent().getExtras().getParcelable("user");
+        //user = getIntent().getExtras().getParcelable("user");
+        user = ((application) getApplicationContext()).user;
 
         final EditText editTextNombre = (EditText) findViewById(R.id.editTextNombre);
         final EditText editTextPrimerApellido = (EditText) findViewById(R.id.editTextPrimerApellido);
@@ -81,7 +87,7 @@ public class SignUpPersonalData extends AppCompatActivity {
                 String toast="";
 
                 if(nombre.trim().equals("")){
-                    if(nombre.trim().equals("")){toast = "Introduzca su nombre";}
+                    if(nombre.trim().equals("")){toast = getResources().getString(R.string.toastErrorName);}
                     //Dar formato al texto
                     SpannableStringBuilder biggerText = new SpannableStringBuilder(toast);
                     biggerText.setSpan(new RelativeSizeSpan(1.5f), 0, toast.length(), 0);
@@ -98,7 +104,7 @@ public class SignUpPersonalData extends AppCompatActivity {
                 }
 
                 if(primerApellido.trim().equals("")){
-                    if(primerApellido.trim().equals("")){toast = "Introduzca su primer apellido";}
+                    if(primerApellido.trim().equals("")){toast = getResources().getString(R.string.toastErrorSurname);}
                     //Dar formato al texto
                     SpannableStringBuilder biggerText = new SpannableStringBuilder(toast);
                     biggerText.setSpan(new RelativeSizeSpan(1.5f), 0, toast.length(), 0);
@@ -115,7 +121,7 @@ public class SignUpPersonalData extends AppCompatActivity {
                 }
 
                 if(segundoApellido.trim().equals("")){
-                    if(segundoApellido.trim().equals("")){toast = "Introduzca su segundo apellido";}
+                    if(segundoApellido.trim().equals("")){toast = getResources().getString(R.string.toastErrorSecondSurname);}
                     //Dar formato al texto
                     SpannableStringBuilder biggerText = new SpannableStringBuilder(toast);
                     biggerText.setSpan(new RelativeSizeSpan(1.5f), 0, toast.length(), 0);
@@ -132,7 +138,7 @@ public class SignUpPersonalData extends AppCompatActivity {
                 }
 
                 if (edad.trim().equals("")) {
-                    toast = "Introduzca su edad";
+                    toast = getResources().getString(R.string.toastErrorEmptyAge);
                     //Dar formato al texto
                     SpannableStringBuilder biggerText = new SpannableStringBuilder(toast);
                     biggerText.setSpan(new RelativeSizeSpan(1.5f), 0, toast.length(), 0);
@@ -148,7 +154,7 @@ public class SignUpPersonalData extends AppCompatActivity {
                 try {
                     int edadUsuario=Integer.parseInt(edad);
                     if (edadUsuario<0 || edadUsuario>99) {
-                        toast = "La edad debe estar comprendida entre 0 y 99";
+                        toast = getResources().getString(R.string.toastErrorInvalidAge);
 
                         //Dar formato al texto
                         SpannableStringBuilder biggerText = new SpannableStringBuilder(toast);
@@ -165,7 +171,7 @@ public class SignUpPersonalData extends AppCompatActivity {
                     }
                 }
                 catch(Exception e){
-                    toast = "La edad introducida no es un número entero";
+                    toast = getResources().getString(R.string.toastErrorNotIntAge);
                     //Dar formato al texto
                     SpannableStringBuilder biggerText = new SpannableStringBuilder(toast);
                     biggerText.setSpan(new RelativeSizeSpan(1.5f), 0, toast.length(), 0);
@@ -178,9 +184,9 @@ public class SignUpPersonalData extends AppCompatActivity {
                 }
 
                 if(dni.trim().equals("") || dni.trim().length()!=9 || !validarNIF(dni)){
-                    if(dni.trim().equals("")){toast = "Introduzca su DNI";}
-                    else if(dni.trim().length()!=9){toast = "El DNI está compuesto por 9 caracteres";}
-                    else{toast = "El DNI introducido no es válido";}
+                    if(dni.trim().equals("")){toast = getResources().getString(R.string.toastErrorEmptyDNI);}
+                    else if(dni.trim().length()!=9){toast = getResources().getString(R.string.toastErrorShortDNI);}
+                    else{toast = getResources().getString(R.string.toastErrorInvalidDNI);}
 
                     //Dar formato al texto
                     SpannableStringBuilder biggerText = new SpannableStringBuilder(toast);
@@ -204,7 +210,8 @@ public class SignUpPersonalData extends AppCompatActivity {
                     user.setEdad(edad);
                     user.setDni(dni);
                     Intent intent = new Intent(contexto, SignUpGender.class);
-                    intent.putExtra("user", user);
+                    //intent.putExtra("user", user);
+                    ((application) getApplicationContext()).user=user;
                     startActivity(intent);
                 }
             }
@@ -511,5 +518,44 @@ public class SignUpPersonalData extends AppCompatActivity {
         catch(Exception e){
             return false;
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        /*if (id == R.id.action_settings) {
+            return true;
+        }
+        else */
+        if(id == R.id.action_help){
+            showHelp();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    public void showHelp() {
+        new AlertDialog.Builder(SignUpPersonalData.this)
+                .setTitle(getResources().getString(R.string.helpTitle))
+                .setMessage(getResources().getString(R.string.helpSignUpPersonalData))
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                }).show();
     }
 }
