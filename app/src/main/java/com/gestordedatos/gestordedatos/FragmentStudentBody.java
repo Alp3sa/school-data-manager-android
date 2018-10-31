@@ -40,7 +40,7 @@ public class FragmentStudentBody extends Fragment {
      * @param param2 Parameter 2.
      * @return A new instance of fragment FragmentStudentBody.
      */
-    // TODO: Rename and change types and number of parameters
+    // TODO: Rename and change types and classroomName of parameters
 
     public static FragmentStudentBody newInstance(String param1, String param2) {
         FragmentStudentBody fragment = new FragmentStudentBody();
@@ -67,7 +67,7 @@ public class FragmentStudentBody extends Fragment {
         return inflater.inflate(R.layout.fragment_student_body, container, false);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
+    // TODO: Rename method, updateRecord argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -102,7 +102,7 @@ public class FragmentStudentBody extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
+        // TODO: Update argument type and classroomName
         void onFragmentInteraction(Uri uri);
     }
 }

@@ -1,9 +1,9 @@
-package com.gestordedatos.gestordedatos;
+package com.gestordedatos.gestordedatos.pojos;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class user implements Parcelable{
+public class User implements Parcelable{
     String nombreUsuario;
     String nombre;
     String primerApellido;
@@ -13,7 +13,7 @@ public class user implements Parcelable{
     String genero;
     String tipoDeMiembro;
 
-    public user(String nombreUsuario,String nombre,String primerApellido,String segundoApellido,String edad,String dni,String genero,String tipoDeMiembro) {
+    public User(String nombreUsuario, String nombre, String primerApellido, String segundoApellido, String edad, String dni, String genero, String tipoDeMiembro) {
         this.nombreUsuario = nombreUsuario;
         this.nombre = nombre;
         this.primerApellido = primerApellido;
@@ -24,19 +24,19 @@ public class user implements Parcelable{
         this.tipoDeMiembro = tipoDeMiembro;
     }
 
-    protected user(Parcel in) {
+    protected User(Parcel in) {
         nombreUsuario = in.readString();
     }
 
-    public static final Creator<user> CREATOR = new Creator<user>() {
+    public static final Creator<User> CREATOR = new Creator<User>() {
         @Override
-        public user createFromParcel(Parcel in) {
-            return new user(in);
+        public User createFromParcel(Parcel in) {
+            return new User(in);
         }
 
         @Override
-        public user[] newArray(int size) {
-            return new user[size];
+        public User[] newArray(int size) {
+            return new User[size];
         }
     };
 

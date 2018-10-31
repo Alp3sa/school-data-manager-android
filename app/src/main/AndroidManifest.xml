@@ -49,26 +49,77 @@
             android:label="@string/mainMenu"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".FormListClassrooms"
+            android:name=".classrooms.ListClassrooms"
+            android:label="@string/titleClassrooms"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.gestordedatos.gestordedatos.MainMenu" />
+        </activity>
+        <activity
+            android:name=".classrooms.FormListClassrooms"
             android:label="@string/titleClassrooms">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.gestordedatos.gestordedatos.classrooms.ListClassrooms" />
+        </activity>
+        <activity
+            android:name=".classrooms.FormListClassroomsUpdate"
+            android:label="@string/titleClassrooms">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.gestordedatos.gestordedatos.classrooms.ListClassrooms" />
+        </activity>
+        <activity
+            android:name=".subjects.ListSubjects"
+            android:label="@string/titleSubjects"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.gestordedatos.gestordedatos.MainMenu" />
         </activity>
         <activity
-            android:name=".FormListSubjects"
+            android:name=".subjects.FormListSubjects"
             android:label="@string/titleSubjects">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.gestordedatos.gestordedatos.MainMenu" />
+                android:value="com.gestordedatos.gestordedatos.subjects.ListSubjects" />
         </activity>
         <activity
-            android:name=".FormListTutorships"
-            android:label="@string/titleTutorships">
+            android:name=".subjects.FormListSubjectsUpdate"
+            android:label="@string/titleSubjects">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.gestordedatos.gestordedatos.subjects.ListSubjects" />
+        </activity>
+        <activity
+            android:name=".tutorships.ListTutorships"
+            android:label="@string/titleTutorships"
+            android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.gestordedatos.gestordedatos.MainMenu" />
         </activity>
+        <activity
+            android:name=".tutorships.FormListTutorships"
+            android:label="@string/titleTutorships">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.gestordedatos.gestordedatos.tutorships.ListTutorships" />
+        </activity>
+        <activity
+            android:name=".tutorships.FormListTutorshipsUpdate"
+            android:label="@string/titleTutorships">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.gestordedatos.gestordedatos.tutorships.ListTutorships" />
+        </activity>
+
+        <provider
+            android:name="com.gestordedatos.gestordedatos.contentProvider.MyContentProvider"
+            android:authorities="com.gestordedatos.gestordedatos.contentProvider.MyContentProvider"
+            android:enabled="true"
+            android:exported="true"></provider>
     </application>
 
 </manifest>

@@ -40,7 +40,7 @@ public class FragmentMySchool extends Fragment {
      * @param param2 Parameter 2.
      * @return A new instance of fragment FragmentMySchool.
      */
-    // TODO: Rename and change types and number of parameters
+    // TODO: Rename and change types and classroomName of parameters
     public static FragmentMySchool newInstance(String param1, String param2) {
         FragmentMySchool fragment = new FragmentMySchool();
         Bundle args = new Bundle();
@@ -66,7 +66,7 @@ public class FragmentMySchool extends Fragment {
         return inflater.inflate(R.layout.fragment_my_school, container, false);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
+    // TODO: Rename method, updateRecord argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -101,7 +101,7 @@ public class FragmentMySchool extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
+        // TODO: Update argument type and classroomName
         void onFragmentInteraction(Uri uri);
     }
 }

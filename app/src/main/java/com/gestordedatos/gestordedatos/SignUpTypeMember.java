@@ -15,12 +15,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.Toast;
+
+import com.gestordedatos.gestordedatos.pojos.User;
 
 public class SignUpTypeMember extends AppCompatActivity {
     Activity contexto;
-    user user;
+    User User;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,8 +29,8 @@ public class SignUpTypeMember extends AppCompatActivity {
 
         contexto=this;
 
-        //user = getIntent().getExtras().getParcelable("user");
-        user = ((application) getApplicationContext()).user;
+        //User = getIntent().getExtras().getParcelable("User");
+        User = ((application) getApplicationContext()).User;
 
         final CheckBox alumnado = (CheckBox) findViewById(R.id.checkBoxAlumnado);
         final CheckBox profesorado = (CheckBox) findViewById(R.id.checkBoxProfesorado);
@@ -58,7 +59,7 @@ public class SignUpTypeMember extends AppCompatActivity {
             @Override
             public void onClick(final View view) {
                 Intent intent = new Intent(contexto,SignUpGender.class);
-                intent.putExtra("user", user);
+                intent.putExtra("User", User);
                 startActivity(intent);
             }
         });
@@ -98,9 +99,9 @@ public class SignUpTypeMember extends AppCompatActivity {
 
                 if(checkTipoMiembro==true) {
                     Intent intent = new Intent(contexto, SignUpPasswords.class);
-                    user.setTipoDeMiembro(tipoMiembro);
-                    //intent.putExtra("user", user);
-                    ((application) getApplicationContext()).user=user;
+                    User.setTipoDeMiembro(tipoMiembro);
+                    //intent.putExtra("User", User);
+                    ((application) getApplicationContext()).User = User;
                     startActivity(intent);
                 }
             }

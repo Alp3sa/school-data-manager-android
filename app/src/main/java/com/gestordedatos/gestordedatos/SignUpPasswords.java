@@ -13,14 +13,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.gestordedatos.gestordedatos.pojos.User;
+
 public class SignUpPasswords extends AppCompatActivity {
     Activity contexto;
-    user user;
+    User User;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,8 +29,8 @@ public class SignUpPasswords extends AppCompatActivity {
 
         contexto=this;
 
-        //user = getIntent().getExtras().getParcelable("user");
-        user = ((application) getApplicationContext()).user;
+        //User = getIntent().getExtras().getParcelable("User");
+        User = ((application) getApplicationContext()).User;
 
         final EditText editTextCodigoActivacion = (EditText) findViewById(R.id.editTextCodigoActivacion);
         final EditText editTextContraseña = (EditText) findViewById(R.id.editTextContraseña);
@@ -42,7 +42,7 @@ public class SignUpPasswords extends AppCompatActivity {
             @Override
             public void onClick(final View view) {
                 Intent intent = new Intent(contexto,SignUpTypeMember.class);
-                intent.putExtra("user", user);
+                intent.putExtra("User", User);
                 startActivity(intent);
             }
         });
@@ -120,8 +120,8 @@ public class SignUpPasswords extends AppCompatActivity {
 
                 if(checkCodigoActivacion==true && checkContraseña==true && checkRepetirContraseña==true) {
                     Intent intent = new Intent(contexto, MainMenu.class);
-                    //intent.putExtra("user", user);
-                    ((application) getApplicationContext()).user=user;
+                    //intent.putExtra("User", User);
+                    ((application) getApplicationContext()).User = User;
                     startActivity(intent);
                 }
             }

@@ -13,14 +13,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.gestordedatos.gestordedatos.pojos.User;
+
 public class SignUpPersonalData extends AppCompatActivity {
     Activity contexto;
-    user user;
+    User User;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,8 +28,8 @@ public class SignUpPersonalData extends AppCompatActivity {
 
         contexto=this;
 
-        //user = getIntent().getExtras().getParcelable("user");
-        user = ((application) getApplicationContext()).user;
+        //User = getIntent().getExtras().getParcelable("User");
+        User = ((application) getApplicationContext()).User;
 
         final EditText editTextNombre = (EditText) findViewById(R.id.editTextNombre);
         final EditText editTextPrimerApellido = (EditText) findViewById(R.id.editTextPrimerApellido);
@@ -43,7 +43,7 @@ public class SignUpPersonalData extends AppCompatActivity {
             @Override
             public void onClick(final View view) {
                 Intent intent = new Intent(contexto,SignUpNick.class);
-                intent.putExtra("user", user);
+                intent.putExtra("User", User);
                 startActivity(intent);
             }
         });
@@ -204,14 +204,14 @@ public class SignUpPersonalData extends AppCompatActivity {
                 }
 
                 if(checkNombre==true && checkPrimerApellido==true && checkSegundoApellido==true && checkEdad==true && checkDNI==true) {
-                    user.setNombre(nombre);
-                    user.setPrimerApellido(primerApellido);
-                    user.setSegundoApellido(segundoApellido);
-                    user.setEdad(edad);
-                    user.setDni(dni);
+                    User.setNombre(nombre);
+                    User.setPrimerApellido(primerApellido);
+                    User.setSegundoApellido(segundoApellido);
+                    User.setEdad(edad);
+                    User.setDni(dni);
                     Intent intent = new Intent(contexto, SignUpGender.class);
-                    //intent.putExtra("user", user);
-                    ((application) getApplicationContext()).user=user;
+                    //intent.putExtra("User", User);
+                    ((application) getApplicationContext()).User = User;
                     startActivity(intent);
                 }
             }

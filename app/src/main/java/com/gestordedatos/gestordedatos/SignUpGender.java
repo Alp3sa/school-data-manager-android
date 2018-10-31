@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableStringBuilder;
 import android.text.style.RelativeSizeSpan;
@@ -16,12 +15,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.Toast;
+
+import com.gestordedatos.gestordedatos.pojos.User;
 
 public class SignUpGender extends AppCompatActivity {
     Activity contexto;
-    user user;
+    User User;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,8 +29,8 @@ public class SignUpGender extends AppCompatActivity {
 
         contexto=this;
 
-        //user = getIntent().getExtras().getParcelable("user");
-        user = ((application) getApplicationContext()).user;
+        //User = getIntent().getExtras().getParcelable("User");
+        User = ((application) getApplicationContext()).User;
 
         final CheckBox hombre = (CheckBox) findViewById(R.id.checkBoxHombre);
         final CheckBox mujer = (CheckBox) findViewById(R.id.checkBoxMujer);
@@ -59,7 +59,7 @@ public class SignUpGender extends AppCompatActivity {
             @Override
             public void onClick(final View view) {
                 Intent intent = new Intent(contexto,SignUpPersonalData.class);
-                intent.putExtra("user", user);
+                intent.putExtra("User", User);
                 startActivity(intent);
             }
         });
@@ -99,9 +99,9 @@ public class SignUpGender extends AppCompatActivity {
 
                 if(checkGenero==true) {
                     Intent intent = new Intent(contexto, SignUpTypeMember.class);
-                    user.setGenero(genero);
-                    //intent.putExtra("user", user);
-                    ((application) getApplicationContext()).user=user;
+                    User.setGenero(genero);
+                    //intent.putExtra("User", User);
+                    ((application) getApplicationContext()).User = User;
                     startActivity(intent);
                 }
             }

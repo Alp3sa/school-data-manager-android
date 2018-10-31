@@ -99,6 +99,9 @@
     <string name="helpSignUpTypeMember">Debe elegir una opción de las alternativas.</string>
     <string name="helpSignUpPassword">El código de activación consta de 4 dígitos. La contraseña debe contener al menos 8 caracteres.</string>
     <string name="helpMainMenu">Acceda a los diferentes apartados desde las pestañas o desde el panel lateral de navegación. Desde este último podrá también cerrar sesión.</string>
+    <string name="helpListClassrooms">Para modificar o borrar un registro manténgalo seleccionado hasta que aparezcan las respectivas opciones en el action bar. Para añadir un nuevo registro selecione la opción que ya aparece en el action bar.</string>
+    <string name="helpListSubjects">Para modificar o borrar un registro manténgalo seleccionado hasta que aparezcan las respectivas opciones en el action bar. Para añadir un nuevo registro selecione la opción que ya aparece en el action bar.</string>
+    <string name="helpListTutorships">Para modificar o borrar un registro manténgalo seleccionado hasta que aparezcan las respectivas opciones en el action bar. Para añadir un nuevo registro selecione la opción que ya aparece en el action bar.</string>
     <string name="helpFormListClassrooms">Asegúrese que los datos introducidos sean válidos.</string>
     <string name="helpFormListSubjects">Asegúrese que los datos introducidos sean válidos.</string>
     <string name="helpFormListTutorships">Asegúrese que los datos introducidos sean válidos.</string>
@@ -115,15 +118,27 @@
     <string name="titleClassrooms">Aulas</string>
     <string name="subject">Asignatura</string>
     <string name="teacher">Docente</string>
-    <string name="classroom">Aula</string>
+    <string name="classroom">Nombre del aula</string>
     <string name="startTime">Hora de comienzo</string>
     <string name="endingTime">Hora de finalización</string>
     <string name="errorEmptySubject">Introduzca el nombre de la asignatura</string>
     <string name="errorEmptyTeacher">Introduzca el nombre del docente</string>
     <string name="errorEmptyClassroom">Introduzca el nombre del aula</string>
+    <string name="errorTime">La hora de comienzo debe ser anterior a la de finalización</string>
 
+    <!--Labels-->
+    <string name="subjectLabel">Nombre de la asignatura: </string>
+    <string name="teacherLabel">Docente: </string>
+    <string name="classroomLabel">Nombre del aula: </string>
+    <string name="startTimeLabel">Hora de comienzo: </string>
+    <string name="endingTimeLabel">Hora de finalización: </string>
 
     <string name="titleSubjects">Asignaturas</string>
     <string name="titleTutorships">Tutorías</string>
+
+    <!--List-->
+    <string name="noData">Sin datos</string>
+    <string name="loadingData">Cargando datos</string>
+
 
 </resources>

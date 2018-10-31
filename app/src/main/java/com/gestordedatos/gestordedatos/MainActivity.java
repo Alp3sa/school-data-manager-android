@@ -19,6 +19,10 @@ import android.widget.TextView;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.gestordedatos.gestordedatos.classrooms.ListClassrooms;
+import com.gestordedatos.gestordedatos.pojos.User;
+import com.gestordedatos.gestordedatos.subjects.ListSubjects;
+
 
 public class MainActivity extends AppCompatActivity {
     Activity contexto;
@@ -37,6 +41,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        contexto=this;
+        //BEGIN TEST - SAVE TIME TO SKIP THE LOGIN SYSTEM
+        //Intent intent = new Intent(contexto,MainMenu.class);
+        //startActivity(intent);
+        //END TEST
+
         textView = (TextView) findViewById(R.id.textViewIniciarSesion);
 
         editTextNombreUsuario = (EditText) findViewById(R.id.editTextNombreUsuario);
@@ -44,8 +54,6 @@ public class MainActivity extends AppCompatActivity {
 
         Button buttonSignup = (Button) findViewById(R.id.botonSignup);
         Button buttonLogin = (Button) findViewById(R.id.botonLogin);
-
-        contexto=this;
 
         buttonSignup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -189,15 +197,15 @@ public class MainActivity extends AppCompatActivity {
         con.execute(nombreUsuario,password);
         */
         //Ejemplo de pasar objeto entre actividades
-        user user = new user(nombreUsuario,null,null,null,null,null,null,null);
+        User User = new User(nombreUsuario,null,null,null,null,null,null,null);
         Intent intent = new Intent(contexto, MainMenu.class);
-        //intent.putExtra("user", user);
-        ((application) getApplicationContext()).user=user;
+        //intent.putExtra("User", User);
+        ((application) getApplicationContext()).User = User;
 
         startActivity(intent);
 
         //Añadir en destino
-        //user user = getIntent().getExtras().getParcelable("user");
+        //User User = getIntent().getExtras().getParcelable("User");
         //...o si pasamos la variable nombreUsuario en vez de un objeto
         //Intent intent = this.getIntent();
         //String nombreUsuario = intent.getExtras().getString("nombreUsuario");

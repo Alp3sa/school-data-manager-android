@@ -26,6 +26,13 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.gestordedatos.gestordedatos.classrooms.ListClassrooms;
+import com.gestordedatos.gestordedatos.pojos.User;
+import com.gestordedatos.gestordedatos.subjects.FormListSubjects;
+import com.gestordedatos.gestordedatos.subjects.ListSubjects;
+import com.gestordedatos.gestordedatos.tutorships.FormListTutorships;
+import com.gestordedatos.gestordedatos.tutorships.ListTutorships;
+
 public class MainMenu extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -43,6 +50,11 @@ public class MainMenu extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //BEGIN TEST - SAVE TIME TO SKIP THE LOGIN SYSTEM
+        //User User = new User("",null,null,null,null,null,null,null);
+        //((application) getApplicationContext()).User = User;
+        //END TEST
 
         setContentView(R.layout.activity_main_menu);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -101,10 +113,10 @@ public class MainMenu extends AppCompatActivity
         getMenuInflater().inflate(R.menu.main_menu, menu);
 
         //Set title NavigationView
-        //user user = getIntent().getExtras().getParcelable("user");
-        user user = ((application) getApplicationContext()).user;
+        //User User = getIntent().getExtras().getParcelable("User");
+        User User = ((application) getApplicationContext()).User;
         titleNavigationView = (TextView) findViewById(R.id.navigationView_title);
-        titleNavigationView.setText(user.getNombreUsuario());
+        titleNavigationView.setText(User.getNombreUsuario());
 
         return true;
     }
@@ -142,17 +154,17 @@ public class MainMenu extends AppCompatActivity
 
         }
         */else if (id == R.id.nav_formListClassrooms) {
-            Intent intent = new Intent(contexto, FormListClassrooms.class);
+            Intent intent = new Intent(contexto, ListClassrooms.class);
             startActivity(intent);
         } else if (id == R.id.nav_formListSubjects) {
-            Intent intent = new Intent(contexto, FormListSubjects.class);
+            Intent intent = new Intent(contexto, ListSubjects.class);
             startActivity(intent);
         } else if (id == R.id.nav_formListTutorships) {
-            Intent intent = new Intent(contexto, FormListTutorships.class);
+            Intent intent = new Intent(contexto, ListTutorships.class);
             startActivity(intent);
         } else if (id == R.id.nav_logout) {
             Intent intent = new Intent(contexto, MainActivity.class);
-            ((application) getApplicationContext()).user=null;
+            ((application) getApplicationContext()).User =null;
             startActivity(intent);
         }
 
@@ -168,7 +180,7 @@ public class MainMenu extends AppCompatActivity
      */
     public static class PlaceholderFragment extends Fragment {
         /**
-         * The fragment argument representing the section number for this
+         * The fragment argument representing the section classroomName for this
          * fragment.
          */
         private static final String ARG_SECTION_NUMBER = "section_number";
@@ -178,7 +190,7 @@ public class MainMenu extends AppCompatActivity
 
         /**
          * Returns a new instance of this fragment for the given section
-         * number.
+         * classroomName.
          */
         public static MainMenu.PlaceholderFragment newInstance(int sectionNumber) {
             MainMenu.PlaceholderFragment fragment = new MainMenu.PlaceholderFragment();
@@ -202,7 +214,7 @@ public class MainMenu extends AppCompatActivity
                 botonMisAulas.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(final View view) {
-                        Intent intent = new Intent(getContext(), FormListClassrooms.class);
+                        Intent intent = new Intent(getContext(), ListClassrooms.class);
                         startActivity(intent);
                     }
                 });
@@ -217,7 +229,7 @@ public class MainMenu extends AppCompatActivity
                 botonMisAsignaturas.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(final View view) {
-                        Intent intent = new Intent(getContext(), FormListSubjects.class);
+                        Intent intent = new Intent(getContext(), ListSubjects.class);
                         startActivity(intent);
                     }
                 });
@@ -232,7 +244,7 @@ public class MainMenu extends AppCompatActivity
                 botonMisTutorias.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(final View view) {
-                        Intent intent = new Intent(getContext(), FormListTutorships.class);
+                        Intent intent = new Intent(getContext(), ListTutorships.class);
                         startActivity(intent);
                     }
                 });
