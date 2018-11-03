@@ -13,6 +13,8 @@ import android.support.v4.widget.CursorAdapter;
 import android.support.v7.widget.Toolbar;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -31,7 +33,7 @@ public class ClassroomsListFragment extends ListFragment implements LoaderManage
     ClassroomsCursorAdapter mAdapter;
     LoaderManager.LoaderCallbacks<Cursor> mCallbacks;
     ActionMode nActionMode;
-    View rowSelected;
+    public static View rowSelected;
 
     Handler handler = new Handler();//Timer to restore insert_menu
 
@@ -130,7 +132,7 @@ public class ClassroomsListFragment extends ListFragment implements LoaderManage
         }
     };
 
-    /*ActionMode.Callback nActionModeCallback = new ActionMode.Callback(){
+    ActionMode.Callback nActionModeCallback = new ActionMode.Callback(){
         @Override
         public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
             return false;
@@ -150,7 +152,7 @@ public class ClassroomsListFragment extends ListFragment implements LoaderManage
         public void onDestroyActionMode(ActionMode actionMode) {
             nActionModeCallback = null;
         }
-    };*/
+    };
 
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         // This is called when a new Loader needs to be created.  This

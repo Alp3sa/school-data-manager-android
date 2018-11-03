@@ -88,7 +88,7 @@ public class ListClassrooms extends AppCompatActivity {
         }
         else if(id == R.id.action_update){
             Intent intent = new Intent(this,FormListClassroomsUpdate.class);
-            System.out.println("CHECK ID: "+rowSelected.getTag());
+            System.out.println("CHECK ID: "+Contract.Classroom._ID+" "+rowSelected.getTag());
             intent.putExtra(Contract.Classroom._ID,(Integer) rowSelected.getTag());
 
             startActivity(intent);

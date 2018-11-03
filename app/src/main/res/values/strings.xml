@@ -65,9 +65,9 @@
     <string name="update">Actualizar</string>
     <string name="consult">Consultar</string>
     <string name="title_activity_main_menu">MainMenu</string>
-    <string name="tab_text_1">Nuestro centro</string>
-    <string name="tab_text_2">Alumnado</string>
-    <string name="tab_text_3">Profesorado</string>
+    <string name="tab_text_1">Aulas</string>
+    <string name="tab_text_2">Asignaturas</string>
+    <string name="tab_text_3">Tutorías</string>
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="title_activity_nav_header_main_menu">nav_header_main_menu</string>
@@ -98,7 +98,7 @@
     <string name="helpSignUpGender">Debe elegir una opción de las alternativas.</string>
     <string name="helpSignUpTypeMember">Debe elegir una opción de las alternativas.</string>
     <string name="helpSignUpPassword">El código de activación consta de 4 dígitos. La contraseña debe contener al menos 8 caracteres.</string>
-    <string name="helpMainMenu">Acceda a los diferentes apartados desde las pestañas o desde el panel lateral de navegación. Desde este último podrá también cerrar sesión.</string>
+    <string name="helpMainMenu">Acceda a los diferentes apartados desde las pestañas o desde el panel lateral de navegación. Desde este último podrá también cerrar sesión.\n\nPara modificar o borrar un registro manténgalo seleccionado hasta que aparezcan las respectivas opciones en el action bar. Si desea añadir un nuevo registro selecione la opción que ya aparece en el action bar.</string>
     <string name="helpListClassrooms">Para modificar o borrar un registro manténgalo seleccionado hasta que aparezcan las respectivas opciones en el action bar. Para añadir un nuevo registro selecione la opción que ya aparece en el action bar.</string>
     <string name="helpListSubjects">Para modificar o borrar un registro manténgalo seleccionado hasta que aparezcan las respectivas opciones en el action bar. Para añadir un nuevo registro selecione la opción que ya aparece en el action bar.</string>
     <string name="helpListTutorships">Para modificar o borrar un registro manténgalo seleccionado hasta que aparezcan las respectivas opciones en el action bar. Para añadir un nuevo registro selecione la opción que ya aparece en el action bar.</string>

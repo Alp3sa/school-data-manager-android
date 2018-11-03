@@ -61,14 +61,14 @@
             android:label="@string/titleClassrooms">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.gestordedatos.gestordedatos.classrooms.ListClassrooms" />
+                android:value="com.gestordedatos.gestordedatos.MainMenu" />
         </activity>
         <activity
             android:name=".classrooms.FormListClassroomsUpdate"
             android:label="@string/titleClassrooms">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.gestordedatos.gestordedatos.classrooms.ListClassrooms" />
+                android:value="com.gestordedatos.gestordedatos.MainMenu" />
         </activity>
         <activity
             android:name=".subjects.ListSubjects"
@@ -83,14 +83,14 @@
             android:label="@string/titleSubjects">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.gestordedatos.gestordedatos.subjects.ListSubjects" />
+                android:value="com.gestordedatos.gestordedatos.MainMenu" />
         </activity>
         <activity
             android:name=".subjects.FormListSubjectsUpdate"
             android:label="@string/titleSubjects">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.gestordedatos.gestordedatos.subjects.ListSubjects" />
+                android:value="com.gestordedatos.gestordedatos.MainMenu" />
         </activity>
         <activity
             android:name=".tutorships.ListTutorships"
@@ -105,14 +105,14 @@
             android:label="@string/titleTutorships">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.gestordedatos.gestordedatos.tutorships.ListTutorships" />
+                android:value="com.gestordedatos.gestordedatos.MainMenu" />
         </activity>
         <activity
             android:name=".tutorships.FormListTutorshipsUpdate"
             android:label="@string/titleTutorships">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.gestordedatos.gestordedatos.tutorships.ListTutorships" />
+                android:value="com.gestordedatos.gestordedatos.MainMenu" />
         </activity>
 
         <provider

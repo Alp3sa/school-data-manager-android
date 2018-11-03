@@ -13,5 +13,6 @@ public class application extends Application {
     public static final int INSERTAR = 1;
     public static final int GUARDAR = 2;
 
-    public static String CLASSROOM_TABLE_NAME = "";
+    public static String CLASSROOM_TABLE_NAME = "Classrooms";
+    public static int LAST_TAB = 0;
 }

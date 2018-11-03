@@ -5,7 +5,9 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -23,30 +25,36 @@ import android.view.ViewGroup;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.widget.Button;
 import android.widget.TextView;
 
+import com.gestordedatos.gestordedatos.classrooms.ClassroomsListFragment;
+import com.gestordedatos.gestordedatos.classrooms.FormListClassrooms;
+import com.gestordedatos.gestordedatos.classrooms.FormListClassroomsUpdate;
 import com.gestordedatos.gestordedatos.classrooms.ListClassrooms;
+import com.gestordedatos.gestordedatos.contentProvider.ClassroomProvider;
+import com.gestordedatos.gestordedatos.contentProvider.Contract;
+import com.gestordedatos.gestordedatos.contentProvider.SubjectProvider;
+import com.gestordedatos.gestordedatos.contentProvider.TutorshipProvider;
 import com.gestordedatos.gestordedatos.pojos.User;
 import com.gestordedatos.gestordedatos.subjects.FormListSubjects;
+import com.gestordedatos.gestordedatos.subjects.FormListSubjectsUpdate;
 import com.gestordedatos.gestordedatos.subjects.ListSubjects;
+import com.gestordedatos.gestordedatos.subjects.SubjectsListFragment;
 import com.gestordedatos.gestordedatos.tutorships.FormListTutorships;
+import com.gestordedatos.gestordedatos.tutorships.FormListTutorshipsUpdate;
 import com.gestordedatos.gestordedatos.tutorships.ListTutorships;
+import com.gestordedatos.gestordedatos.tutorships.TutorshipsListFragment;
 
 public class MainMenu extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
-    private SectionsPagerAdapter mSectionsPagerAdapter;
 
     /**
      * The {@link ViewPager} that will host the section contents.
      */
     Activity contexto = this;
 
-    private ViewPager mViewPager;
-
     private TextView titleNavigationView;
-
+    TabLayout tabLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,35 +64,74 @@ public class MainMenu extends AppCompatActivity
         //((application) getApplicationContext()).User = User;
         //END TEST
 
+        //Set layouts
         setContentView(R.layout.activity_main_menu);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        //Tab listener to replace fragments
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+            public void onTabSelected(TabLayout.Tab tab) {
+                if(tab.getPosition()==0){
+                    application.CLASSROOM_TABLE_NAME="Classrooms";
+                    application.LAST_TAB=0;
+                    ClassroomsListFragment myFragment = new ClassroomsListFragment();
+
+                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                    transaction.replace(R.id.fragment, myFragment);
+                    transaction.addToBackStack(null);
+                    transaction.commit();
+                }
+                else if(tab.getPosition()==1){
+                    application.CLASSROOM_TABLE_NAME="Subjects";
+                    application.LAST_TAB=1;
+                    SubjectsListFragment myFragment = new SubjectsListFragment();
+
+                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                    transaction.replace(R.id.fragment, myFragment);
+                    transaction.addToBackStack(null);
+                    transaction.commit();
+                }
+                else if(tab.getPosition()==2){
+                    application.CLASSROOM_TABLE_NAME="Tutorships";
+                    application.LAST_TAB=2;
+                    TutorshipsListFragment myFragment = new TutorshipsListFragment();
+
+                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                    transaction.replace(R.id.fragment, myFragment);
+                    transaction.addToBackStack(null);
+                    transaction.commit();
+                }
             }
-        });*/
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {}
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {}
+        });
 
+        //Floating button
+        FloatingActionButton floatingActionButton = (FloatingActionButton) findViewById(R.id.action_insert_alternative);
 
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View view) {
+                Intent intent = null;
+                if(application.CLASSROOM_TABLE_NAME=="Classrooms") {
+                    intent = new Intent(getBaseContext(), FormListClassrooms.class);
+                }
+                else if(application.CLASSROOM_TABLE_NAME=="Subjects") {
+                    intent = new Intent(getBaseContext(), FormListSubjects.class);
+                }
+                else if(application.CLASSROOM_TABLE_NAME=="Tutorships") {
+                    intent = new Intent(getBaseContext(), FormListTutorships.class);
+                }
+                startActivity(intent);
+            }
+        });
 
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
-        mSectionsPagerAdapter = new MainMenu.SectionsPagerAdapter(getSupportFragmentManager());
-
-        // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.container);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
-
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-
-        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
-
-
+        //Navigation drawer
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -94,7 +141,34 @@ public class MainMenu extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        //Set tab selected and default tab at the beginning
+        tabLayout.getTabAt(application.LAST_TAB).select();
+        //Add fragment depending on tab
+        if(application.LAST_TAB==0) {
+            ClassroomsListFragment myFragment = new ClassroomsListFragment();
 
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.add(R.id.fragment, myFragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        }
+        else if(application.LAST_TAB==1) {
+            SubjectsListFragment myFragment = new SubjectsListFragment();
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.hide(myFragment);
+            transaction.add(R.id.fragment, myFragment);
+            transaction.addToBackStack(null);
+            application.CLASSROOM_TABLE_NAME="Subjects";
+            transaction.commit();
+        }
+        else if(application.LAST_TAB==2) {
+            TutorshipsListFragment myFragment = new TutorshipsListFragment();
+
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.add(R.id.fragment, myFragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        }
     }
 
     @Override
@@ -110,7 +184,7 @@ public class MainMenu extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main_menu, menu);
+        getMenuInflater().inflate(R.menu.insert_menu, menu);
 
         //Set title NavigationView
         //User User = getIntent().getExtras().getParcelable("User");
@@ -137,6 +211,55 @@ public class MainMenu extends AppCompatActivity
             showHelp();
             return true;
         }
+        else if(id == R.id.action_insert){
+            Intent intent = null;
+            if(application.CLASSROOM_TABLE_NAME=="Classrooms") {
+                intent = new Intent(this, FormListClassrooms.class);
+            }
+            else if(application.CLASSROOM_TABLE_NAME=="Subjects") {
+                intent = new Intent(this, FormListSubjects.class);
+            }
+            else if(application.CLASSROOM_TABLE_NAME=="Tutorships") {
+                intent = new Intent(this, FormListTutorships.class);
+            }
+            startActivity(intent);
+            return true;
+        }
+        else if(id == R.id.action_delete){
+            //Restore toolbar
+            Toolbar toolbar = (Toolbar) this.findViewById(R.id.toolbar);
+            toolbar.getMenu().clear();
+            toolbar.inflateMenu(R.menu.insert_menu);
+            //Delete record
+            if(application.CLASSROOM_TABLE_NAME=="Classrooms") {
+                ClassroomProvider.deleteRecord(this.getContentResolver(),(Integer) ClassroomsListFragment.rowSelected.getTag());
+            }
+            else if(application.CLASSROOM_TABLE_NAME=="Subjects") {
+                SubjectProvider.deleteRecord(this.getContentResolver(),(Integer) SubjectsListFragment.rowSelected.getTag());
+            }
+            else if(application.CLASSROOM_TABLE_NAME=="Tutorships") {
+                TutorshipProvider.deleteRecord(this.getContentResolver(),(Integer) TutorshipsListFragment.rowSelected.getTag());
+            }
+            return true;
+        }
+        else if(id == R.id.action_update){
+            Intent intent = null;
+            if(application.CLASSROOM_TABLE_NAME=="Classrooms") {
+                intent = new Intent(this, FormListClassroomsUpdate.class);
+                intent.putExtra(Contract.Classroom._ID,(Integer) ClassroomsListFragment.rowSelected.getTag());
+            }
+            else if(application.CLASSROOM_TABLE_NAME=="Subjects") {
+                intent = new Intent(this, FormListSubjectsUpdate.class);
+                intent.putExtra(Contract.Subject._ID,(Integer) SubjectsListFragment.rowSelected.getTag());
+            }
+            else if(application.CLASSROOM_TABLE_NAME=="Tutorships") {
+                intent = new Intent(this, FormListTutorshipsUpdate.class);
+                intent.putExtra(Contract.Tutorship._ID,(Integer) TutorshipsListFragment.rowSelected.getTag());
+            }
+
+            startActivity(intent);
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -154,14 +277,11 @@ public class MainMenu extends AppCompatActivity
 
         }
         */else if (id == R.id.nav_formListClassrooms) {
-            Intent intent = new Intent(contexto, ListClassrooms.class);
-            startActivity(intent);
+            tabLayout.getTabAt(0).select();
         } else if (id == R.id.nav_formListSubjects) {
-            Intent intent = new Intent(contexto, ListSubjects.class);
-            startActivity(intent);
+            tabLayout.getTabAt(1).select();
         } else if (id == R.id.nav_formListTutorships) {
-            Intent intent = new Intent(contexto, ListTutorships.class);
-            startActivity(intent);
+            tabLayout.getTabAt(2).select();
         } else if (id == R.id.nav_logout) {
             Intent intent = new Intent(contexto, MainActivity.class);
             ((application) getApplicationContext()).User =null;
@@ -203,56 +323,8 @@ public class MainMenu extends AppCompatActivity
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View rootView=null;
-            if(getArguments().getInt(ARG_SECTION_NUMBER)==1) {
-                rootView = inflater.inflate(R.layout.fragment_my_school, container, false);
 
-                //Fragment buttons
-
-                Button botonMisAulas = (Button) rootView.findViewById(R.id.botonMisAulas);
-
-                botonMisAulas.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(final View view) {
-                        Intent intent = new Intent(getContext(), ListClassrooms.class);
-                        startActivity(intent);
-                    }
-                });
-            }
-            else if(getArguments().getInt(ARG_SECTION_NUMBER)==2) {
-                rootView = inflater.inflate(R.layout.fragment_student_body, container, false);
-
-                //Fragment buttons
-
-                Button botonMisAsignaturas = (Button) rootView.findViewById(R.id.botonMisAsignaturas);
-
-                botonMisAsignaturas.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(final View view) {
-                        Intent intent = new Intent(getContext(), ListSubjects.class);
-                        startActivity(intent);
-                    }
-                });
-            }
-            else if(getArguments().getInt(ARG_SECTION_NUMBER)==3) {
-                rootView = inflater.inflate(R.layout.fragment_teacher_body, container, false);
-
-                //Fragment buttons
-
-                Button botonMisTutorias = (Button) rootView.findViewById(R.id.botonMisTutorias);
-
-                botonMisTutorias.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(final View view) {
-                        Intent intent = new Intent(getContext(), ListTutorships.class);
-                        startActivity(intent);
-                    }
-                });
-            }
-
-            //TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            //textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
-            return rootView;
+            return inflater.inflate(R.layout.fragment_main_menu, container, false);
         }
     }
 

@@ -32,7 +32,7 @@ public class TutorshipsListFragment extends ListFragment implements LoaderManage
     TutorshipsCursorAdapter mAdapter;
     LoaderManager.LoaderCallbacks<Cursor> mCallbacks;
     ActionMode nActionMode;
-    View rowSelected;
+    public static View rowSelected;
 
     Handler handler = new Handler();//Timer to restore insert_menu
 
