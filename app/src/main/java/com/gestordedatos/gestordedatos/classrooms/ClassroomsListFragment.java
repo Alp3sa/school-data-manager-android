@@ -11,7 +11,11 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v7.widget.Toolbar;
+import android.text.SpannableStringBuilder;
+import android.text.style.RelativeSizeSpan;
+import android.util.Log;
 import android.view.ActionMode;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,11 +24,16 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.gestordedatos.gestordedatos.R;
+import com.gestordedatos.gestordedatos.Utilities;
 import com.gestordedatos.gestordedatos.contentProvider.Contract;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 /**
  * A fragment representing a list of Items.
@@ -215,13 +224,17 @@ public class ClassroomsListFragment extends ListFragment implements LoaderManage
             TextView textviewSubjectTitle = (TextView) view.findViewById(R.id.textviewTitle_classroom_list_item_subject);
             textviewSubjectTitle.setText(getResources().getString(R.string.subjectLabel)+" ");
 
-            ColorGenerator generator = ColorGenerator.MATERIAL; // or use DEFAULT
-            int color = generator.getColor(abbreviation); //Genera un color según el nombre
-            TextDrawable drawable = TextDrawable.builder()
-                    .buildRound(abbreviation.substring(0,1), color);
-
             ImageView image = (ImageView) view.findViewById(R.id.image_view);
-            image.setImageDrawable(drawable);
+
+            try {
+                Utilities.loadImageFromStorage(getActivity(), "img_" + ID + ".jpg", image);
+            }catch(FileNotFoundException e){
+                ColorGenerator generator = ColorGenerator.MATERIAL; // or use DEFAULT
+                int color = generator.getColor(abbreviation); //Genera un color según el nombre
+                TextDrawable drawable = TextDrawable.builder()
+                        .buildRound(abbreviation.substring(0,1), color);
+                image.setImageDrawable(drawable);
+            }
 
             view.setTag(ID);
         }

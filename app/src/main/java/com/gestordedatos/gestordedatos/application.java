@@ -4,7 +4,7 @@ import android.app.Application;
 
 import com.gestordedatos.gestordedatos.pojos.User;
 
-public class application extends Application {
+public class application extends android.app.Application {
     public User User;
 
     public static final int SIN_VALOR_INT = -1;
@@ -15,4 +15,7 @@ public class application extends Application {
 
     public static String CLASSROOM_TABLE_NAME = "Classrooms";
     public static int LAST_TAB = 0;
+
+    public static final int TAKE_PHOTO = 1;
+    public static final int UPLOAD_PHOTO = 2;
 }

@@ -1,16 +1,22 @@
 package com.gestordedatos.gestordedatos.classrooms;
 
-import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 
+import com.gestordedatos.gestordedatos.application;
 import com.gestordedatos.gestordedatos.R;
 import com.gestordedatos.gestordedatos.contentProvider.ClassroomProvider;
 import com.gestordedatos.gestordedatos.pojos.Classroom;
@@ -20,11 +26,94 @@ public class FormListClassrooms extends AppCompatActivity {
     EditText editTextSubject;
     String classroomName;
     String subject;
+    ImageView preview;
+    Bitmap image=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_form_list_classrooms);
+
+        preview = findViewById(R.id.preview);
+
+        Button takePhoto = findViewById(R.id.takePhoto);
+
+        takePhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View view) {
+                takePhoto();
+            }
+        });
+
+        Button uploadPhoto = findViewById(R.id.uploadPhoto);
+
+        uploadPhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View view) {
+                uploadPhoto();
+            }
+        });
+
+        Button deletePhoto = findViewById(R.id.deletePhoto);
+
+        deletePhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View view) {
+                image=null;
+                preview.setImageResource(android.R.drawable.ic_menu_camera);
+            }
+        });
+    }
+
+    public void takePhoto(){
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(intent, application.TAKE_PHOTO);
+    }
+
+    public void uploadPhoto(){
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("image/*");
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        startActivityForResult(intent, application.UPLOAD_PHOTO);
+    }
+
+    @Override
+    protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
+        switch(requestCode){
+            case application.TAKE_PHOTO:
+                if(resultCode==RESULT_OK){
+                    image = (Bitmap) data.getExtras().get("data");
+                    preview.setImageBitmap(image);
+
+                    /*try{
+                        Utilities.storeImage(image, this, "image.jpg");
+                    } catch (IOException e) {
+                        String toast = getResources().getString(R.string.errorImage);
+                        SpannableStringBuilder biggerText = new SpannableStringBuilder(toast);
+                        biggerText.setSpan(new RelativeSizeSpan(1.5f), 0, toast.length(), 0);
+                        Toast errorImage = Toast.makeText(getApplicationContext(),biggerText,Toast.LENGTH_LONG);
+                        errorImage.setGravity(Gravity.BOTTOM, 0, 40);
+                        errorImage.show();
+                    }*/
+                }
+                else{
+                    // User canceled action
+                }
+                break;
+            case application.UPLOAD_PHOTO:
+                if(resultCode==RESULT_OK){
+                    Uri uri = data.getData();
+                    preview.setImageURI(uri);
+                }
+                else{
+                    // User canceled action
+                }
+                break;
+        }
+
+        image = ((BitmapDrawable) preview.getDrawable()).getBitmap();
+
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     public void validar(){
@@ -49,8 +138,8 @@ public class FormListClassrooms extends AppCompatActivity {
         }
 
         //Insertar registro
-        Classroom classroom = new Classroom(classroomName,subject);
-        ClassroomProvider.insertRecord(getContentResolver(),classroom);
+        Classroom classroom = new Classroom(classroomName,subject,image);
+        ClassroomProvider.insertRecord(getContentResolver(),classroom,this);
         finish();
     }
 

@@ -16,8 +16,6 @@ import android.util.SparseArray;
 
 import com.gestordedatos.gestordedatos.application;
 
-import java.io.File;
-
 public class MyContentProvider extends ContentProvider {
     private static final int CLASSROOM_ONE_REG=1;
     private static final int CLASSROOM_ALL_REGS=2;

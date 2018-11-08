@@ -12,8 +12,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.gestordedatos.gestordedatos.R;
 import com.gestordedatos.gestordedatos.application;
+import com.gestordedatos.gestordedatos.R;
 import com.gestordedatos.gestordedatos.contentProvider.ClassroomProvider;
 import com.gestordedatos.gestordedatos.contentProvider.Contract;
 
@@ -83,7 +83,7 @@ public class ListClassrooms extends AppCompatActivity {
             toolbar.getMenu().clear();
             toolbar.inflateMenu(R.menu.insert_menu);
             //Delete record
-            ClassroomProvider.deleteRecord(this.getContentResolver(),(Integer) rowSelected.getTag());
+            ClassroomProvider.deleteRecord(this.getContentResolver(),(Integer) rowSelected.getTag(),getApplicationContext());
             return true;
         }
         else if(id == R.id.action_update){

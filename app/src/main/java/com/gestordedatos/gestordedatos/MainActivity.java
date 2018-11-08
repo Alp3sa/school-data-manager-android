@@ -19,9 +19,7 @@ import android.widget.TextView;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.gestordedatos.gestordedatos.classrooms.ListClassrooms;
 import com.gestordedatos.gestordedatos.pojos.User;
-import com.gestordedatos.gestordedatos.subjects.ListSubjects;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -43,8 +41,8 @@ public class MainActivity extends AppCompatActivity {
 
         contexto=this;
         //BEGIN TEST - SAVE TIME TO SKIP THE LOGIN SYSTEM
-        //Intent intent = new Intent(contexto,MainMenu.class);
-        //startActivity(intent);
+        Intent intent = new Intent(contexto,MainMenu.class);
+        startActivity(intent);
         //END TEST
 
         textView = (TextView) findViewById(R.id.textViewIniciarSesion);

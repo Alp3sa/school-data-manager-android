@@ -30,7 +30,6 @@ import android.widget.TextView;
 import com.gestordedatos.gestordedatos.classrooms.ClassroomsListFragment;
 import com.gestordedatos.gestordedatos.classrooms.FormListClassrooms;
 import com.gestordedatos.gestordedatos.classrooms.FormListClassroomsUpdate;
-import com.gestordedatos.gestordedatos.classrooms.ListClassrooms;
 import com.gestordedatos.gestordedatos.contentProvider.ClassroomProvider;
 import com.gestordedatos.gestordedatos.contentProvider.Contract;
 import com.gestordedatos.gestordedatos.contentProvider.SubjectProvider;
@@ -38,11 +37,9 @@ import com.gestordedatos.gestordedatos.contentProvider.TutorshipProvider;
 import com.gestordedatos.gestordedatos.pojos.User;
 import com.gestordedatos.gestordedatos.subjects.FormListSubjects;
 import com.gestordedatos.gestordedatos.subjects.FormListSubjectsUpdate;
-import com.gestordedatos.gestordedatos.subjects.ListSubjects;
 import com.gestordedatos.gestordedatos.subjects.SubjectsListFragment;
 import com.gestordedatos.gestordedatos.tutorships.FormListTutorships;
 import com.gestordedatos.gestordedatos.tutorships.FormListTutorshipsUpdate;
-import com.gestordedatos.gestordedatos.tutorships.ListTutorships;
 import com.gestordedatos.gestordedatos.tutorships.TutorshipsListFragment;
 
 public class MainMenu extends AppCompatActivity
@@ -60,8 +57,8 @@ public class MainMenu extends AppCompatActivity
         super.onCreate(savedInstanceState);
 
         //BEGIN TEST - SAVE TIME TO SKIP THE LOGIN SYSTEM
-        //User User = new User("",null,null,null,null,null,null,null);
-        //((application) getApplicationContext()).User = User;
+        User User = new User("",null,null,null,null,null,null,null);
+        ((application) getApplicationContext()).User = User;
         //END TEST
 
         //Set layouts
@@ -232,7 +229,7 @@ public class MainMenu extends AppCompatActivity
             toolbar.inflateMenu(R.menu.insert_menu);
             //Delete record
             if(application.CLASSROOM_TABLE_NAME=="Classrooms") {
-                ClassroomProvider.deleteRecord(this.getContentResolver(),(Integer) ClassroomsListFragment.rowSelected.getTag());
+                ClassroomProvider.deleteRecord(this.getContentResolver(),(Integer) ClassroomsListFragment.rowSelected.getTag(),this);
             }
             else if(application.CLASSROOM_TABLE_NAME=="Subjects") {
                 SubjectProvider.deleteRecord(this.getContentResolver(),(Integer) SubjectsListFragment.rowSelected.getTag());

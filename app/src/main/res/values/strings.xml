@@ -125,6 +125,10 @@
     <string name="errorEmptyTeacher">Introduzca el nombre del docente</string>
     <string name="errorEmptyClassroom">Introduzca el nombre del aula</string>
     <string name="errorTime">La hora de comienzo debe ser anterior a la de finalización</string>
+    <string name="errorImage">No se pudo guardar la imagen.</string>
+    <string name="takePhoto">Sacar foto</string>
+    <string name="uploadPhoto">Elegir de galería</string>
+    <string name="deletePhoto">Borrar imagen</string>
 
     <!--Labels-->
     <string name="subjectLabel">Nombre de la asignatura: </string>

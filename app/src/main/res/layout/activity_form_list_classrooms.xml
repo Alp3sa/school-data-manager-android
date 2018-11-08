@@ -10,7 +10,7 @@
     <ImageView
         android:id="@+id/imageViewFondo"
         android:layout_width="349dp"
-        android:layout_height="136dp"
+        android:layout_height="273dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
@@ -35,7 +35,6 @@
         android:text="@string/classroom"
         android:textColor="@color/colorBlack"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/buttonConsult"
         app:layout_constraintStart_toStartOf="@+id/imageViewFondo"
         app:layout_constraintTop_toTopOf="@+id/imageViewFondo" />
 
@@ -51,7 +50,6 @@
         android:ems="10"
         android:inputType="textPersonName"
         android:text=""
-        app:layout_constraintBottom_toTopOf="@+id/buttonUpdate"
         app:layout_constraintEnd_toEndOf="@+id/imageViewFondo"
         app:layout_constraintTop_toTopOf="@+id/imageViewFondo" />
 
@@ -62,13 +60,11 @@
         android:layout_marginStart="32dp"
         android:layout_marginLeft="32dp"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
         android:gravity="center_vertical"
         android:paddingLeft="5dp"
         android:text="@string/subject"
         android:textColor="@color/colorBlack"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/imageViewFondo"
         app:layout_constraintStart_toStartOf="@+id/imageViewFondo"
         app:layout_constraintTop_toBottomOf="@+id/textViewClassroom" />
 
@@ -79,13 +75,71 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="32dp"
         android:layout_marginRight="32dp"
-        android:layout_marginBottom="8dp"
         android:background="@drawable/ic_border_edit_text"
         android:ems="10"
         android:inputType="textPersonName"
         android:text=""
-        app:layout_constraintBottom_toBottomOf="@+id/imageViewFondo"
         app:layout_constraintEnd_toEndOf="@+id/imageViewFondo"
         app:layout_constraintTop_toBottomOf="@+id/editTextClassroom" />
+
+    <Button
+        android:id="@+id/takePhoto"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:text="@string/takePhoto"
+        android:fontFamily="arial"
+        android:shadowColor="@color/colorBlack"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/imageViewFondo"
+        app:layout_constraintStart_toStartOf="@+id/imageViewFondo"
+        app:layout_constraintTop_toBottomOf="@+id/textViewClassroomSubject" />
+
+    <Button
+        android:id="@+id/uploadPhoto"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="arial"
+        android:shadowColor="@color/colorBlack"
+        android:text="@string/uploadPhoto"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/imageViewFondo"
+        app:layout_constraintStart_toStartOf="@+id/imageViewFondo"
+        app:layout_constraintTop_toBottomOf="@+id/takePhoto" />
+
+    <Button
+        android:id="@+id/deletePhoto"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="arial"
+        android:shadowColor="@color/colorBlack"
+        android:text="@string/deletePhoto"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/imageViewFondo"
+        app:layout_constraintStart_toStartOf="@+id/imageViewFondo"
+        app:layout_constraintTop_toBottomOf="@+id/uploadPhoto" />
+
+    <ImageView
+        android:id="@+id/preview"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:src="@android:drawable/ic_menu_camera"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewFondo" />
 
 </android.support.constraint.ConstraintLayout>
