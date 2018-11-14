@@ -3,6 +3,7 @@ package com.gestordedatos.gestordedatos.contentProvider;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.net.Uri;
 
 import com.gestordedatos.gestordedatos.application;
@@ -20,7 +21,7 @@ public class TutorshipProvider {
 
         application.CLASSROOM_TABLE_NAME = "Tutorships";
 
-        resolver.insert(uri,values);
+        resolver.insert(uri, values);
     }
 
     public static void deleteRecord(ContentResolver resolver, int tutorshipId){

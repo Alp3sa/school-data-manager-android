@@ -3,6 +3,7 @@ package com.gestordedatos.gestordedatos.classrooms;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.SQLException;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
@@ -28,6 +29,8 @@ public class FormListClassrooms extends AppCompatActivity {
     String subject;
     ImageView preview;
     Bitmap image=null;
+
+    int checkonOptionsItemSelected=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,30 +120,38 @@ public class FormListClassrooms extends AppCompatActivity {
     }
 
     public void validar(){
-        editTextClassroomName = (EditText) findViewById(R.id.editTextClassroom);
-        editTextClassroomName.setError(null);
-        classroomName = editTextClassroomName.getText().toString();
+            editTextClassroomName = (EditText) findViewById(R.id.editTextClassroom);
+            editTextClassroomName.setError(null);
+            classroomName = editTextClassroomName.getText().toString();
 
-        if(classroomName.trim().equals("")){
-            editTextClassroomName.setError(getString(R.string.errorEmptyClassroom));
-            editTextClassroomName.requestFocus();
-            return;
-        }
+            if (classroomName.trim().equals("")) {
+                editTextClassroomName.setError(getString(R.string.errorEmptyClassroom));
+                editTextClassroomName.requestFocus();
+                return;
+            }
 
-        editTextSubject = (EditText) findViewById(R.id.editTextClassroomSubject);
-        editTextSubject.setError(null);
-        subject = editTextSubject.getText().toString();
+            editTextSubject = (EditText) findViewById(R.id.editTextClassroomSubject);
+            editTextSubject.setError(null);
+            subject = editTextSubject.getText().toString();
 
-        if(subject.trim().equals("")){
-            editTextSubject.setError(getString(R.string.errorEmptySubject));
-            editTextSubject.requestFocus();
-            return;
-        }
+            if (subject.trim().equals("")) {
+                editTextSubject.setError(getString(R.string.errorEmptySubject));
+                editTextSubject.requestFocus();
+                return;
+            }
 
-        //Insertar registro
-        Classroom classroom = new Classroom(classroomName,subject,image);
-        ClassroomProvider.insertRecord(getContentResolver(),classroom,this);
-        finish();
+            //Insert
+            Classroom classroom = new Classroom(classroomName, subject, image);
+            try{
+                ClassroomProvider.insertRecord(getContentResolver(), classroom, this);
+            }
+            catch(SQLException e){
+                editTextClassroomName.setError(getString(R.string.errorClassroomUnique));
+                editTextClassroomName.requestFocus();
+                return;
+            }
+            checkonOptionsItemSelected=1;
+            finish();
     }
 
     @Override
@@ -168,7 +179,9 @@ public class FormListClassrooms extends AppCompatActivity {
             return true;
         }
         else if(id == R.id.action_save){
-            validar();
+            if(checkonOptionsItemSelected==0) {
+                validar();
+            }
             return true;
         }
 

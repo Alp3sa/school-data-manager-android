@@ -2,13 +2,23 @@ package com.gestordedatos.gestordedatos;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Matrix;
+import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.text.SpannableStringBuilder;
+import android.text.style.RelativeSizeSpan;
+import android.view.Gravity;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -25,7 +35,11 @@ import android.view.ViewGroup;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.widget.AbsListView;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.gestordedatos.gestordedatos.classrooms.ClassroomsListFragment;
 import com.gestordedatos.gestordedatos.classrooms.FormListClassrooms;
@@ -41,9 +55,28 @@ import com.gestordedatos.gestordedatos.subjects.SubjectsListFragment;
 import com.gestordedatos.gestordedatos.tutorships.FormListTutorships;
 import com.gestordedatos.gestordedatos.tutorships.FormListTutorshipsUpdate;
 import com.gestordedatos.gestordedatos.tutorships.TutorshipsListFragment;
+/*import com.itextpdf.text.BadElementException;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.pdf.PdfWriter;*/
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import static java.lang.Thread.sleep;
 
 public class MainMenu extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener,View.OnLayoutChangeListener {
 
     /**
      * The {@link ViewPager} that will host the section contents.
@@ -52,6 +85,9 @@ public class MainMenu extends AppCompatActivity
 
     private TextView titleNavigationView;
     TabLayout tabLayout;
+
+    Menu menu;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,6 +116,9 @@ public class MainMenu extends AppCompatActivity
                     transaction.replace(R.id.fragment, myFragment);
                     transaction.addToBackStack(null);
                     transaction.commit();
+
+                    //Set floating button as invisible
+                    findViewById(R.id.action_insert_alternative).setVisibility(View.VISIBLE);
                 }
                 else if(tab.getPosition()==1){
                     application.CLASSROOM_TABLE_NAME="Subjects";
@@ -90,6 +129,9 @@ public class MainMenu extends AppCompatActivity
                     transaction.replace(R.id.fragment, myFragment);
                     transaction.addToBackStack(null);
                     transaction.commit();
+
+                    //Set floating button as invisible
+                    findViewById(R.id.action_insert_alternative).setVisibility(View.VISIBLE);
                 }
                 else if(tab.getPosition()==2){
                     application.CLASSROOM_TABLE_NAME="Tutorships";
@@ -100,6 +142,21 @@ public class MainMenu extends AppCompatActivity
                     transaction.replace(R.id.fragment, myFragment);
                     transaction.addToBackStack(null);
                     transaction.commit();
+
+                    //Set floating button as invisible
+                    findViewById(R.id.action_insert_alternative).setVisibility(View.VISIBLE);
+                }
+                else if(tab.getPosition()==3){
+                    application.LAST_TAB=3;
+                    MapsActivity myFragment = new MapsActivity();
+
+                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                    transaction.replace(R.id.fragment, myFragment);
+                    transaction.addToBackStack(null);
+                    transaction.commit();
+
+                    //Set floating button as invisible
+                    findViewById(R.id.action_insert_alternative).setVisibility(View.INVISIBLE);
                 }
             }
             @Override
@@ -180,8 +237,15 @@ public class MainMenu extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        this.menu = menu;
+
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.insert_menu, menu);
+        if(application.LAST_TAB>=0 && application.LAST_TAB<=2){
+            getMenuInflater().inflate(R.menu.insert_menu, menu);
+        }
+        else{
+            getMenuInflater().inflate(R.menu.map_menu, menu);
+        }
 
         //Set title NavigationView
         //User User = getIntent().getExtras().getParcelable("User");
@@ -256,6 +320,9 @@ public class MainMenu extends AppCompatActivity
 
             startActivity(intent);
             return true;
+        }
+        else if(id == R.id.action_download){
+            CreateJPG();
         }
 
         return super.onOptionsItemSelected(item);
@@ -345,18 +412,187 @@ public class MainMenu extends AppCompatActivity
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return 3;
+            return 4;
         }
     }
 
     public void showHelp() {
+        String heltText="";
+
+        if(application.LAST_TAB>=0 && application.LAST_TAB<=2) {
+            heltText = getResources().getString(R.string.helpMainMenu);
+        }
+        else{
+            heltText = getResources().getString(R.string.helpMap);
+        }
         new AlertDialog.Builder(MainMenu.this)
                 .setTitle(getResources().getString(R.string.helpTitle))
-                .setMessage(getResources().getString(R.string.helpMainMenu))
+                .setMessage(heltText)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
                     }
                 }).show();
+    }
+
+    public void CreateJPG(){
+        //Get ListView
+        ListView view = findViewById(android.R.id.list);
+        //Add listener to use the next layout and restore it the original
+        view.addOnLayoutChangeListener(this);
+        //Get first row
+        View child = view.getChildAt(0);
+        //Get row height, num of last row and totalHeight
+        int height = child.getMeasuredHeight()*ClassroomsListFragment.cursor.getCount();
+        //Set ListView height
+        view.getLayoutParams().height=height;
+        view.requestLayout();
+    }
+
+    @Override
+    public void onLayoutChange(View v, int left, int top, int right, int bottom,
+                               int oldLeft, int oldTop, int oldRight, int oldBottom) {
+
+        //Get entire ListView
+        ListView view = findViewById(android.R.id.list);
+
+        //Reset temporal ListView
+        if(application.LAST_TAB==0){
+            ClassroomsListFragment myFragment = new ClassroomsListFragment();
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragment, myFragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        }
+        else if(application.LAST_TAB==1){
+            SubjectsListFragment myFragment = new SubjectsListFragment();
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragment, myFragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        }
+        else if(application.LAST_TAB==2){
+            TutorshipsListFragment myFragment = new TutorshipsListFragment();
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragment, myFragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        }
+
+        ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setProgressStyle(progressDialog.STYLE_HORIZONTAL);
+        progressDialog.setMessage(getResources().getString(R.string.downloadingJPG));
+        new MainMenu.CreateJPGAsyncTask(progressDialog).execute(view);
+    }
+
+    class CreateJPGAsyncTask extends AsyncTask<ListView, Integer, String> {
+        ProgressDialog progressDialog;
+
+        CreateJPGAsyncTask(ProgressDialog progressDialog) {
+            this.progressDialog=progressDialog;
+        }
+
+        @Override
+        protected String doInBackground(final ListView... v) {
+
+            try{
+                ListView view = v[0];
+
+                //Get measures from table
+                publishProgress(25);
+                progressDialog.setMessage(getResources().getString(R.string.gettingMeasures));
+                sleep(3000);
+                View child;
+                int width = 0;
+                int height = 0;
+                int totalHeight = 0;
+                Bitmap rowImage=null;
+                for(int i=0;i<view.getChildCount();i++){
+                    child = view.getChildAt(i);
+                    width = child.getMeasuredWidth();
+                    height = child.getMeasuredHeight();
+                    totalHeight = totalHeight+height;
+                }
+
+
+                //Create bitmap from table
+                publishProgress(50);
+                progressDialog.setMessage(getResources().getString(R.string.creatingBitmap));
+                sleep(3000);
+                Bitmap image = Bitmap.createBitmap(width, totalHeight, Bitmap.Config.ARGB_8888);
+                Canvas canvas = new Canvas(image);
+                canvas.drawColor(Color.WHITE);
+                Canvas c;
+
+                for(int e=0;e<view.getChildCount();e++){
+                    child = view.getChildAt(e);
+                    width = child.getMeasuredWidth();
+                    height = child.getMeasuredHeight();
+                    rowImage = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+                    c = new Canvas(rowImage);
+                    child.draw(c);
+                    if(e>0){
+                        canvas.drawBitmap(rowImage, 0, rowImage.getHeight()*e, null);
+                    }
+                    else{
+                        canvas.drawBitmap(rowImage, new Matrix(), null);
+                    }
+                }
+
+                //Create JPG
+                publishProgress(75);
+                progressDialog.setMessage(getResources().getString(R.string.creatingJPG));
+                sleep(3000);
+
+                File f = new File(getFilesDir(), application.CLASSROOM_TABLE_NAME + ".jpg");
+                OutputStream fos = openFileOutput(application.CLASSROOM_TABLE_NAME + ".jpg", MODE_PRIVATE);
+                image.compress(Bitmap.CompressFormat.PNG, 100, fos);
+                fos.close();
+
+                //Finish
+                publishProgress(100);
+                progressDialog.setMessage(getResources().getString(R.string.jpgSuccessful));
+                sleep(1000);
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            publishProgress(100);
+
+            return null;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog.show();
+        }
+
+        @Override
+        protected void onPostExecute(final String aVoid) {
+            super.onPostExecute(aVoid);
+
+            progressDialog.dismiss();
+
+            String toast = getFilesDir()+"/"+application.CLASSROOM_TABLE_NAME + ".jpg";
+            SpannableStringBuilder biggerText = new SpannableStringBuilder(toast);
+            biggerText.setSpan(new RelativeSizeSpan(1.5f), 0, toast.length(), 0);
+            Toast errorImage = Toast.makeText(getApplicationContext(),biggerText,Toast.LENGTH_LONG);
+            errorImage.setGravity(Gravity.BOTTOM, 0, 40);
+            errorImage.show();
+        }
+
+        @Override
+        protected void onProgressUpdate(final Integer... values) {
+            super.onProgressUpdate(values);
+            progressDialog.setIndeterminate(false);
+            progressDialog.setMax(100);
+            progressDialog.setProgress(values[0]);
+        }
     }
 }

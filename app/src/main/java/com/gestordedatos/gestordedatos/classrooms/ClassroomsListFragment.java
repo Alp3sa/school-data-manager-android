@@ -43,6 +43,7 @@ public class ClassroomsListFragment extends ListFragment implements LoaderManage
     LoaderManager.LoaderCallbacks<Cursor> mCallbacks;
     ActionMode nActionMode;
     public static View rowSelected;
+    public static Cursor cursor;
 
     Handler handler = new Handler();//Timer to restore insert_menu
 
@@ -243,6 +244,7 @@ public class ClassroomsListFragment extends ListFragment implements LoaderManage
         public View newView(Context context, Cursor cursor, ViewGroup parent) {
             LayoutInflater inflater = LayoutInflater.from(context);
             View v = inflater.inflate(R.layout.list_item_classrooms, parent, false);
+            ClassroomsListFragment.cursor=cursor;
             bindView(v, context, cursor);
             return v;
         }

@@ -2,6 +2,7 @@ package com.gestordedatos.gestordedatos.subjects;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.database.SQLException;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -34,6 +35,8 @@ public class FormListSubjectsUpdate extends AppCompatActivity {
     String startTime;
     String endingTime;
     int subjectId;
+
+    int checkonOptionsItemSelected=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,9 +128,17 @@ public class FormListSubjectsUpdate extends AppCompatActivity {
             return;
         }
 
-        //Actualizar registro
+        //Update
         Subject subject = new Subject(subjectId,subjectName,teacher,classroomName,startTime,endingTime);
-        SubjectProvider.updateRecord(getContentResolver(),subject);
+        try{
+            SubjectProvider.updateRecord(getContentResolver(),subject);
+        }
+        catch(SQLException e){
+            editTextClassroom.setError(getString(R.string.errorClassroomConstraint));
+            editTextClassroom.requestFocus();
+            return;
+        }
+        checkonOptionsItemSelected=1;
         finish();
     }
 
@@ -156,7 +167,9 @@ public class FormListSubjectsUpdate extends AppCompatActivity {
             return true;
         }
         if(id == R.id.action_save){
-            validar();
+            if(checkonOptionsItemSelected==0) {
+                validar();
+            }
             return true;
         }
 

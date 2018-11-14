@@ -2,6 +2,7 @@ package com.gestordedatos.gestordedatos.tutorships;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.database.SQLException;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
@@ -28,6 +29,8 @@ public class FormListTutorships extends AppCompatActivity {
     String classroomName;
     String startTime;
     String endingTime;
+
+    int checkonOptionsItemSelected=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,9 +93,17 @@ public class FormListTutorships extends AppCompatActivity {
             return;
         }
 
-        //Insertar registro
+        //Insert
         Tutorship tutorship = new Tutorship(teacher,classroomName,startTime,endingTime);
-        TutorshipProvider.insertRecord(getContentResolver(),tutorship);
+        try{
+            TutorshipProvider.insertRecord(getContentResolver(),tutorship);
+        }
+        catch(SQLException e){
+            editTextClassroom.setError(getString(R.string.errorClassroomConstraint));
+            editTextClassroom.requestFocus();
+            return;
+        }
+        checkonOptionsItemSelected = 1;
         finish();
     }
 
@@ -121,7 +132,9 @@ public class FormListTutorships extends AppCompatActivity {
             return true;
         }
         else if(id == R.id.action_save){
-            validar();
+            if(checkonOptionsItemSelected==0) {
+                validar();
+            }
             return true;
         }
 

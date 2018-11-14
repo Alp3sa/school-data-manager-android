@@ -13,6 +13,12 @@
         android:icon="@drawable/ic_menu_insert"
         app:showAsAction="always" />
     <item
+        android:id="@+id/action_download"
+        android:orderInCategory="100"
+        android:title="@string/downloadTable"
+        android:icon="@drawable/ic_menu_download"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/action_help"
         android:orderInCategory="100"
         android:title="@string/help"

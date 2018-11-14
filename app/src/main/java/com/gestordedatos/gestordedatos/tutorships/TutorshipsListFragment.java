@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
+import com.gestordedatos.gestordedatos.classrooms.ClassroomsListFragment;
 import com.gestordedatos.gestordedatos.tutorships.ListTutorships;
 import com.gestordedatos.gestordedatos.R;
 import com.gestordedatos.gestordedatos.contentProvider.Contract;
@@ -33,6 +34,7 @@ public class TutorshipsListFragment extends ListFragment implements LoaderManage
     LoaderManager.LoaderCallbacks<Cursor> mCallbacks;
     ActionMode nActionMode;
     public static View rowSelected;
+    public static Cursor cursor;
 
     Handler handler = new Handler();//Timer to restore insert_menu
 
@@ -243,6 +245,7 @@ public class TutorshipsListFragment extends ListFragment implements LoaderManage
         public View newView(Context context, Cursor cursor, ViewGroup parent) {
             LayoutInflater inflater = LayoutInflater.from(context);
             View v = inflater.inflate(R.layout.list_item_tutorships, parent, false);
+            TutorshipsListFragment.cursor=cursor;
             bindView(v, context, cursor);
             return v;
         }

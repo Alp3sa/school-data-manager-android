@@ -2,8 +2,10 @@ package com.gestordedatos.gestordedatos;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
@@ -20,6 +22,16 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.gestordedatos.gestordedatos.pojos.User;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import static java.lang.Thread.sleep;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -233,6 +245,10 @@ public class MainActivity extends AppCompatActivity {
             showHelp();
             return true;
         }
+        else if(id == R.id.action_download){
+            CreatePDF();
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -246,5 +262,110 @@ public class MainActivity extends AppCompatActivity {
                         dialog.cancel();
                     }
                 }).show();
+    }
+
+    public void CreatePDF(){
+        String url = "http://www3.gobiernodecanarias.org/medusa/edublog/ieselrincon/wp-content/uploads/sites/137/2015/11/NORMAS-DE-ORGANIZACIoN-Y-FUNCIONAMIENTO.pdf";
+        ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setProgressStyle(progressDialog.STYLE_HORIZONTAL);
+        progressDialog.setMessage(getResources().getString(R.string.downloadingPDF));
+
+        new MainActivity.CreatePDFAsyncTask(progressDialog).execute(url);
+    }
+
+    class CreatePDFAsyncTask extends AsyncTask<String, Integer, String> {
+        ProgressDialog progressDialog;
+
+        CreatePDFAsyncTask(ProgressDialog progressDialog) {
+            this.progressDialog=progressDialog;
+        }
+
+        @Override
+        protected String doInBackground(final String... url) {
+            String urlD=url[0];
+            HttpURLConnection connection = null;
+            InputStream input = null;
+            OutputStream output = null;
+
+            try{
+                URL urlDownload = new URL(urlD);
+                connection = (HttpURLConnection) urlDownload.openConnection();
+                connection.connect();
+
+                if(connection.getResponseCode()!=HttpURLConnection.HTTP_OK){
+                    return "Connection failed";
+                }
+
+                input = connection.getInputStream();
+                String fileDir = getFilesDir()+"/SchoolRules.pdf";
+                output = new FileOutputStream(fileDir);
+
+                byte[] data = new byte[1024];
+                int total = 0;
+                int count;
+                int fileSize=connection.getContentLength();
+
+                while((count=input.read(data)) != -1){
+                    sleep(100);
+                    output.write(data,0,count);
+                    total+=count;
+                    publishProgress((int) ((total*100)/fileSize));
+                }
+            }
+            catch (MalformedURLException e) {
+                e.printStackTrace();
+                return "Error: "+e.getMessage();
+            } catch (IOException e) {
+                e.printStackTrace();
+                return "Error: "+e.getMessage();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } finally{
+                try{
+                    if(input!=null){
+                        input.close();
+                    }
+                    if(output!=null){
+                        output.close();
+                    }
+                    if(connection!=null){
+                        connection.disconnect();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog.show();
+        }
+
+        @Override
+        protected void onPostExecute(final String aVoid) {
+            super.onPostExecute(aVoid);
+
+            progressDialog.dismiss();
+
+            String toast = getResources().getString(R.string.pdfSuccessful);
+            SpannableStringBuilder biggerText = new SpannableStringBuilder(toast);
+            biggerText.setSpan(new RelativeSizeSpan(1.5f), 0, toast.length(), 0);
+            Toast errorImage = Toast.makeText(getApplicationContext(),biggerText,Toast.LENGTH_LONG);
+            errorImage.setGravity(Gravity.BOTTOM, 0, 40);
+            errorImage.show();
+        }
+
+        @Override
+        protected void onProgressUpdate(final Integer... values) {
+            super.onProgressUpdate(values);
+            progressDialog.setIndeterminate(false);
+            progressDialog.setMax(100);
+            progressDialog.setProgress(values[0]);
+        }
     }
 }

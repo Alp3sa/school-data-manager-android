@@ -3,6 +3,7 @@ package com.gestordedatos.gestordedatos.classrooms;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.SQLException;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
@@ -32,6 +33,8 @@ public class FormListClassroomsUpdate extends AppCompatActivity {
     Bitmap image=null;
     int classroomId;
 
+    int checkonOptionsItemSelected=0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,9 +53,9 @@ public class FormListClassroomsUpdate extends AppCompatActivity {
         preview = findViewById(R.id.preview);
         try {
             Utilities.loadImageFromStorage(this, "img_" + classroomId + ".jpg", preview);
+            image = ((BitmapDrawable) preview.getDrawable()).getBitmap();
         }catch(Exception e){}
         preview.setTag(preview);
-        image = ((BitmapDrawable) preview.getDrawable()).getBitmap();
 
         Button takePhoto = findViewById(R.id.takePhoto);
 
@@ -157,9 +160,17 @@ public class FormListClassroomsUpdate extends AppCompatActivity {
             Utilities.deleteImage(getApplicationContext(), "img_" + classroomId + ".jpg");
         }
 
-        //Actualizar registro
+        //Update
         Classroom classroom = new Classroom(classroomId, classroomName, subject, image);
-        ClassroomProvider.updateRecord(getContentResolver(),classroom,this);
+        try{
+            ClassroomProvider.updateRecord(getContentResolver(),classroom,this);
+        }
+        catch(SQLException e){
+            editTextClassroomName.setError(getString(R.string.errorClassroomUnique));
+            editTextClassroomName.requestFocus();
+            return;
+        }
+        checkonOptionsItemSelected = 1;
         finish();
     }
 
@@ -188,7 +199,9 @@ public class FormListClassroomsUpdate extends AppCompatActivity {
             return true;
         }
         if(id == R.id.action_save){
-            validar();
+            if(checkonOptionsItemSelected==0) {
+                validar();
+            }
             return true;
         }
 

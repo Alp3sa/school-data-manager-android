@@ -23,7 +23,7 @@ public class MyContentProvider extends ContentProvider {
     private SQLiteDatabase sqlDB;
     public DatabaseHelper dbHelper;
     private static final String DATABASE_NAME = "school.db";
-    private static final int DATABASE_VERSION = 9;
+    private static final int DATABASE_VERSION = 14;
 
     //Indicates an invalid content URI
     public static final int INVALID_URI = -1;
@@ -129,11 +129,16 @@ public class MyContentProvider extends ContentProvider {
         }
 
         @Override
+        public void onConfigure(SQLiteDatabase db) {
+            db.setForeignKeyConstraintsEnabled(true);
+        }
+
+        @Override
         public void onCreate(SQLiteDatabase db) {
             db.execSQL("Create table "
                 +"Classrooms "
                     +"(_id INTEGER PRIMARY KEY ON CONFLICT ROLLBACK AUTOINCREMENT, "
-                    +Contract.Classroom.classroomName +" TEXT, "
+                    +Contract.Classroom.classroomName +" TEXT UNIQUE, "
                     +Contract.Classroom.subject+" TEXT);");
 
             db.execSQL("Create table "
@@ -143,7 +148,8 @@ public class MyContentProvider extends ContentProvider {
                     +Contract.Subject.teacher +" TEXT, "
                     +Contract.Subject.classroom +" TEXT, "
                     +Contract.Subject.startTime +" TEXT, "
-                    +Contract.Subject.endingTime+" TEXT);");
+                    +Contract.Subject.endingTime+" TEXT, "
+                    +"FOREIGN KEY(classroom) REFERENCES Classrooms(classroomName));");
 
             db.execSQL("Create table "
                     +"Tutorships "
@@ -151,7 +157,8 @@ public class MyContentProvider extends ContentProvider {
                     +Contract.Tutorship.name +" TEXT, "
                     +Contract.Tutorship.classroom +" TEXT, "
                     +Contract.Tutorship.startTime +" TEXT, "
-                    +Contract.Tutorship.endingTime+" TEXT);");
+                    +Contract.Tutorship.endingTime+" TEXT, "
+                    +"FOREIGN KEY(classroom) REFERENCES Classrooms(classroomName));");
 
             inicializarDatos(db);
         }
@@ -181,9 +188,10 @@ public class MyContentProvider extends ContentProvider {
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-            db.execSQL("DROP TABLE IF EXISTS Classrooms");
-            db.execSQL("DROP TABLE IF EXISTS Subjects");
             db.execSQL("DROP TABLE IF EXISTS Tutorships");
+            db.execSQL("DROP TABLE IF EXISTS Subjects");
+            db.execSQL("DROP TABLE IF EXISTS Classrooms");
+
             onCreate(db);
         }
     }
