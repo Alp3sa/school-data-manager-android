@@ -53,8 +53,8 @@ public class MainActivity extends AppCompatActivity {
 
         contexto=this;
         //BEGIN TEST - SAVE TIME TO SKIP THE LOGIN SYSTEM
-        Intent intent = new Intent(contexto,MainMenu.class);
-        startActivity(intent);
+        //Intent intent = new Intent(contexto,MainMenu.class);
+        //startActivity(intent);
         //END TEST
 
         textView = (TextView) findViewById(R.id.textViewIniciarSesion);

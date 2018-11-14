@@ -94,8 +94,8 @@ public class MainMenu extends AppCompatActivity
         super.onCreate(savedInstanceState);
 
         //BEGIN TEST - SAVE TIME TO SKIP THE LOGIN SYSTEM
-        User User = new User("",null,null,null,null,null,null,null);
-        ((application) getApplicationContext()).User = User;
+        //User User = new User("",null,null,null,null,null,null,null);
+        //((application) getApplicationContext()).User = User;
         //END TEST
 
         //Set layouts
