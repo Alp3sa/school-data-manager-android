@@ -18,6 +18,8 @@
     <string name="errorInvalidPassword">Contraseña inválida</string>
     <string name="errorClassroomConstraint">El aula introducida no existe</string>
     <string name="errorClassroomUnique">El aula introducida ya existe</string>
+    <string name="errorClassroomUniqueUpdate">El aula que intenta modificar está siendo usado o la que intenta introducir ya existe</string>
+    <string name="errorClassroomUsed">Debe borrar primero los registros que hacen referencia a este aula</string>
 
     <string name="toastErrorEmptyUsername">Introduzca un nombre de usuario</string>
     <string name="toastErrorShortUsername">Introduzca un nombre de usuario de al menos 4 caracteres</string>

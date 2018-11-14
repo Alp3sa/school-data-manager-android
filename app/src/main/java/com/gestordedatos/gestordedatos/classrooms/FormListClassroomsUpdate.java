@@ -166,7 +166,7 @@ public class FormListClassroomsUpdate extends AppCompatActivity {
             ClassroomProvider.updateRecord(getContentResolver(),classroom,this);
         }
         catch(SQLException e){
-            editTextClassroomName.setError(getString(R.string.errorClassroomUnique));
+            editTextClassroomName.setError(getString(R.string.errorClassroomUniqueUpdate));
             editTextClassroomName.requestFocus();
             return;
         }

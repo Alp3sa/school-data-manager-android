@@ -72,6 +72,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.sql.SQLException;
 
 import static java.lang.Thread.sleep;
 
@@ -93,8 +94,8 @@ public class MainMenu extends AppCompatActivity
         super.onCreate(savedInstanceState);
 
         //BEGIN TEST - SAVE TIME TO SKIP THE LOGIN SYSTEM
-        //User User = new User("",null,null,null,null,null,null,null);
-        //((application) getApplicationContext()).User = User;
+        User User = new User("",null,null,null,null,null,null,null);
+        ((application) getApplicationContext()).User = User;
         //END TEST
 
         //Set layouts
@@ -293,7 +294,17 @@ public class MainMenu extends AppCompatActivity
             toolbar.inflateMenu(R.menu.insert_menu);
             //Delete record
             if(application.CLASSROOM_TABLE_NAME=="Classrooms") {
-                ClassroomProvider.deleteRecord(this.getContentResolver(),(Integer) ClassroomsListFragment.rowSelected.getTag(),this);
+                try {
+                    ClassroomProvider.deleteRecord(this.getContentResolver(), (Integer) ClassroomsListFragment.rowSelected.getTag(), this);
+                }
+                catch (android.database.SQLException e){
+                    String toast = getResources().getString(R.string.errorClassroomUsed);
+                    SpannableStringBuilder biggerText = new SpannableStringBuilder(toast);
+                    biggerText.setSpan(new RelativeSizeSpan(1.5f), 0, toast.length(), 0);
+                    Toast errorImage = Toast.makeText(getApplicationContext(),biggerText,Toast.LENGTH_LONG);
+                    errorImage.setGravity(Gravity.BOTTOM, 0, 40);
+                    errorImage.show();
+                }
             }
             else if(application.CLASSROOM_TABLE_NAME=="Subjects") {
                 SubjectProvider.deleteRecord(this.getContentResolver(),(Integer) SubjectsListFragment.rowSelected.getTag());
