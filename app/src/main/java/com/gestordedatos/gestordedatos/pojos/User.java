@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class User implements Parcelable{
+    int validacion;
     String nombreUsuario;
     String nombre;
     String primerApellido;
@@ -12,6 +13,7 @@ public class User implements Parcelable{
     String dni;
     String genero;
     String tipoDeMiembro;
+    String password;
 
     public User(String nombreUsuario, String nombre, String primerApellido, String segundoApellido, String edad, String dni, String genero, String tipoDeMiembro) {
         this.nombreUsuario = nombreUsuario;
@@ -22,6 +24,12 @@ public class User implements Parcelable{
         this.dni = dni;
         this.genero = genero;
         this.tipoDeMiembro = tipoDeMiembro;
+    }
+
+    public User(int validacion, String nombreUsuario, String password) {
+        this.validacion = validacion;
+        this.nombreUsuario = nombreUsuario;
+        this.password = password;
     }
 
     protected User(Parcel in) {
@@ -39,6 +47,22 @@ public class User implements Parcelable{
             return new User[size];
         }
     };
+
+    public int getValidacion() {
+        return validacion;
+    }
+
+    public void setValidacion(final int validacion) {
+        this.validacion = validacion;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(final String password) {
+        this.password = password;
+    }
 
     public String getNombreUsuario() {
         return nombreUsuario;

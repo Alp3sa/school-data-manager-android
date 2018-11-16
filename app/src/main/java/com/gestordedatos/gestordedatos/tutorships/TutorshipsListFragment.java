@@ -109,7 +109,7 @@ public class TutorshipsListFragment extends ListFragment implements LoaderManage
                 //Clear the toolbar and add a new menu
                 Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
                 toolbar.getMenu().clear();
-                toolbar.inflateMenu(R.menu.delete_modify_menu);
+                toolbar.inflateMenu(R.menu.delete_modify_menu_tutorships);
 
                 //pass rowSelected to ListTutorships, using this variable in onOptionsItemSelected
                 rowSelected = view;

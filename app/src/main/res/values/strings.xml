@@ -68,6 +68,8 @@
     <string name="delete">Borrar</string>
     <string name="update">Actualizar</string>
     <string name="consult">Consultar</string>
+    <string name="consultClassrooms">Consultar aulas</string>
+    <string name="consultSubjects">Consultar asignaturas</string>
     <string name="title_activity_main_menu">MainMenu</string>
     <string name="tab_text_1">Aulas</string>
     <string name="tab_text_2">Asignaturas</string>
@@ -98,13 +100,13 @@
 
     <!--Help-->
     <string name="helpTitle">Ayuda</string>
-    <string name="helpLogin">El nombre del usuario debe tener al menos 4 caracteres y la contraseña al menos 8.</string>
+    <string name="helpLogin">El nombre del usuario debe tener al menos 4 caracteres y la contraseña al menos 8.\n\nSi lo desea puede descargar las normas del centro haciendo click en el icono de la nube, al lado del icono de ayuda.</string>
     <string name="helpSignUpNick">El nombre del usuario debe tener al menos 4 caracteres.</string>
     <string name="helpSignUpPersonalData">Introduzca sus datos personales. En el campo edad debe introducir un número entero válido. El DNI será validado por lo que debe ser real.</string>
     <string name="helpSignUpGender">Debe elegir una opción de las alternativas.</string>
     <string name="helpSignUpTypeMember">Debe elegir una opción de las alternativas.</string>
     <string name="helpSignUpPassword">El código de activación consta de 4 dígitos. La contraseña debe contener al menos 8 caracteres.</string>
-    <string name="helpMainMenu">Acceda a los diferentes apartados desde las pestañas o desde el panel lateral de navegación. Desde este último podrá también cerrar sesión.\n\nPara modificar o borrar un registro manténgalo seleccionado hasta que aparezcan las respectivas opciones en el action bar. Si desea añadir un nuevo registro selecione la opción que ya aparece en el action bar.</string>
+    <string name="helpMainMenu">Acceda a los diferentes apartados desde las pestañas o desde el panel lateral de navegación. Desde este último podrá también cerrar sesión.\n\nPara modificar o borrar un registro manténgalo seleccionado hasta que aparezcan las respectivas opciones en el action bar. Si desea añadir un nuevo registro selecione la opción que ya aparece en el action bar.\n\nTambién podrá descargar la tabla como JPG desde el icono de la nube. Además podrá hacer subconsultas haciendo click largo sobre un registro y eligiendo la opción de la flecha. Por último, en la sección tutorías, dispone de la posibilidad de buscar específicamente datos referentes al profesorado.</string>
     <string name="helpListClassrooms">Para modificar o borrar un registro manténgalo seleccionado hasta que aparezcan las respectivas opciones en el action bar. Para añadir un nuevo registro selecione la opción que ya aparece en el action bar.</string>
     <string name="helpListSubjects">Para modificar o borrar un registro manténgalo seleccionado hasta que aparezcan las respectivas opciones en el action bar. Para añadir un nuevo registro selecione la opción que ya aparece en el action bar.</string>
     <string name="helpListTutorships">Para modificar o borrar un registro manténgalo seleccionado hasta que aparezcan las respectivas opciones en el action bar. Para añadir un nuevo registro selecione la opción que ya aparece en el action bar.</string>
@@ -168,4 +170,8 @@
     <string name="creatingBitmap">Creando bitmap</string>
     <string name="creatingJPG">Creando JPG</string>
     <string name="jpgSuccessful">Descarga completada</string>
+
+    <!--SubQueries-->
+    <string name="errorNoSubjectRelated">No hay ninguna asignatura que se imparta en este aula</string>
+    <string name="searchBox">Buscar</string>
 </resources>

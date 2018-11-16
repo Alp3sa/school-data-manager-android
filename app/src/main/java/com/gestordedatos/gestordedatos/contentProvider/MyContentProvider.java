@@ -265,8 +265,6 @@ public class MyContentProvider extends ContentProvider {
         qb.setTables(application.CLASSROOM_TABLE_NAME);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        String query = null;
-
         switch(sUriMatcher.match(uri)){
             case CLASSROOM_ONE_REG:
                 if(null == selection) selection = "";
@@ -278,6 +276,28 @@ public class MyContentProvider extends ContentProvider {
                 if(TextUtils.isEmpty(sortOrder)) sortOrder = Contract.Classroom._ID+" ASC";
                 qb.setTables(application.CLASSROOM_TABLE_NAME);
                 break;
+        }
+
+        if(application.classroomsSubquery!=null && application.LAST_TAB==1){
+            String arg[] = {application.classroomsSubquery.getClassroomName()};
+            selectionArgs=arg;
+            selection="classroom=?";
+        }
+        else if(application.classrooms1Subquery!=null && application.LAST_TAB==0){
+            String arg[] = {application.classrooms1Subquery.getClassroom()};
+            selectionArgs=arg;
+            selection="classroomName=?";
+        }
+        else if(application.classrooms2Subquery!=null && application.LAST_TAB==0){
+            String arg[] = {application.classrooms2Subquery.getClassroom()};
+            selectionArgs=arg;
+            selection="classroomName=?";
+        }
+        else if(application.tutorshipSearchBox!=null && application.LAST_TAB==2){
+            String arg[] = {"%"+application.tutorshipSearchBox+"%","%"+application.tutorshipSearchBox+"%","%"+application.tutorshipSearchBox+"%","%"+application.tutorshipSearchBox+"%"};
+            selectionArgs=arg;
+            selection="name LIKE ? COLLATE NOCASE OR classroom LIKE ? COLLATE NOCASE OR startTime LIKE ? COLLATE NOCASE OR endingTime LIKE ? COLLATE NOCASE";
+            application.tutorshipSearchBox=null;
         }
 
         Cursor c;

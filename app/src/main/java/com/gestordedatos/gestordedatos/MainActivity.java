@@ -30,6 +30,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.concurrent.ExecutionException;
 
 import static java.lang.Thread.sleep;
 
@@ -165,7 +166,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void validar(){
+    public void validar() {
         editTextNombreUsuario.setError(null);
         editTextPassword.setError(null);
 
@@ -193,26 +194,70 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
+        /*Login con mysql mediante PHP*/
+        /*connection con = new connection(contexto);
+        try {
+            User validation = con.execute(nombreUsuario, password).get();
+            int status = validation.getValidacion();
+            if(status==1){
+                String toast = "Los datos son válidos";
+                SpannableStringBuilder biggerText = new SpannableStringBuilder(toast);
+                biggerText.setSpan(new RelativeSizeSpan(1.5f), 0, toast.length(), 0);
+                Toast mensajeValidacion = Toast.makeText(getApplicationContext(),biggerText,Toast.LENGTH_LONG);
+                mensajeValidacion.setGravity(Gravity.CENTER, 0, 0);
+                mensajeValidacion.show();
+                sleep(1000);
+
+                //Ejemplo de pasar objeto entre actividades
+                User User = new User(nombreUsuario,null,null,null,null,null,null,null);
+                Intent intent = new Intent(contexto, MainMenu.class);
+                intent.putExtra("User", User);
+                ((application) getApplicationContext()).User = User;
+
+                startActivity(intent);
+            }
+            else if(status==0){
+                String toast = "Los datos no son válidos";
+                SpannableStringBuilder biggerText = new SpannableStringBuilder(toast);
+                biggerText.setSpan(new RelativeSizeSpan(1.5f), 0, toast.length(), 0);
+                Toast mensajeValidacion = Toast.makeText(getApplicationContext(),biggerText,Toast.LENGTH_LONG);
+                mensajeValidacion.setGravity(Gravity.CENTER, 0, 0);
+                mensajeValidacion.show();
+                sleep(1000);
+            }
+            else if(status==-1){
+                String toast = "El servidor está caído. Inténtelo más tarde.";
+                SpannableStringBuilder biggerText = new SpannableStringBuilder(toast);
+                biggerText.setSpan(new RelativeSizeSpan(1.5f), 0, toast.length(), 0);
+                Toast mensajeValidacion = Toast.makeText(getApplicationContext(),biggerText,Toast.LENGTH_LONG);
+                mensajeValidacion.setGravity(Gravity.CENTER, 0, 0);
+                mensajeValidacion.show();
+                sleep(1000);
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }*/
+
         String toast = "Los datos son válidos";
-        //Dar formato al texto
         SpannableStringBuilder biggerText = new SpannableStringBuilder(toast);
         biggerText.setSpan(new RelativeSizeSpan(1.5f), 0, toast.length(), 0);
-
         Toast mensajeValidacion = Toast.makeText(getApplicationContext(),biggerText,Toast.LENGTH_LONG);
         mensajeValidacion.setGravity(Gravity.CENTER, 0, 0);
         mensajeValidacion.show();
-        /*Futura conexión con mysql
 
-        connection con = new connection(contexto);
-        con.execute(nombreUsuario,password);
-        */
         //Ejemplo de pasar objeto entre actividades
         User User = new User(nombreUsuario,null,null,null,null,null,null,null);
         Intent intent = new Intent(contexto, MainMenu.class);
-        //intent.putExtra("User", User);
+        intent.putExtra("User", User);
         ((application) getApplicationContext()).User = User;
 
         startActivity(intent);
+
+
+
+
 
         //Añadir en destino
         //User User = getIntent().getExtras().getParcelable("User");

@@ -35,7 +35,10 @@ import android.view.ViewGroup;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -48,12 +51,14 @@ import com.gestordedatos.gestordedatos.contentProvider.ClassroomProvider;
 import com.gestordedatos.gestordedatos.contentProvider.Contract;
 import com.gestordedatos.gestordedatos.contentProvider.SubjectProvider;
 import com.gestordedatos.gestordedatos.contentProvider.TutorshipProvider;
+import com.gestordedatos.gestordedatos.pojos.Classroom;
 import com.gestordedatos.gestordedatos.pojos.User;
 import com.gestordedatos.gestordedatos.subjects.FormListSubjects;
 import com.gestordedatos.gestordedatos.subjects.FormListSubjectsUpdate;
 import com.gestordedatos.gestordedatos.subjects.SubjectsListFragment;
 import com.gestordedatos.gestordedatos.tutorships.FormListTutorships;
 import com.gestordedatos.gestordedatos.tutorships.FormListTutorshipsUpdate;
+import com.gestordedatos.gestordedatos.tutorships.ListTutorships;
 import com.gestordedatos.gestordedatos.tutorships.TutorshipsListFragment;
 /*import com.itextpdf.text.BadElementException;
 import com.itextpdf.text.Document;
@@ -74,6 +79,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.SQLException;
 
+import static com.gestordedatos.gestordedatos.contentProvider.SubjectProvider.readRecordFromClassrooms;
 import static java.lang.Thread.sleep;
 
 public class MainMenu extends AppCompatActivity
@@ -88,6 +94,11 @@ public class MainMenu extends AppCompatActivity
     TabLayout tabLayout;
 
     Menu menu;
+
+    ImageButton searchButton;
+    EditText searchBox;
+    String textSearched=null;
+    int checkSearchBox=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,62 +119,44 @@ public class MainMenu extends AppCompatActivity
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                if(tab.getPosition()==0){
-                    application.CLASSROOM_TABLE_NAME="Classrooms";
-                    application.LAST_TAB=0;
-                    ClassroomsListFragment myFragment = new ClassroomsListFragment();
+                //Set fragments based on tabs selection
+                setFragments(tab);
+                //Reset searchBox
+                checkSearchBox=0;
+                searchBox.clearFocus();
+                searchBox.setText(getResources().getString(R.string.searchBox));
+                hideKeyboard(contexto);
 
-                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                    transaction.replace(R.id.fragment, myFragment);
-                    transaction.addToBackStack(null);
-                    transaction.commit();
-
-                    //Set floating button as invisible
-                    findViewById(R.id.action_insert_alternative).setVisibility(View.VISIBLE);
+                //Reset subquery vars
+                if (tab.getPosition() != 1) {
+                    application.classroomsSubquery = null;
+                    application.subquery=-1;
                 }
-                else if(tab.getPosition()==1){
-                    application.CLASSROOM_TABLE_NAME="Subjects";
-                    application.LAST_TAB=1;
-                    SubjectsListFragment myFragment = new SubjectsListFragment();
-
-                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                    transaction.replace(R.id.fragment, myFragment);
-                    transaction.addToBackStack(null);
-                    transaction.commit();
-
-                    //Set floating button as invisible
-                    findViewById(R.id.action_insert_alternative).setVisibility(View.VISIBLE);
-                }
-                else if(tab.getPosition()==2){
-                    application.CLASSROOM_TABLE_NAME="Tutorships";
-                    application.LAST_TAB=2;
-                    TutorshipsListFragment myFragment = new TutorshipsListFragment();
-
-                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                    transaction.replace(R.id.fragment, myFragment);
-                    transaction.addToBackStack(null);
-                    transaction.commit();
-
-                    //Set floating button as invisible
-                    findViewById(R.id.action_insert_alternative).setVisibility(View.VISIBLE);
-                }
-                else if(tab.getPosition()==3){
-                    application.LAST_TAB=3;
-                    MapsActivity myFragment = new MapsActivity();
-
-                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                    transaction.replace(R.id.fragment, myFragment);
-                    transaction.addToBackStack(null);
-                    transaction.commit();
-
-                    //Set floating button as invisible
-                    findViewById(R.id.action_insert_alternative).setVisibility(View.INVISIBLE);
+                else if (tab.getPosition() != 0) {
+                    application.classrooms1Subquery = null;
+                    application.classrooms2Subquery = null;
+                    application.subquery=-1;
                 }
             }
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {}
             @Override
-            public void onTabReselected(TabLayout.Tab tab) {}
+            public void onTabReselected(TabLayout.Tab tab) {
+                //Reset fragment
+                setFragments(tab);
+
+                //Reset searchBox
+                checkSearchBox=0;
+                searchBox.clearFocus();
+                searchBox.setText(getResources().getString(R.string.searchBox));
+                hideKeyboard(contexto);
+
+                //Reset subquery vars
+                application.classroomsSubquery = null;
+                application.classrooms1Subquery = null;
+                application.classrooms2Subquery = null;
+                application.subquery=-1;
+            }
         });
 
         //Floating button
@@ -183,6 +176,37 @@ public class MainMenu extends AppCompatActivity
                     intent = new Intent(getBaseContext(), FormListTutorships.class);
                 }
                 startActivity(intent);
+            }
+        });
+
+
+
+        searchButton = (ImageButton) findViewById(R.id.searchButton);
+        searchBox = (EditText) findViewById(R.id.textViewSearch);
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View view) {
+                //Get text from searchBox
+                searchBox = (EditText) findViewById(R.id.textViewSearch);
+                textSearched = searchBox.getText().toString();
+                application.tutorshipSearchBox=textSearched;
+
+                //Hide keyboard
+                hideKeyboard(contexto);
+
+                //Reload fragment calling to the tabListener
+                TabLayout.Tab tab = tabLayout.getTabAt(application.LAST_TAB);
+                tab.select();
+            }
+        });
+
+        searchBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View view) {
+                if(checkSearchBox==0){
+                    searchBox.setText("");
+                    checkSearchBox=1;
+                }
             }
         });
 
@@ -335,6 +359,44 @@ public class MainMenu extends AppCompatActivity
         else if(id == R.id.action_download){
             CreateJPG();
         }
+        else if(id == R.id.action_subquery_classrooms){
+            application.subquery = (Integer) ClassroomsListFragment.rowSelected.getTag();
+            application.classroomsSubquery = ClassroomProvider.readRecord(getBaseContext().getContentResolver(),application.subquery);
+            int checkSucjects = readRecordFromClassrooms(getBaseContext().getContentResolver(),application.classroomsSubquery.getClassroomName());
+
+            if(checkSucjects==1){
+                application.LAST_TAB=1;
+                TabLayout.Tab tab = tabLayout.getTabAt(application.LAST_TAB);
+                tab.select();
+            }
+            else if(checkSucjects==0){
+                application.subquery = -1;
+                application.classroomsSubquery = null;
+
+                String toast = getResources().getString(R.string.errorNoSubjectRelated);
+                SpannableStringBuilder biggerText = new SpannableStringBuilder(toast);
+                biggerText.setSpan(new RelativeSizeSpan(1.5f), 0, toast.length(), 0);
+                Toast errorImage = Toast.makeText(getApplicationContext(),biggerText,Toast.LENGTH_LONG);
+                errorImage.setGravity(Gravity.BOTTOM, 0, 40);
+                errorImage.show();
+            }
+        }
+        else if(id == R.id.action_subquery_subjects){
+            application.subquery = (Integer) SubjectsListFragment.rowSelected.getTag();
+            application.classrooms1Subquery = SubjectProvider.readRecord(getBaseContext().getContentResolver(),application.subquery);
+
+            application.LAST_TAB=0;
+            TabLayout.Tab tab = tabLayout.getTabAt(application.LAST_TAB);
+            tab.select();
+        }
+        else if(id == R.id.action_subquery_tutorships){
+            application.subquery = (Integer) TutorshipsListFragment.rowSelected.getTag();
+            application.classrooms2Subquery = TutorshipProvider.readRecord(getBaseContext().getContentResolver(),application.subquery);
+
+            application.LAST_TAB=0;
+            TabLayout.Tab tab = tabLayout.getTabAt(application.LAST_TAB);
+            tab.select();
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -346,7 +408,27 @@ public class MainMenu extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
+            application.LAST_TAB=0;
+            application.subquery=-1;
+            application.classroomsSubquery=null;
+            application.classrooms1Subquery=null;
+            application.classrooms2Subquery=null;
 
+            application.CLASSROOM_TABLE_NAME = "Classrooms";
+            application.LAST_TAB = 0;
+
+            ClassroomsListFragment myFragment = new ClassroomsListFragment();
+
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragment, myFragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+
+            //Set floating button as invisible
+            findViewById(R.id.footer).setVisibility(View.VISIBLE);
+
+            TabLayout.Tab tab = tabLayout.getTabAt(application.LAST_TAB);
+            tab.select();
         }
         /*else if (id == R.id.nav_profile) {
 
@@ -605,5 +687,73 @@ public class MainMenu extends AppCompatActivity
             progressDialog.setMax(100);
             progressDialog.setProgress(values[0]);
         }
+    }
+
+    public void setFragments(TabLayout.Tab tab){
+        if (tab.getPosition() == 0) {
+            application.CLASSROOM_TABLE_NAME = "Classrooms";
+            application.LAST_TAB = 0;
+            ClassroomsListFragment myFragment = new ClassroomsListFragment();
+
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragment, myFragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+
+            //Set footer
+            findViewById(R.id.footer).setVisibility(View.VISIBLE);
+            findViewById(R.id.searchPanel).setVisibility(View.INVISIBLE);
+            findViewById(R.id.footer).setBackgroundColor(Color.TRANSPARENT);
+        } else if (tab.getPosition() == 1) {
+            application.CLASSROOM_TABLE_NAME = "Subjects";
+            application.LAST_TAB = 1;
+            SubjectsListFragment myFragment = new SubjectsListFragment();
+
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragment, myFragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+
+            //Set footer
+            findViewById(R.id.footer).setVisibility(View.VISIBLE);
+            findViewById(R.id.searchPanel).setVisibility(View.INVISIBLE);
+            findViewById(R.id.footer).setBackgroundColor(Color.TRANSPARENT);
+        } else if (tab.getPosition() == 2) {
+            application.CLASSROOM_TABLE_NAME = "Tutorships";
+            application.LAST_TAB = 2;
+            TutorshipsListFragment myFragment = new TutorshipsListFragment();
+
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragment, myFragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+
+            //Set footer
+            findViewById(R.id.footer).setVisibility(View.VISIBLE);
+            findViewById(R.id.searchPanel).setVisibility(View.VISIBLE);
+            findViewById(R.id.footer).setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+        } else if (tab.getPosition() == 3) {
+            application.LAST_TAB = 3;
+            MapsActivity myFragment = new MapsActivity();
+
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragment, myFragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+
+            //Set footer
+            findViewById(R.id.footer).setVisibility(View.INVISIBLE);
+        }
+    }
+
+    public static void hideKeyboard(Activity activity) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        //Find the currently focused view, so we can grab the correct window token from it.
+        View view = activity.getCurrentFocus();
+        //If no view currently has focus, create a new one, just so we can grab a window token from it
+        if (view == null) {
+            view = new View(activity);
+        }
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 }

@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.net.Uri;
 
 import com.gestordedatos.gestordedatos.application;
+import com.gestordedatos.gestordedatos.pojos.Classroom;
 import com.gestordedatos.gestordedatos.pojos.Subject;
 
 public class SubjectProvider {
@@ -75,5 +76,42 @@ public class SubjectProvider {
         }
 
         return null;
+    }
+
+    public static int readRecordFromClassrooms(ContentResolver resolver, String classroomName){
+        //GET SUBJECTS FROM CLASSROOM NAME
+
+        if(classroomName!=null) {
+            application.CLASSROOM_TABLE_NAME="Subjects";
+            Uri uri = Uri.parse("content://" + Contract.AUTHORITY + "/Subjects");
+
+            String[] projection = {
+                    Contract.Subject._ID,
+                    Contract.Subject.name,
+                    Contract.Subject.teacher,
+                    Contract.Subject.classroom,
+                    Contract.Subject.startTime,
+                    Contract.Subject.endingTime
+            };
+
+            Cursor cursor = resolver.query(uri, projection, null, null, null);
+
+            int numRows = 0;
+
+            try {
+                while (cursor.moveToNext()) {
+                    if (classroomName.equals(cursor.getString(cursor.getColumnIndex(Contract.Subject.classroom)))) {
+                        numRows++;
+                        return 1;
+                    }
+                }
+            } finally {cursor.close();}
+
+            if(numRows==0){
+                application.CLASSROOM_TABLE_NAME="Classrooms";
+                return 0;
+            }
+        }
+        return -1;
     }
 }

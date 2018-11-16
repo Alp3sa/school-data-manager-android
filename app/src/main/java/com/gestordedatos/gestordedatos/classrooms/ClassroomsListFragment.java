@@ -118,7 +118,7 @@ public class ClassroomsListFragment extends ListFragment implements LoaderManage
                 //Clear the toolbar and add a new menu
                 Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
                 toolbar.getMenu().clear();
-                toolbar.inflateMenu(R.menu.delete_modify_menu);
+                toolbar.inflateMenu(R.menu.delete_modify_menu_classrooms);
 
                 //pass rowSelected to ListClassrooms, using this variable in onOptionsItemSelected
                 rowSelected = view;
