@@ -14,7 +14,7 @@ import android.net.Uri;
 import android.text.TextUtils;
 import android.util.SparseArray;
 
-import com.gestordedatos.gestordedatos.application;
+import com.gestordedatos.gestordedatos.Globals;
 
 public class MyContentProvider extends ContentProvider {
     private static final int CLASSROOM_ONE_REG=1;
@@ -80,12 +80,12 @@ public class MyContentProvider extends ContentProvider {
                 CLASSROOM_ONE_REG);
         /*sUriMatcher.addURI(
                 Contract.AUTHORITY,
-                application.CLASSROOM_TABLE_NAME,
+                Globals.CLASSROOM_TABLE_NAME,
                 CLASSROOM_ALL_REGS);
 
         sUriMatcher.addURI(
                 Contract.AUTHORITY,
-                application.CLASSROOM_TABLE_NAME+"/#",
+                Globals.CLASSROOM_TABLE_NAME+"/#",
                 CLASSROOM_ONE_REG);*/
 
         // Specifies a custom MIME type for the picture URL table text/html
@@ -111,10 +111,10 @@ public class MyContentProvider extends ContentProvider {
 
         /*sMimeTypes.put(CLASSROOM_ONE_REG,
                 "vnd.android.cursor.dir/vnd."+
-                Contract.AUTHORITY+"."+application.CLASSROOM_TABLE_NAME);
+                Contract.AUTHORITY+"."+Globals.CLASSROOM_TABLE_NAME);
         sMimeTypes.put(CLASSROOM_ALL_REGS,
                 "vnd.android.cursor.dir/vnd."+
-                        Contract.AUTHORITY+"."+application.CLASSROOM_TABLE_NAME);*/
+                        Contract.AUTHORITY+"."+Globals.CLASSROOM_TABLE_NAME);*/
     }
 
     public static class DatabaseHelper extends SQLiteOpenHelper{
@@ -210,10 +210,10 @@ public class MyContentProvider extends ContentProvider {
                 if(null == selection) selection = "";
                 selection += Contract.Classroom._ID+"="
                         +uri.getLastPathSegment();
-                table=application.CLASSROOM_TABLE_NAME;
+                table=Globals.CLASSROOM_TABLE_NAME;
                 break;
             case CLASSROOM_ALL_REGS:
-                table=application.CLASSROOM_TABLE_NAME;
+                table=Globals.CLASSROOM_TABLE_NAME;
                 break;
         }
 
@@ -236,7 +236,7 @@ public class MyContentProvider extends ContentProvider {
         String table="";
         switch(sUriMatcher.match(uri)){
             case CLASSROOM_ALL_REGS:
-                table=application.CLASSROOM_TABLE_NAME;
+                table=Globals.CLASSROOM_TABLE_NAME;
                 break;
         }
 
@@ -262,7 +262,7 @@ public class MyContentProvider extends ContentProvider {
     public Cursor query(Uri uri, String[] projection, String selection,
                         String[] selectionArgs, String sortOrder) {
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
-        qb.setTables(application.CLASSROOM_TABLE_NAME);
+        qb.setTables(Globals.CLASSROOM_TABLE_NAME);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         switch(sUriMatcher.match(uri)){
@@ -270,34 +270,34 @@ public class MyContentProvider extends ContentProvider {
                 if(null == selection) selection = "";
                 selection += Contract.Classroom._ID+"="
                         +uri.getLastPathSegment();
-                qb.setTables(application.CLASSROOM_TABLE_NAME);
+                qb.setTables(Globals.CLASSROOM_TABLE_NAME);
                 break;
             case CLASSROOM_ALL_REGS:
                 if(TextUtils.isEmpty(sortOrder)) sortOrder = Contract.Classroom._ID+" ASC";
-                qb.setTables(application.CLASSROOM_TABLE_NAME);
+                qb.setTables(Globals.CLASSROOM_TABLE_NAME);
                 break;
         }
 
-        if(application.classroomsSubquery!=null && application.LAST_TAB==1){
-            String arg[] = {application.classroomsSubquery.getClassroomName()};
+        if(Globals.classroomsSubquery!=null && Globals.LAST_TAB==1){
+            String arg[] = {Globals.classroomsSubquery.getClassroomName()};
             selectionArgs=arg;
             selection="classroom=?";
         }
-        else if(application.classrooms1Subquery!=null && application.LAST_TAB==0){
-            String arg[] = {application.classrooms1Subquery.getClassroom()};
+        else if(Globals.classrooms1Subquery!=null && Globals.LAST_TAB==0){
+            String arg[] = {Globals.classrooms1Subquery.getClassroom()};
             selectionArgs=arg;
             selection="classroomName=?";
         }
-        else if(application.classrooms2Subquery!=null && application.LAST_TAB==0){
-            String arg[] = {application.classrooms2Subquery.getClassroom()};
+        else if(Globals.classrooms2Subquery!=null && Globals.LAST_TAB==0){
+            String arg[] = {Globals.classrooms2Subquery.getClassroom()};
             selectionArgs=arg;
             selection="classroomName=?";
         }
-        else if(application.tutorshipSearchBox!=null && application.LAST_TAB==2){
-            String arg[] = {"%"+application.tutorshipSearchBox+"%","%"+application.tutorshipSearchBox+"%","%"+application.tutorshipSearchBox+"%","%"+application.tutorshipSearchBox+"%"};
+        else if(Globals.tutorshipSearchBox!=null && Globals.LAST_TAB==2){
+            String arg[] = {"%"+Globals.tutorshipSearchBox+"%","%"+Globals.tutorshipSearchBox+"%","%"+Globals.tutorshipSearchBox+"%","%"+Globals.tutorshipSearchBox+"%"};
             selectionArgs=arg;
             selection="name LIKE ? COLLATE NOCASE OR classroom LIKE ? COLLATE NOCASE OR startTime LIKE ? COLLATE NOCASE OR endingTime LIKE ? COLLATE NOCASE";
-            application.tutorshipSearchBox=null;
+            Globals.tutorshipSearchBox=null;
         }
 
         Cursor c;
@@ -318,10 +318,10 @@ public class MyContentProvider extends ContentProvider {
                 if(null == selection) selection = "";
                 selection += Contract.Classroom._ID+"="
                         +uri.getLastPathSegment();
-                table=application.CLASSROOM_TABLE_NAME;
+                table=Globals.CLASSROOM_TABLE_NAME;
                 break;
             case CLASSROOM_ALL_REGS:
-                table=application.CLASSROOM_TABLE_NAME;
+                table=Globals.CLASSROOM_TABLE_NAME;
                 break;
         }
 

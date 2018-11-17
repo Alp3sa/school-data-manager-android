@@ -5,8 +5,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
 
-import com.gestordedatos.gestordedatos.application;
-import com.gestordedatos.gestordedatos.pojos.Classroom;
+import com.gestordedatos.gestordedatos.Globals;
 import com.gestordedatos.gestordedatos.pojos.Subject;
 
 public class SubjectProvider {
@@ -20,7 +19,7 @@ public class SubjectProvider {
         values.put(Contract.Subject.startTime,subject.getStartTime());
         values.put(Contract.Subject.endingTime,subject.getEndingTime());
 
-        application.CLASSROOM_TABLE_NAME = "Subjects";
+        Globals.CLASSROOM_TABLE_NAME = "Subjects";
 
         resolver.insert(uri,values);
     }
@@ -28,7 +27,7 @@ public class SubjectProvider {
     public static void deleteRecord(ContentResolver resolver, int subjectId){
         Uri uri = Uri.parse(Contract.Subject.CONTENT_URI+"/"+subjectId);
 
-        application.CLASSROOM_TABLE_NAME = "Subjects";
+        Globals.CLASSROOM_TABLE_NAME = "Subjects";
 
         resolver.delete(uri, null, null);
     }
@@ -43,7 +42,7 @@ public class SubjectProvider {
         values.put(Contract.Subject.startTime,subject.getStartTime());
         values.put(Contract.Subject.endingTime,subject.getEndingTime());
 
-        application.CLASSROOM_TABLE_NAME = "Subjects";
+        Globals.CLASSROOM_TABLE_NAME = "Subjects";
 
         resolver.update(uri, values, null, null);
     }
@@ -60,7 +59,7 @@ public class SubjectProvider {
                 Contract.Subject.endingTime
         };
 
-        application.CLASSROOM_TABLE_NAME = "Subjects";
+        Globals.CLASSROOM_TABLE_NAME = "Subjects";
 
         Cursor cursor = resolver.query(uri, projection, null, null, null);
 
@@ -82,7 +81,7 @@ public class SubjectProvider {
         //GET SUBJECTS FROM CLASSROOM NAME
 
         if(classroomName!=null) {
-            application.CLASSROOM_TABLE_NAME="Subjects";
+            Globals.CLASSROOM_TABLE_NAME="Subjects";
             Uri uri = Uri.parse("content://" + Contract.AUTHORITY + "/Subjects");
 
             String[] projection = {
@@ -108,7 +107,7 @@ public class SubjectProvider {
             } finally {cursor.close();}
 
             if(numRows==0){
-                application.CLASSROOM_TABLE_NAME="Classrooms";
+                Globals.CLASSROOM_TABLE_NAME="Classrooms";
                 return 0;
             }
         }

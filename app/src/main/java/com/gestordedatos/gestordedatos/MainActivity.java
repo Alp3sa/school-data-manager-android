@@ -56,6 +56,10 @@ public class MainActivity extends AppCompatActivity {
         //BEGIN TEST - SAVE TIME TO SKIP THE LOGIN SYSTEM
         //Intent intent = new Intent(contexto,MainMenu.class);
         //startActivity(intent);
+        //TEST Sign Up
+        //Globals.user = new User(-4,"root6","a","b","c","22","a","1","1",null);
+        //Intent intent = new Intent(contexto,SignUpPasswords.class);
+        //startActivity(intent);
         //END TEST
 
         textView = (TextView) findViewById(R.id.textViewIniciarSesion);
@@ -133,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
                     intent.putExtra("nombreUsuario", nombreUsuario);
                     intent.putExtra("password", password);
 
-                    connection con = new connection(contexto);
+                    Connection con = new Connection(contexto);
                     con.execute(nombreUsuario,password);
                     //startActivity(intent);
 
@@ -195,8 +199,9 @@ public class MainActivity extends AppCompatActivity {
         }
 
         /*Login con mysql mediante PHP*/
-        /*connection con = new connection(contexto);
+        Connection con = new Connection(contexto);
         try {
+            Globals.connectionUsers="login";
             User validation = con.execute(nombreUsuario, password).get();
             int status = validation.getValidacion();
             if(status==1){
@@ -212,7 +217,7 @@ public class MainActivity extends AppCompatActivity {
                 User User = new User(nombreUsuario,null,null,null,null,null,null,null);
                 Intent intent = new Intent(contexto, MainMenu.class);
                 intent.putExtra("User", User);
-                ((application) getApplicationContext()).User = User;
+                ((Globals) getApplicationContext()).User = User;
 
                 startActivity(intent);
             }
@@ -238,22 +243,7 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
-        }*/
-
-        String toast = "Los datos son válidos";
-        SpannableStringBuilder biggerText = new SpannableStringBuilder(toast);
-        biggerText.setSpan(new RelativeSizeSpan(1.5f), 0, toast.length(), 0);
-        Toast mensajeValidacion = Toast.makeText(getApplicationContext(),biggerText,Toast.LENGTH_LONG);
-        mensajeValidacion.setGravity(Gravity.CENTER, 0, 0);
-        mensajeValidacion.show();
-
-        //Ejemplo de pasar objeto entre actividades
-        User User = new User(nombreUsuario,null,null,null,null,null,null,null);
-        Intent intent = new Intent(contexto, MainMenu.class);
-        intent.putExtra("User", User);
-        ((application) getApplicationContext()).User = User;
-
-        startActivity(intent);
+        }
 
 
 

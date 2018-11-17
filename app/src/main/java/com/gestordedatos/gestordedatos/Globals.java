@@ -7,8 +7,9 @@ import com.gestordedatos.gestordedatos.pojos.Subject;
 import com.gestordedatos.gestordedatos.pojos.Tutorship;
 import com.gestordedatos.gestordedatos.pojos.User;
 
-public class application extends android.app.Application {
+public class Globals extends android.app.Application {
     public User User;
+    public static User user;
 
     public static final int SIN_VALOR_INT = -1;
     public static final String SIN_VALOR_STRING = "";
@@ -23,6 +24,8 @@ public class application extends android.app.Application {
     public static Subject classrooms1Subquery = null;
     public static Tutorship classrooms2Subquery = null;
     public static String tutorshipSearchBox = null;
+
+    public static String connectionUsers = null;
 
     public static final int TAKE_PHOTO = 1;
     public static final int UPLOAD_PHOTO = 2;

@@ -13,7 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.gestordedatos.gestordedatos.R;
-import com.gestordedatos.gestordedatos.application;
+import com.gestordedatos.gestordedatos.Globals;
 import com.gestordedatos.gestordedatos.contentProvider.SubjectProvider;
 import com.gestordedatos.gestordedatos.contentProvider.Contract;
 
@@ -30,7 +30,7 @@ public class ListSubjects extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //Including list - Content Provider
-        ((application) getApplicationContext()).CLASSROOM_TABLE_NAME = "Subjects";
+        ((Globals) getApplicationContext()).CLASSROOM_TABLE_NAME = "Subjects";
         SubjectsListFragment SubjectsListFragment = new SubjectsListFragment();
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();

@@ -26,6 +26,31 @@ public class User implements Parcelable{
         this.tipoDeMiembro = tipoDeMiembro;
     }
 
+    public User(int validacion, String nombreUsuario, String nombre, String primerApellido, String segundoApellido, String edad, String dni, String genero, String tipoDeMiembro, String password) {
+        this.validacion = validacion;
+        this.nombreUsuario = nombreUsuario;
+        this.nombre = nombre;
+        this.primerApellido = primerApellido;
+        this.segundoApellido = segundoApellido;
+        this.edad = edad;
+        this.dni = dni;
+        this.genero = genero;
+        this.tipoDeMiembro = tipoDeMiembro;
+        this.password = password;
+    }
+
+    public User(String nombreUsuario, String nombre, String primerApellido, String segundoApellido, String edad, String dni, String genero, String tipoDeMiembro, String password) {
+        this.nombreUsuario = nombreUsuario;
+        this.nombre = nombre;
+        this.primerApellido = primerApellido;
+        this.segundoApellido = segundoApellido;
+        this.edad = edad;
+        this.dni = dni;
+        this.genero = genero;
+        this.tipoDeMiembro = tipoDeMiembro;
+        this.password = password;
+    }
+
     public User(int validacion, String nombreUsuario, String password) {
         this.validacion = validacion;
         this.nombreUsuario = nombreUsuario;
@@ -66,6 +91,10 @@ public class User implements Parcelable{
 
     public String getNombreUsuario() {
         return nombreUsuario;
+    }
+
+    public String getNombre() {
+        return nombre;
     }
 
     public String getPrimerApellido() {

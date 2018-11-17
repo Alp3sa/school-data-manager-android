@@ -17,7 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import com.gestordedatos.gestordedatos.application;
+import com.gestordedatos.gestordedatos.Globals;
 import com.gestordedatos.gestordedatos.R;
 import com.gestordedatos.gestordedatos.Utilities;
 import com.gestordedatos.gestordedatos.contentProvider.ClassroomProvider;
@@ -88,20 +88,20 @@ public class FormListClassroomsUpdate extends AppCompatActivity {
 
     public void takePhoto(){
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(intent, application.TAKE_PHOTO);
+        startActivityForResult(intent, Globals.TAKE_PHOTO);
     }
 
     public void uploadPhoto(){
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("image/*");
         intent.addCategory(Intent.CATEGORY_OPENABLE);
-        startActivityForResult(intent, application.UPLOAD_PHOTO);
+        startActivityForResult(intent, Globals.UPLOAD_PHOTO);
     }
 
     @Override
     protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
         switch(requestCode){
-            case application.TAKE_PHOTO:
+            case Globals.TAKE_PHOTO:
                 if(resultCode==RESULT_OK){
                     image = (Bitmap) data.getExtras().get("data");
                     preview.setImageBitmap(image);
@@ -121,7 +121,7 @@ public class FormListClassroomsUpdate extends AppCompatActivity {
                     // User canceled action
                 }
                 break;
-            case application.UPLOAD_PHOTO:
+            case Globals.UPLOAD_PHOTO:
                 if(resultCode==RESULT_OK){
                     Uri uri = data.getData();
                     preview.setImageURI(uri);

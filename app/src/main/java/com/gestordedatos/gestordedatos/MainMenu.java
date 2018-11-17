@@ -9,7 +9,6 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -36,29 +35,26 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AbsListView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gestordedatos.gestordedatos.classrooms.ClassroomsListFragment;
 import com.gestordedatos.gestordedatos.classrooms.FormListClassrooms;
 import com.gestordedatos.gestordedatos.classrooms.FormListClassroomsUpdate;
+import com.gestordedatos.gestordedatos.classrooms.ListClassrooms;
 import com.gestordedatos.gestordedatos.contentProvider.ClassroomProvider;
 import com.gestordedatos.gestordedatos.contentProvider.Contract;
 import com.gestordedatos.gestordedatos.contentProvider.SubjectProvider;
 import com.gestordedatos.gestordedatos.contentProvider.TutorshipProvider;
-import com.gestordedatos.gestordedatos.pojos.Classroom;
 import com.gestordedatos.gestordedatos.pojos.User;
 import com.gestordedatos.gestordedatos.subjects.FormListSubjects;
 import com.gestordedatos.gestordedatos.subjects.FormListSubjectsUpdate;
 import com.gestordedatos.gestordedatos.subjects.SubjectsListFragment;
 import com.gestordedatos.gestordedatos.tutorships.FormListTutorships;
 import com.gestordedatos.gestordedatos.tutorships.FormListTutorshipsUpdate;
-import com.gestordedatos.gestordedatos.tutorships.ListTutorships;
 import com.gestordedatos.gestordedatos.tutorships.TutorshipsListFragment;
 /*import com.itextpdf.text.BadElementException;
 import com.itextpdf.text.Document;
@@ -67,17 +63,10 @@ import com.itextpdf.text.Image;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.pdf.PdfWriter;*/
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.sql.SQLException;
 
 import static com.gestordedatos.gestordedatos.contentProvider.SubjectProvider.readRecordFromClassrooms;
 import static java.lang.Thread.sleep;
@@ -106,7 +95,7 @@ public class MainMenu extends AppCompatActivity
 
         //BEGIN TEST - SAVE TIME TO SKIP THE LOGIN SYSTEM
         //User User = new User("",null,null,null,null,null,null,null);
-        //((application) getApplicationContext()).User = User;
+        //((Globals) getApplicationContext()).User = User;
         //END TEST
 
         //Set layouts
@@ -129,13 +118,13 @@ public class MainMenu extends AppCompatActivity
 
                 //Reset subquery vars
                 if (tab.getPosition() != 1) {
-                    application.classroomsSubquery = null;
-                    application.subquery=-1;
+                    Globals.classroomsSubquery = null;
+                    Globals.subquery=-1;
                 }
                 else if (tab.getPosition() != 0) {
-                    application.classrooms1Subquery = null;
-                    application.classrooms2Subquery = null;
-                    application.subquery=-1;
+                    Globals.classrooms1Subquery = null;
+                    Globals.classrooms2Subquery = null;
+                    Globals.subquery=-1;
                 }
             }
             @Override
@@ -152,10 +141,10 @@ public class MainMenu extends AppCompatActivity
                 hideKeyboard(contexto);
 
                 //Reset subquery vars
-                application.classroomsSubquery = null;
-                application.classrooms1Subquery = null;
-                application.classrooms2Subquery = null;
-                application.subquery=-1;
+                Globals.classroomsSubquery = null;
+                Globals.classrooms1Subquery = null;
+                Globals.classrooms2Subquery = null;
+                Globals.subquery=-1;
             }
         });
 
@@ -166,13 +155,13 @@ public class MainMenu extends AppCompatActivity
             @Override
             public void onClick(final View view) {
                 Intent intent = null;
-                if(application.CLASSROOM_TABLE_NAME=="Classrooms") {
+                if(Globals.CLASSROOM_TABLE_NAME=="Classrooms") {
                     intent = new Intent(getBaseContext(), FormListClassrooms.class);
                 }
-                else if(application.CLASSROOM_TABLE_NAME=="Subjects") {
+                else if(Globals.CLASSROOM_TABLE_NAME=="Subjects") {
                     intent = new Intent(getBaseContext(), FormListSubjects.class);
                 }
-                else if(application.CLASSROOM_TABLE_NAME=="Tutorships") {
+                else if(Globals.CLASSROOM_TABLE_NAME=="Tutorships") {
                     intent = new Intent(getBaseContext(), FormListTutorships.class);
                 }
                 startActivity(intent);
@@ -189,13 +178,13 @@ public class MainMenu extends AppCompatActivity
                 //Get text from searchBox
                 searchBox = (EditText) findViewById(R.id.textViewSearch);
                 textSearched = searchBox.getText().toString();
-                application.tutorshipSearchBox=textSearched;
+                Globals.tutorshipSearchBox=textSearched;
 
                 //Hide keyboard
                 hideKeyboard(contexto);
 
                 //Reload fragment calling to the tabListener
-                TabLayout.Tab tab = tabLayout.getTabAt(application.LAST_TAB);
+                TabLayout.Tab tab = tabLayout.getTabAt(Globals.LAST_TAB);
                 tab.select();
             }
         });
@@ -221,9 +210,9 @@ public class MainMenu extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         //Set tab selected and default tab at the beginning
-        tabLayout.getTabAt(application.LAST_TAB).select();
+        tabLayout.getTabAt(Globals.LAST_TAB).select();
         //Add fragment depending on tab
-        if(application.LAST_TAB==0) {
+        if(Globals.LAST_TAB==0) {
             ClassroomsListFragment myFragment = new ClassroomsListFragment();
 
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -231,16 +220,16 @@ public class MainMenu extends AppCompatActivity
             transaction.addToBackStack(null);
             transaction.commit();
         }
-        else if(application.LAST_TAB==1) {
+        else if(Globals.LAST_TAB==1) {
             SubjectsListFragment myFragment = new SubjectsListFragment();
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.hide(myFragment);
             transaction.add(R.id.fragment, myFragment);
             transaction.addToBackStack(null);
-            application.CLASSROOM_TABLE_NAME="Subjects";
+            Globals.CLASSROOM_TABLE_NAME="Subjects";
             transaction.commit();
         }
-        else if(application.LAST_TAB==2) {
+        else if(Globals.LAST_TAB==2) {
             TutorshipsListFragment myFragment = new TutorshipsListFragment();
 
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -265,7 +254,7 @@ public class MainMenu extends AppCompatActivity
         this.menu = menu;
 
         // Inflate the menu; this adds items to the action bar if it is present.
-        if(application.LAST_TAB>=0 && application.LAST_TAB<=2){
+        if(Globals.LAST_TAB>=0 && Globals.LAST_TAB<=2){
             getMenuInflater().inflate(R.menu.insert_menu, menu);
         }
         else{
@@ -274,7 +263,7 @@ public class MainMenu extends AppCompatActivity
 
         //Set title NavigationView
         //User User = getIntent().getExtras().getParcelable("User");
-        User User = ((application) getApplicationContext()).User;
+        User User = ((Globals) getApplicationContext()).User;
         titleNavigationView = (TextView) findViewById(R.id.navigationView_title);
         titleNavigationView.setText(User.getNombreUsuario());
 
@@ -299,13 +288,13 @@ public class MainMenu extends AppCompatActivity
         }
         else if(id == R.id.action_insert){
             Intent intent = null;
-            if(application.CLASSROOM_TABLE_NAME=="Classrooms") {
+            if(Globals.CLASSROOM_TABLE_NAME=="Classrooms") {
                 intent = new Intent(this, FormListClassrooms.class);
             }
-            else if(application.CLASSROOM_TABLE_NAME=="Subjects") {
+            else if(Globals.CLASSROOM_TABLE_NAME=="Subjects") {
                 intent = new Intent(this, FormListSubjects.class);
             }
-            else if(application.CLASSROOM_TABLE_NAME=="Tutorships") {
+            else if(Globals.CLASSROOM_TABLE_NAME=="Tutorships") {
                 intent = new Intent(this, FormListTutorships.class);
             }
             startActivity(intent);
@@ -317,7 +306,7 @@ public class MainMenu extends AppCompatActivity
             toolbar.getMenu().clear();
             toolbar.inflateMenu(R.menu.insert_menu);
             //Delete record
-            if(application.CLASSROOM_TABLE_NAME=="Classrooms") {
+            if(Globals.CLASSROOM_TABLE_NAME=="Classrooms") {
                 try {
                     ClassroomProvider.deleteRecord(this.getContentResolver(), (Integer) ClassroomsListFragment.rowSelected.getTag(), this);
                 }
@@ -330,25 +319,25 @@ public class MainMenu extends AppCompatActivity
                     errorImage.show();
                 }
             }
-            else if(application.CLASSROOM_TABLE_NAME=="Subjects") {
+            else if(Globals.CLASSROOM_TABLE_NAME=="Subjects") {
                 SubjectProvider.deleteRecord(this.getContentResolver(),(Integer) SubjectsListFragment.rowSelected.getTag());
             }
-            else if(application.CLASSROOM_TABLE_NAME=="Tutorships") {
+            else if(Globals.CLASSROOM_TABLE_NAME=="Tutorships") {
                 TutorshipProvider.deleteRecord(this.getContentResolver(),(Integer) TutorshipsListFragment.rowSelected.getTag());
             }
             return true;
         }
         else if(id == R.id.action_update){
             Intent intent = null;
-            if(application.CLASSROOM_TABLE_NAME=="Classrooms") {
+            if(Globals.CLASSROOM_TABLE_NAME=="Classrooms") {
                 intent = new Intent(this, FormListClassroomsUpdate.class);
                 intent.putExtra(Contract.Classroom._ID,(Integer) ClassroomsListFragment.rowSelected.getTag());
             }
-            else if(application.CLASSROOM_TABLE_NAME=="Subjects") {
+            else if(Globals.CLASSROOM_TABLE_NAME=="Subjects") {
                 intent = new Intent(this, FormListSubjectsUpdate.class);
                 intent.putExtra(Contract.Subject._ID,(Integer) SubjectsListFragment.rowSelected.getTag());
             }
-            else if(application.CLASSROOM_TABLE_NAME=="Tutorships") {
+            else if(Globals.CLASSROOM_TABLE_NAME=="Tutorships") {
                 intent = new Intent(this, FormListTutorshipsUpdate.class);
                 intent.putExtra(Contract.Tutorship._ID,(Integer) TutorshipsListFragment.rowSelected.getTag());
             }
@@ -360,18 +349,18 @@ public class MainMenu extends AppCompatActivity
             CreateJPG();
         }
         else if(id == R.id.action_subquery_classrooms){
-            application.subquery = (Integer) ClassroomsListFragment.rowSelected.getTag();
-            application.classroomsSubquery = ClassroomProvider.readRecord(getBaseContext().getContentResolver(),application.subquery);
-            int checkSucjects = readRecordFromClassrooms(getBaseContext().getContentResolver(),application.classroomsSubquery.getClassroomName());
+            Globals.subquery = (Integer) ClassroomsListFragment.rowSelected.getTag();
+            Globals.classroomsSubquery = ClassroomProvider.readRecord(getBaseContext().getContentResolver(),Globals.subquery);
+            int checkSucjects = readRecordFromClassrooms(getBaseContext().getContentResolver(),Globals.classroomsSubquery.getClassroomName());
 
             if(checkSucjects==1){
-                application.LAST_TAB=1;
-                TabLayout.Tab tab = tabLayout.getTabAt(application.LAST_TAB);
+                Globals.LAST_TAB=1;
+                TabLayout.Tab tab = tabLayout.getTabAt(Globals.LAST_TAB);
                 tab.select();
             }
             else if(checkSucjects==0){
-                application.subquery = -1;
-                application.classroomsSubquery = null;
+                Globals.subquery = -1;
+                Globals.classroomsSubquery = null;
 
                 String toast = getResources().getString(R.string.errorNoSubjectRelated);
                 SpannableStringBuilder biggerText = new SpannableStringBuilder(toast);
@@ -382,19 +371,19 @@ public class MainMenu extends AppCompatActivity
             }
         }
         else if(id == R.id.action_subquery_subjects){
-            application.subquery = (Integer) SubjectsListFragment.rowSelected.getTag();
-            application.classrooms1Subquery = SubjectProvider.readRecord(getBaseContext().getContentResolver(),application.subquery);
+            Globals.subquery = (Integer) SubjectsListFragment.rowSelected.getTag();
+            Globals.classrooms1Subquery = SubjectProvider.readRecord(getBaseContext().getContentResolver(),Globals.subquery);
 
-            application.LAST_TAB=0;
-            TabLayout.Tab tab = tabLayout.getTabAt(application.LAST_TAB);
+            Globals.LAST_TAB=0;
+            TabLayout.Tab tab = tabLayout.getTabAt(Globals.LAST_TAB);
             tab.select();
         }
         else if(id == R.id.action_subquery_tutorships){
-            application.subquery = (Integer) TutorshipsListFragment.rowSelected.getTag();
-            application.classrooms2Subquery = TutorshipProvider.readRecord(getBaseContext().getContentResolver(),application.subquery);
+            Globals.subquery = (Integer) TutorshipsListFragment.rowSelected.getTag();
+            Globals.classrooms2Subquery = TutorshipProvider.readRecord(getBaseContext().getContentResolver(),Globals.subquery);
 
-            application.LAST_TAB=0;
-            TabLayout.Tab tab = tabLayout.getTabAt(application.LAST_TAB);
+            Globals.LAST_TAB=0;
+            TabLayout.Tab tab = tabLayout.getTabAt(Globals.LAST_TAB);
             tab.select();
         }
 
@@ -408,14 +397,14 @@ public class MainMenu extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
-            application.LAST_TAB=0;
-            application.subquery=-1;
-            application.classroomsSubquery=null;
-            application.classrooms1Subquery=null;
-            application.classrooms2Subquery=null;
+            Globals.LAST_TAB=0;
+            Globals.subquery=-1;
+            Globals.classroomsSubquery=null;
+            Globals.classrooms1Subquery=null;
+            Globals.classrooms2Subquery=null;
 
-            application.CLASSROOM_TABLE_NAME = "Classrooms";
-            application.LAST_TAB = 0;
+            Globals.CLASSROOM_TABLE_NAME = "Classrooms";
+            Globals.LAST_TAB = 0;
 
             ClassroomsListFragment myFragment = new ClassroomsListFragment();
 
@@ -427,7 +416,7 @@ public class MainMenu extends AppCompatActivity
             //Set floating button as invisible
             findViewById(R.id.footer).setVisibility(View.VISIBLE);
 
-            TabLayout.Tab tab = tabLayout.getTabAt(application.LAST_TAB);
+            TabLayout.Tab tab = tabLayout.getTabAt(Globals.LAST_TAB);
             tab.select();
         }
         /*else if (id == R.id.nav_profile) {
@@ -441,7 +430,7 @@ public class MainMenu extends AppCompatActivity
             tabLayout.getTabAt(2).select();
         } else if (id == R.id.nav_logout) {
             Intent intent = new Intent(contexto, MainActivity.class);
-            ((application) getApplicationContext()).User =null;
+            ((Globals) getApplicationContext()).User =null;
             startActivity(intent);
         }
 
@@ -512,7 +501,7 @@ public class MainMenu extends AppCompatActivity
     public void showHelp() {
         String heltText="";
 
-        if(application.LAST_TAB>=0 && application.LAST_TAB<=2) {
+        if(Globals.LAST_TAB>=0 && Globals.LAST_TAB<=2) {
             heltText = getResources().getString(R.string.helpMainMenu);
         }
         else{
@@ -550,21 +539,21 @@ public class MainMenu extends AppCompatActivity
         ListView view = findViewById(android.R.id.list);
 
         //Reset temporal ListView
-        if(application.LAST_TAB==0){
+        if(Globals.LAST_TAB==0){
             ClassroomsListFragment myFragment = new ClassroomsListFragment();
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.fragment, myFragment);
             transaction.addToBackStack(null);
             transaction.commit();
         }
-        else if(application.LAST_TAB==1){
+        else if(Globals.LAST_TAB==1){
             SubjectsListFragment myFragment = new SubjectsListFragment();
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.fragment, myFragment);
             transaction.addToBackStack(null);
             transaction.commit();
         }
-        else if(application.LAST_TAB==2){
+        else if(Globals.LAST_TAB==2){
             TutorshipsListFragment myFragment = new TutorshipsListFragment();
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.fragment, myFragment);
@@ -638,8 +627,8 @@ public class MainMenu extends AppCompatActivity
                 progressDialog.setMessage(getResources().getString(R.string.creatingJPG));
                 sleep(3000);
 
-                File f = new File(getFilesDir(), application.CLASSROOM_TABLE_NAME + ".jpg");
-                OutputStream fos = openFileOutput(application.CLASSROOM_TABLE_NAME + ".jpg", MODE_PRIVATE);
+                File f = new File(getFilesDir(), Globals.CLASSROOM_TABLE_NAME + ".jpg");
+                OutputStream fos = openFileOutput(Globals.CLASSROOM_TABLE_NAME + ".jpg", MODE_PRIVATE);
                 image.compress(Bitmap.CompressFormat.PNG, 100, fos);
                 fos.close();
 
@@ -672,7 +661,7 @@ public class MainMenu extends AppCompatActivity
 
             progressDialog.dismiss();
 
-            String toast = getFilesDir()+"/"+application.CLASSROOM_TABLE_NAME + ".jpg";
+            String toast = getFilesDir()+"/"+Globals.CLASSROOM_TABLE_NAME + ".jpg";
             SpannableStringBuilder biggerText = new SpannableStringBuilder(toast);
             biggerText.setSpan(new RelativeSizeSpan(1.5f), 0, toast.length(), 0);
             Toast errorImage = Toast.makeText(getApplicationContext(),biggerText,Toast.LENGTH_LONG);
@@ -691,8 +680,8 @@ public class MainMenu extends AppCompatActivity
 
     public void setFragments(TabLayout.Tab tab){
         if (tab.getPosition() == 0) {
-            application.CLASSROOM_TABLE_NAME = "Classrooms";
-            application.LAST_TAB = 0;
+            Globals.CLASSROOM_TABLE_NAME = "Classrooms";
+            Globals.LAST_TAB = 0;
             ClassroomsListFragment myFragment = new ClassroomsListFragment();
 
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -705,8 +694,8 @@ public class MainMenu extends AppCompatActivity
             findViewById(R.id.searchPanel).setVisibility(View.INVISIBLE);
             findViewById(R.id.footer).setBackgroundColor(Color.TRANSPARENT);
         } else if (tab.getPosition() == 1) {
-            application.CLASSROOM_TABLE_NAME = "Subjects";
-            application.LAST_TAB = 1;
+            Globals.CLASSROOM_TABLE_NAME = "Subjects";
+            Globals.LAST_TAB = 1;
             SubjectsListFragment myFragment = new SubjectsListFragment();
 
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -719,8 +708,8 @@ public class MainMenu extends AppCompatActivity
             findViewById(R.id.searchPanel).setVisibility(View.INVISIBLE);
             findViewById(R.id.footer).setBackgroundColor(Color.TRANSPARENT);
         } else if (tab.getPosition() == 2) {
-            application.CLASSROOM_TABLE_NAME = "Tutorships";
-            application.LAST_TAB = 2;
+            Globals.CLASSROOM_TABLE_NAME = "Tutorships";
+            Globals.LAST_TAB = 2;
             TutorshipsListFragment myFragment = new TutorshipsListFragment();
 
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -733,7 +722,7 @@ public class MainMenu extends AppCompatActivity
             findViewById(R.id.searchPanel).setVisibility(View.VISIBLE);
             findViewById(R.id.footer).setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         } else if (tab.getPosition() == 3) {
-            application.LAST_TAB = 3;
+            Globals.LAST_TAB = 3;
             MapsActivity myFragment = new MapsActivity();
 
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();

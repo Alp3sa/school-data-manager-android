@@ -10,7 +10,7 @@ import android.text.style.RelativeSizeSpan;
 import android.view.Gravity;
 import android.widget.Toast;
 
-import com.gestordedatos.gestordedatos.application;
+import com.gestordedatos.gestordedatos.Globals;
 import com.gestordedatos.gestordedatos.R;
 import com.gestordedatos.gestordedatos.Utilities;
 import com.gestordedatos.gestordedatos.pojos.Classroom;
@@ -25,7 +25,7 @@ public class ClassroomProvider {
         values.put(Contract.Classroom.classroomName,classroom.getClassroomName());
         values.put(Contract.Classroom.subject,classroom.getSubject());
 
-        application.CLASSROOM_TABLE_NAME = "Classrooms";
+        Globals.CLASSROOM_TABLE_NAME = "Classrooms";
 
         Uri uriResult = resolver.insert(uri,values);
 
@@ -53,7 +53,7 @@ public class ClassroomProvider {
         Uri uri = Uri.parse(Contract.Classroom.CONTENT_URI+"/"+classroomId);
         Utilities.deleteImage(context, "img_" + classroomId + ".jpg");
 
-        application.CLASSROOM_TABLE_NAME = "Classrooms";
+        Globals.CLASSROOM_TABLE_NAME = "Classrooms";
 
         resolver.delete(uri, null, null);
     }
@@ -65,7 +65,7 @@ public class ClassroomProvider {
         values.put(Contract.Classroom.classroomName,classroom.getClassroomName());
         values.put(Contract.Classroom.subject,classroom.getSubject());
 
-        application.CLASSROOM_TABLE_NAME = "Classrooms";
+        Globals.CLASSROOM_TABLE_NAME = "Classrooms";
 
         resolver.update(uri, values, null, null);
 
@@ -94,7 +94,7 @@ public class ClassroomProvider {
                 Contract.Classroom.subject
         };
 
-        application.CLASSROOM_TABLE_NAME = "Classrooms";
+        Globals.CLASSROOM_TABLE_NAME = "Classrooms";
 
         Cursor cursor = resolver.query(uri, projection, null, null, null);
 

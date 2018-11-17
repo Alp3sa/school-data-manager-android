@@ -30,7 +30,7 @@ public class SignUpGender extends AppCompatActivity {
         contexto=this;
 
         //User = getIntent().getExtras().getParcelable("User");
-        User = ((application) getApplicationContext()).User;
+        User = ((Globals) getApplicationContext()).User;
 
         final CheckBox hombre = (CheckBox) findViewById(R.id.checkBoxHombre);
         final CheckBox mujer = (CheckBox) findViewById(R.id.checkBoxMujer);
@@ -101,7 +101,7 @@ public class SignUpGender extends AppCompatActivity {
                     Intent intent = new Intent(contexto, SignUpTypeMember.class);
                     User.setGenero(genero);
                     //intent.putExtra("User", User);
-                    ((application) getApplicationContext()).User = User;
+                    ((Globals) getApplicationContext()).User = User;
                     startActivity(intent);
                 }
             }

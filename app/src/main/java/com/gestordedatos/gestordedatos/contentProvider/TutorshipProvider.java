@@ -3,10 +3,9 @@ package com.gestordedatos.gestordedatos.contentProvider;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.database.SQLException;
 import android.net.Uri;
 
-import com.gestordedatos.gestordedatos.application;
+import com.gestordedatos.gestordedatos.Globals;
 import com.gestordedatos.gestordedatos.pojos.Tutorship;
 
 public class TutorshipProvider {
@@ -19,7 +18,7 @@ public class TutorshipProvider {
         values.put(Contract.Tutorship.startTime,tutorship.getStartTime());
         values.put(Contract.Tutorship.endingTime,tutorship.getEndingTime());
 
-        application.CLASSROOM_TABLE_NAME = "Tutorships";
+        Globals.CLASSROOM_TABLE_NAME = "Tutorships";
 
         resolver.insert(uri, values);
     }
@@ -27,7 +26,7 @@ public class TutorshipProvider {
     public static void deleteRecord(ContentResolver resolver, int tutorshipId){
         Uri uri = Uri.parse(Contract.Tutorship.CONTENT_URI+"/"+tutorshipId);
 
-        application.CLASSROOM_TABLE_NAME = "Tutorships";
+        Globals.CLASSROOM_TABLE_NAME = "Tutorships";
 
         resolver.delete(uri, null, null);
     }
@@ -41,7 +40,7 @@ public class TutorshipProvider {
         values.put(Contract.Tutorship.startTime,tutorship.getStartTime());
         values.put(Contract.Tutorship.endingTime,tutorship.getEndingTime());
 
-        application.CLASSROOM_TABLE_NAME = "Tutorships";
+        Globals.CLASSROOM_TABLE_NAME = "Tutorships";
 
         resolver.update(uri, values, null, null);
     }
@@ -57,7 +56,7 @@ public class TutorshipProvider {
                 Contract.Tutorship.endingTime
         };
 
-        application.CLASSROOM_TABLE_NAME = "Tutorships";
+        Globals.CLASSROOM_TABLE_NAME = "Tutorships";
 
         Cursor cursor = resolver.query(uri, projection, null, null, null);
 

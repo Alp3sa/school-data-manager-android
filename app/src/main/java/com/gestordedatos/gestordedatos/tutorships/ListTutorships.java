@@ -12,7 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.gestordedatos.gestordedatos.application;
+import com.gestordedatos.gestordedatos.Globals;
 import com.gestordedatos.gestordedatos.R;
 import com.gestordedatos.gestordedatos.contentProvider.TutorshipProvider;
 import com.gestordedatos.gestordedatos.contentProvider.Contract;
@@ -30,7 +30,7 @@ public class ListTutorships extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //Including list - Content Provider
-        ((application) getApplicationContext()).CLASSROOM_TABLE_NAME = "Tutorships";
+        ((Globals) getApplicationContext()).CLASSROOM_TABLE_NAME = "Tutorships";
         TutorshipsListFragment TutorshipsListFragment = new TutorshipsListFragment();
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();

@@ -30,7 +30,7 @@ public class SignUpTypeMember extends AppCompatActivity {
         contexto=this;
 
         //User = getIntent().getExtras().getParcelable("User");
-        User = ((application) getApplicationContext()).User;
+        User = ((Globals) getApplicationContext()).User;
 
         final CheckBox alumnado = (CheckBox) findViewById(R.id.checkBoxAlumnado);
         final CheckBox profesorado = (CheckBox) findViewById(R.id.checkBoxProfesorado);
@@ -101,7 +101,7 @@ public class SignUpTypeMember extends AppCompatActivity {
                     Intent intent = new Intent(contexto, SignUpPasswords.class);
                     User.setTipoDeMiembro(tipoMiembro);
                     //intent.putExtra("User", User);
-                    ((application) getApplicationContext()).User = User;
+                    ((Globals) getApplicationContext()).User = User;
                     startActivity(intent);
                 }
             }

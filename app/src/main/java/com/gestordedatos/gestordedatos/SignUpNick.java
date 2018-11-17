@@ -80,7 +80,7 @@ public class SignUpNick extends AppCompatActivity {
                     User User = new User(nombreUsuario,null,null,null,null,null,null,null);
                     Intent intent = new Intent(contexto, SignUpPersonalData.class);
                     //intent.putExtra("User", User);
-                    ((application) getApplicationContext()).User = User;
+                    ((Globals) getApplicationContext()).User = User;
                     startActivity(intent);
                 }
             }
