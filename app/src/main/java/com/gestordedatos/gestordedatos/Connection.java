@@ -40,7 +40,7 @@ public class Connection extends AsyncTask<String,Void,User> {
     try {
       client.setRequestMethod("POST");
       client.setDoOutput(true);
-      client.setConnectTimeout(500);
+      //client.setConnectTimeout(500);
       OutputStreamWriter out = new OutputStreamWriter(client.getOutputStream());
       isUp = true;
       out.close();
@@ -65,15 +65,16 @@ public class Connection extends AsyncTask<String,Void,User> {
 
           try {
               //String link = "http://192.168.1.37/gestorDatos/connection.php";
-              String link = "http://www.alp3sa.info/pupluns/connectionDataManager.php";
+              String link = "https://pupluns.000webhostapp.com/pupluns/connectionDataManager.php";
+              //String link = "https://www.alp3sa.info/pupluns/connectionDataManager.php";
               //192.168.1.35 IPv4
               URL url = new URL(link);
               HttpURLConnection client = (HttpURLConnection) url.openConnection();
 
-              if (!isServerUp(client)) {
+              /*if (!isServerUp(client)) {
                   System.out.println("Servidor MySQL caído");
                   validation = new User(-1, null, null);
-              } else {
+              } else {*/
                   client = (HttpURLConnection) url.openConnection();
                   client.setRequestMethod("POST");
                   //client.setDoInput(true);
@@ -115,7 +116,7 @@ public class Connection extends AsyncTask<String,Void,User> {
                   r.close();
                   ips.close();
                   client.disconnect();
-              }
+              //}
           } catch (SQLException e) {
               validation = new User(-1, null, null);
               Log.i("Connection", e.getMessage());//Error
