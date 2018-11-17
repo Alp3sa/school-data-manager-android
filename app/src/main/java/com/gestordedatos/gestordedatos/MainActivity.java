@@ -54,8 +54,8 @@ public class MainActivity extends AppCompatActivity {
 
         contexto=this;
         //BEGIN TEST - SAVE TIME TO SKIP THE LOGIN SYSTEM
-        //Intent intent = new Intent(contexto,MainMenu.class);
-        //startActivity(intent);
+        Intent intent = new Intent(contexto,MainMenu.class);
+        startActivity(intent);
         //TEST Sign Up
         //Globals.user = new User(-4,"root6","a","b","c","22","a","1","1",null);
         //Intent intent = new Intent(contexto,SignUpPasswords.class);
@@ -199,7 +199,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         /*Login con mysql mediante PHP*/
-        Connection con = new Connection(contexto);
+        /*Connection con = new Connection(contexto);
         try {
             Globals.connectionUsers="login";
             User validation = con.execute(nombreUsuario, password).get();
@@ -243,9 +243,15 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
-        }
+        }*/
 
+        //Ejemplo de pasar objeto entre actividades
+        User User = new User(nombreUsuario,null,null,null,null,null,null,null);
+        Intent intent = new Intent(contexto, MainMenu.class);
+        intent.putExtra("User", User);
+        ((Globals) getApplicationContext()).User = User;
 
+        startActivity(intent);
 
 
 
