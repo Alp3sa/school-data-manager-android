@@ -231,7 +231,7 @@ public class MainActivity extends AppCompatActivity {
                 sleep(1000);
             }
             else if(status==-1){
-                String toast = "El servidor está caído. Inténtelo más tarde.";
+                String toast = "El servidor MySQL está caído. Inténtelo más tarde.";
                 SpannableStringBuilder biggerText = new SpannableStringBuilder(toast);
                 biggerText.setSpan(new RelativeSizeSpan(1.5f), 0, toast.length(), 0);
                 Toast mensajeValidacion = Toast.makeText(getApplicationContext(),biggerText,Toast.LENGTH_LONG);

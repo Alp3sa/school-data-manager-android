@@ -71,7 +71,7 @@ public class Connection extends AsyncTask<String,Void,User> {
               HttpURLConnection client = (HttpURLConnection) url.openConnection();
 
               if (!isServerUp(client)) {
-                  System.out.println("Servidor caído");
+                  System.out.println("Servidor MySQL caído");
                   validation = new User(-1, null, null);
               } else {
                   client = (HttpURLConnection) url.openConnection();

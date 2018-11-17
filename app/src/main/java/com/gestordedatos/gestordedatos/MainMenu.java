@@ -429,6 +429,13 @@ public class MainMenu extends AppCompatActivity
         } else if (id == R.id.nav_formListTutorships) {
             tabLayout.getTabAt(2).select();
         } else if (id == R.id.nav_logout) {
+            //Reset subquery vars
+            Globals.classroomsSubquery = null;
+            Globals.classrooms1Subquery = null;
+            Globals.classrooms2Subquery = null;
+            Globals.tutorshipSearchBox = null;
+            Globals.subquery=-1;
+
             Intent intent = new Intent(contexto, MainActivity.class);
             ((Globals) getApplicationContext()).User =null;
             startActivity(intent);
