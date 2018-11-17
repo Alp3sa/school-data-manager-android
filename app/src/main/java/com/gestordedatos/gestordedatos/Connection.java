@@ -71,10 +71,10 @@ public class Connection extends AsyncTask<String,Void,User> {
               URL url = new URL(link);
               HttpURLConnection client = (HttpURLConnection) url.openConnection();
 
-              /*if (!isServerUp(client)) {
+              if (!isServerUp(client)) {
                   System.out.println("Servidor MySQL caído");
                   validation = new User(-1, null, null);
-              } else {*/
+              } else {
                   client = (HttpURLConnection) url.openConnection();
                   client.setRequestMethod("POST");
                   //client.setDoInput(true);
@@ -116,7 +116,7 @@ public class Connection extends AsyncTask<String,Void,User> {
                   r.close();
                   ips.close();
                   client.disconnect();
-              //}
+              }
           } catch (SQLException e) {
               validation = new User(-1, null, null);
               Log.i("Connection", e.getMessage());//Error
