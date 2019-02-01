@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.gestordedatos.gestordedatos.pojos.User;
+import com.gestordedatos.gestordedatos.sync.Sincronizacion;
 
 import java.util.concurrent.ExecutionException;
 
@@ -138,6 +139,16 @@ public class SignUpPasswords extends AppCompatActivity {
                             User.getTipoDeMiembro(),
                             contraseña).get();
 
+                    System.out.println("check nuevo usuario: "+User.getNombreUsuario()+" "+
+                            User.getNombre()+" "+
+                            User.getPrimerApellido()+" "+
+                            User.getSegundoApellido()+" "+
+                            User.getEdad()+" "+
+                            User.getDni()+" "+
+                            User.getGenero()+" "+
+                            User.getTipoDeMiembro()+" "+
+                            contraseña);
+                            
                     /*User validation = con.execute(Globals.user.getNombreUsuario(),
                             Globals.user.getNombre(),
                             Globals.user.getPrimerApellido(),
@@ -166,18 +177,30 @@ public class SignUpPasswords extends AppCompatActivity {
                                 validation.getSegundoApellido(),
                                 validation.getEdad(),
                                 validation.getDni(),
-                                validation.getTipoDeMiembro(),
                                 validation.getGenero(),
+                                validation.getTipoDeMiembro(),
                                 validation.getPassword());
 
                         if(checkCodigoActivacion==true && checkContraseña==true && checkRepetirContraseña==true) {
                             Intent intent = new Intent(contexto, MainMenu.class);
-                            intent.putExtra("User", User);
-                            ((Globals) getApplicationContext()).User = User;
+                            /*intent.putExtra("User", User);
+                            ((Globals) getApplicationContext()).User = User;*/
+
+                            Globals.LOGIN=true;
+                            Globals.user = new User(User.getNombreUsuario(),
+                                    User.getNombre(),
+                                    User.getPrimerApellido(),
+                                    User.getSegundoApellido(),
+                                    User.getEdad(),
+                                    User.getDni(),
+                                    User.getGenero(),
+                                    User.getTipoDeMiembro(),
+                                    contraseña);
+                            Sincronizacion.refresh();
                             startActivity(intent);
                         }
                     }
-                    /*else if(status==0){
+                    else if(status==0){
                         toast = "Los datos no son válidos";
                         System.out.println(toast);
                         SpannableStringBuilder biggerText = new SpannableStringBuilder(toast);
@@ -186,7 +209,7 @@ public class SignUpPasswords extends AppCompatActivity {
                         mensajeValidacion.setGravity(Gravity.CENTER, 0, 0);
                         mensajeValidacion.show();
                         sleep(1000);
-                    }*/
+                    }
                     else if(status==-1){
                         toast = "El servidor está caído. Inténtelo más tarde.";
                         System.out.println(toast);

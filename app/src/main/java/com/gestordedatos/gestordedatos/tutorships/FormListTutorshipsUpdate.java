@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.gestordedatos.gestordedatos.Globals;
 import com.gestordedatos.gestordedatos.R;
 import com.gestordedatos.gestordedatos.contentProvider.Contract;
 import com.gestordedatos.gestordedatos.contentProvider.TutorshipProvider;
@@ -37,7 +38,12 @@ public class FormListTutorshipsUpdate extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_form_list_tutorships);
+        if(Globals.user.getTipoDeMiembro().equals("0")){
+            setContentView(R.layout.activity_form_list_tutorships);
+        }
+        else{
+            setContentView(R.layout.activity_form_list_tutorships_id);
+        }
 
         editTextTeacher = (EditText) findViewById(R.id.editTextTeacher);
         editTextClassroom = (EditText) findViewById(R.id.editTextClassroom);
@@ -114,15 +120,30 @@ public class FormListTutorshipsUpdate extends AppCompatActivity {
             return;
         }
 
+        EditText editTextClassroomID = (EditText) findViewById(R.id.editTextClassroomID);
+
+        int classroomID=0;
+        try {
+            classroomID=Integer.parseInt(editTextClassroomID.getText().toString());
+        }
+        catch(NumberFormatException e){
+            editTextClassroomID.setError(getString(R.string.errorSubjectReference));
+            editTextClassroomID.requestFocus();
+            return;
+        }
+
         //Update
-        Tutorship tutorship = new Tutorship(tutorshipId,teacher,classroomName,startTime,endingTime);
+        Tutorship tutorship = new Tutorship(tutorshipId,teacher,classroomName,startTime,endingTime,classroomID);
         try{
-            TutorshipProvider.updateRecord(getContentResolver(),tutorship);
+            //TutorshipProvider.updateRecord(getContentResolver(),tutorship);
+            TutorshipProvider.updateConBitacora(getContentResolver(),tutorship);
         }
         catch(SQLException e){
             editTextClassroom.setError(getString(R.string.errorClassroomConstraint));
             editTextClassroom.requestFocus();
             return;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         checkonOptionsItemSelected = 1;
         finish();

@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.gestordedatos.gestordedatos.pojos.User;
+import com.gestordedatos.gestordedatos.sync.Sincronizacion;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -54,8 +55,8 @@ public class MainActivity extends AppCompatActivity {
 
         contexto=this;
         //BEGIN TEST - SAVE TIME TO SKIP THE LOGIN SYSTEM
-        Intent intent = new Intent(contexto,MainMenu.class);
-        startActivity(intent);
+        //Intent intent = new Intent(contexto,MainMenu.class);
+        //startActivity(intent);
         //TEST Sign Up
         //Globals.user = new User(-4,"root6","a","b","c","22","a","1","1",null);
         //Intent intent = new Intent(contexto,SignUpPasswords.class);
@@ -205,20 +206,19 @@ public class MainActivity extends AppCompatActivity {
             User validation = con.execute(nombreUsuario, password).get();
             int status = validation.getValidacion();
             if(status==1){
-                String toast = "Los datos son válidos";
+                Globals.LOGIN=true;
+
+                /*String toast = "Los datos son válidos";
                 SpannableStringBuilder biggerText = new SpannableStringBuilder(toast);
                 biggerText.setSpan(new RelativeSizeSpan(1.5f), 0, toast.length(), 0);
                 Toast mensajeValidacion = Toast.makeText(getApplicationContext(),biggerText,Toast.LENGTH_LONG);
                 mensajeValidacion.setGravity(Gravity.CENTER, 0, 0);
-                mensajeValidacion.show();
-                sleep(1000);
+                mensajeValidacion.show();*/
 
-                //Ejemplo de pasar objeto entre actividades
-                User User = new User(nombreUsuario,null,null,null,null,null,null,null);
+                Globals.user = new User(nombreUsuario,validation.getNombre(),validation.getPrimerApellido(),validation.getSegundoApellido(),validation.getEdad(),validation.getDni(),validation.getGenero(),validation.getTipoDeMiembro(),validation.getPassword());
+
                 Intent intent = new Intent(contexto, MainMenu.class);
-                intent.putExtra("User", User);
-                ((Globals) getApplicationContext()).User = User;
-
+                Sincronizacion.refresh();
                 startActivity(intent);
             }
             else if(status==0){
@@ -244,6 +244,9 @@ public class MainActivity extends AppCompatActivity {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
+        /*Login con Java*/
+
+
 
 
 

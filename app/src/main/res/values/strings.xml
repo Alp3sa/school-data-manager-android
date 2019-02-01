@@ -19,7 +19,8 @@
     <string name="errorClassroomConstraint">El aula introducida no existe</string>
     <string name="errorClassroomUnique">El aula introducida ya existe</string>
     <string name="errorClassroomUniqueUpdate">El aula que intenta modificar está siendo usado o la que intenta introducir ya existe</string>
-    <string name="errorClassroomUsed">Debe borrar primero los registros que hacen referencia a este aula</string>
+    <string name="errorSubjectReference">El aula al que intenta referenciar no existe.</string>
+    <string name="errorClassroomUsed">Debe borrar primero los registros que le hacen referencia.</string>
 
     <string name="toastErrorEmptyUsername">Introduzca un nombre de usuario</string>
     <string name="toastErrorShortUsername">Introduzca un nombre de usuario de al menos 4 caracteres</string>
@@ -126,11 +127,15 @@
     <!--FormList-->
     <string name="titleClassrooms">Aulas</string>
     <string name="subject">Asignatura</string>
+    <string name="details">Asignaturas</string>
     <string name="teacher">Docente</string>
     <string name="classroom">Nombre del aula</string>
     <string name="startTime">Hora de comienzo</string>
     <string name="endingTime">Hora de finalización</string>
+    <string name="classroomID">ID del aula</string>
+    <string name="teacherID">ID del profesor</string>
     <string name="errorEmptySubject">Introduzca el nombre de la asignatura</string>
+    <string name="errorEmptyDetails">Introduzca el nombre de las asignaturas que se imparten en el aula</string>
     <string name="errorEmptyTeacher">Introduzca el nombre del docente</string>
     <string name="errorEmptyClassroom">Introduzca el nombre del aula</string>
     <string name="errorTime">La hora de comienzo debe ser anterior a la de finalización</string>
@@ -174,4 +179,5 @@
     <!--SubQueries-->
     <string name="errorNoSubjectRelated">No hay ninguna asignatura que se imparta en este aula</string>
     <string name="searchBox">Buscar</string>
+    <string name="title_activity_maps2">Map</string>
 </resources>

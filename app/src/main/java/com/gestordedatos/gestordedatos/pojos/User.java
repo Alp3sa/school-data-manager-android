@@ -3,7 +3,13 @@ package com.gestordedatos.gestordedatos.pojos;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.gestordedatos.gestordedatos.Globals;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class User implements Parcelable{
+    int ID;
     int validacion;
     String nombreUsuario;
     String nombre;
@@ -14,6 +20,20 @@ public class User implements Parcelable{
     String genero;
     String tipoDeMiembro;
     String password;
+
+    public User() {
+        this.ID = Globals.SIN_VALOR_INT;
+        this.validacion = Globals.SIN_VALOR_INT;
+        this.nombreUsuario = Globals.SIN_VALOR_STRING;
+        this.nombre = Globals.SIN_VALOR_STRING;
+        this.primerApellido = Globals.SIN_VALOR_STRING;
+        this.segundoApellido = Globals.SIN_VALOR_STRING;
+        this.edad = Globals.SIN_VALOR_STRING;
+        this.dni = Globals.SIN_VALOR_STRING;
+        this.genero = Globals.SIN_VALOR_STRING;
+        this.tipoDeMiembro = Globals.SIN_VALOR_STRING;
+        this.password = Globals.SIN_VALOR_STRING;
+    }
 
     public User(String nombreUsuario, String nombre, String primerApellido, String segundoApellido, String edad, String dni, String genero, String tipoDeMiembro) {
         this.nombreUsuario = nombreUsuario;
@@ -54,6 +74,20 @@ public class User implements Parcelable{
     public User(int validacion, String nombreUsuario, String password) {
         this.validacion = validacion;
         this.nombreUsuario = nombreUsuario;
+        this.password = password;
+    }
+
+    public User(int ID, int validacion, String nombreUsuario, String nombre, String primerApellido, String segundoApellido, String edad, String dni, String genero, String tipoDeMiembro, String password) {
+        this.ID = ID;
+        this.validacion = validacion;
+        this.nombreUsuario = nombreUsuario;
+        this.nombre = nombre;
+        this.primerApellido = primerApellido;
+        this.segundoApellido = segundoApellido;
+        this.edad = edad;
+        this.dni = dni;
+        this.genero = genero;
+        this.tipoDeMiembro = tipoDeMiembro;
         this.password = password;
     }
 
@@ -153,6 +187,14 @@ public class User implements Parcelable{
         this.tipoDeMiembro = tipoDeMiembro;
     }
 
+    public int getID() {
+        return ID;
+    }
+
+    public void setID(final int ID) {
+        this.ID = ID;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -161,5 +203,26 @@ public class User implements Parcelable{
     @Override
     public void writeToParcel(final Parcel parcel, final int i) {
         parcel.writeString(nombreUsuario);
+    }
+
+    public String toJSON(){
+        JSONObject jsonObject= new JSONObject();
+        try {
+            jsonObject.put("ID", this.getID());
+            jsonObject.put("nombreUsuario", this.getNombreUsuario());
+            jsonObject.put("nombre", this.getNombre());
+            jsonObject.put("primerApellido", this.getPrimerApellido());
+            jsonObject.put("segundoApellido", this.getSegundoApellido());
+            jsonObject.put("edad", this.getEdad());
+            jsonObject.put("dni", this.getDni());
+            jsonObject.put("genero", this.getGenero());
+            jsonObject.put("tipoDeMiembro", this.getTipoDeMiembro());
+            jsonObject.put("password", this.getPassword());
+
+            return jsonObject.toString();
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return "";
+        }
     }
 }

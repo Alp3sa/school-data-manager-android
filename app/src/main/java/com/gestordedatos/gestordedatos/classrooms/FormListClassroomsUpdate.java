@@ -48,7 +48,7 @@ public class FormListClassroomsUpdate extends AppCompatActivity {
         Classroom classroom = ClassroomProvider.readRecord(getContentResolver(),classroomId);
 
         editTextClassroomName.setText(classroom.getClassroomName());
-        editTextSubject.setText(classroom.getSubject());
+        editTextSubject.setText(classroom.getDetails());
 
         preview = findViewById(R.id.preview);
         try {
@@ -124,6 +124,7 @@ public class FormListClassroomsUpdate extends AppCompatActivity {
             case Globals.UPLOAD_PHOTO:
                 if(resultCode==RESULT_OK){
                     Uri uri = data.getData();
+                    System.out.println("check uri image: "+uri);
                     preview.setImageURI(uri);
                 }
                 else{
@@ -151,7 +152,7 @@ public class FormListClassroomsUpdate extends AppCompatActivity {
         editTextSubject.setError(null);
 
         if(subject.trim().equals("")){
-            editTextSubject.setError(getString(R.string.errorEmptySubject));
+            editTextSubject.setError(getString(R.string.errorEmptyDetails));
             editTextSubject.requestFocus();
             return;
         }
@@ -163,12 +164,15 @@ public class FormListClassroomsUpdate extends AppCompatActivity {
         //Update
         Classroom classroom = new Classroom(classroomId, classroomName, subject, image);
         try{
-            ClassroomProvider.updateRecord(getContentResolver(),classroom,this);
+            //ClassroomProvider.updateRecord(getContentResolver(),classroom,this);
+            ClassroomProvider.updateConBitacora(getContentResolver(),classroom, this);
         }
         catch(SQLException e){
             editTextClassroomName.setError(getString(R.string.errorClassroomUniqueUpdate));
             editTextClassroomName.requestFocus();
             return;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         checkonOptionsItemSelected = 1;
         finish();

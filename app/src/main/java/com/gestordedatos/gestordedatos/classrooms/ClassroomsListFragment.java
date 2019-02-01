@@ -28,6 +28,7 @@ import android.widget.Toast;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
+import com.gestordedatos.gestordedatos.Globals;
 import com.gestordedatos.gestordedatos.R;
 import com.gestordedatos.gestordedatos.Utilities;
 import com.gestordedatos.gestordedatos.contentProvider.Contract;
@@ -120,6 +121,15 @@ public class ClassroomsListFragment extends ListFragment implements LoaderManage
                 toolbar.getMenu().clear();
                 toolbar.inflateMenu(R.menu.delete_modify_menu_classrooms);
 
+                if(Globals.user.getTipoDeMiembro().equals("1")) {
+                    toolbar.getMenu().findItem(R.id.action_delete).setVisible(true);
+                    toolbar.getMenu().findItem(R.id.action_update).setVisible(true);
+                }
+                else{
+                    toolbar.getMenu().findItem(R.id.action_delete).setVisible(false);
+                    toolbar.getMenu().findItem(R.id.action_update).setVisible(false);
+                }
+
                 //pass rowSelected to ListClassrooms, using this variable in onOptionsItemSelected
                 rowSelected = view;
                 ListClassrooms list = new ListClassrooms();
@@ -139,6 +149,13 @@ public class ClassroomsListFragment extends ListFragment implements LoaderManage
             Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
             toolbar.getMenu().clear();
             toolbar.inflateMenu(R.menu.insert_menu);
+
+            if(Globals.user.getTipoDeMiembro().equals("1")) {
+                toolbar.getMenu().findItem(R.id.action_insert).setVisible(true);
+            }
+            else{
+                toolbar.getMenu().findItem(R.id.action_insert).setVisible(false);
+            }
         }
     };
 
@@ -171,7 +188,8 @@ public class ClassroomsListFragment extends ListFragment implements LoaderManage
         // currently filtering.
         String columns[] = new String[] { Contract.Classroom._ID,
                 Contract.Classroom.classroomName,
-                Contract.Classroom.subject
+                Contract.Classroom.details,
+                Contract.Classroom.image_url
         };
 
         Uri baseUri = Contract.Classroom.CONTENT_URI;
@@ -212,16 +230,22 @@ public class ClassroomsListFragment extends ListFragment implements LoaderManage
             int ID = cursor.getInt(cursor.getColumnIndex(Contract.Classroom._ID));
             String name = cursor.getString(cursor.getColumnIndex(Contract.Classroom.classroomName));
             String abbreviation = String.valueOf(name.charAt(0));
-            String subject = cursor.getString(cursor.getColumnIndex(Contract.Classroom.subject));
+            String details = cursor.getString(cursor.getColumnIndex(Contract.Classroom.details));
 
             //Set table values
             TextView textviewNameTitle = (TextView) view.findViewById(R.id.textviewTitle_classroom_list_item_name);
             textviewNameTitle.setText(getResources().getString(R.string.classroomLabel)+" ");
             TextView textviewName = (TextView) view.findViewById(R.id.textview_classroom_list_item_name);
-            textviewName.setText(name);
+
+            if(Globals.user.getTipoDeMiembro().equals("1")) {
+                textviewName.setText(name + " (ID: " + ID + ")");
+            }
+            else{
+                textviewName.setText(name);
+            }
 
             TextView textviewSubject = (TextView) view.findViewById(R.id.textview_classroom_list_item_subject);
-            textviewSubject.setText(subject);
+            textviewSubject.setText(details);
             TextView textviewSubjectTitle = (TextView) view.findViewById(R.id.textviewTitle_classroom_list_item_subject);
             textviewSubjectTitle.setText(getResources().getString(R.string.subjectLabel)+" ");
 

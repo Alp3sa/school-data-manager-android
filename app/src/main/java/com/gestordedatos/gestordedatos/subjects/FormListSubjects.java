@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.gestordedatos.gestordedatos.Globals;
 import com.gestordedatos.gestordedatos.R;
 import com.gestordedatos.gestordedatos.contentProvider.SubjectProvider;
 import com.gestordedatos.gestordedatos.pojos.Subject;
@@ -37,7 +38,12 @@ public class FormListSubjects extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_form_list_subjects);
+        if(Globals.user.getTipoDeMiembro().equals("0")){
+            setContentView(R.layout.activity_form_list_subjects);
+        }
+        else{
+            setContentView(R.layout.activity_form_list_subjects_id);
+        }
 
         dropdownComienzo = findViewById(R.id.spinnerComienzo);
         String[] itemsDropdownComienzo = new String[]{"08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30"};
@@ -103,14 +109,31 @@ public class FormListSubjects extends AppCompatActivity {
             return;
         }
 
+        EditText editTextClassroomID = (EditText) findViewById(R.id.editTextClassroomID);
+        int classroomID=0;
+        try {
+            classroomID=Integer.parseInt(editTextClassroomID.getText().toString());
+        }
+        catch(NumberFormatException e){
+            editTextClassroomID.setError(getString(R.string.errorSubjectReference));
+            editTextClassroomID.requestFocus();
+            return;
+        }
+
         //Insert
-        Subject subject = new Subject(subjectName,teacher,classroomName,startTime,endingTime);
+        Subject subject = new Subject(subjectName,teacher,classroomName,startTime,endingTime,classroomID);
         try{
-            SubjectProvider.insertRecord(getContentResolver(),subject);
+            //SubjectProvider.insertRecord(getContentResolver(),subject);
+            SubjectProvider.insertConBitacora(getContentResolver(), subject, this);
         }
         catch(SQLException e){
-            editTextClassroom.setError(getString(R.string.errorClassroomConstraint));
-            editTextClassroom.requestFocus();
+            editTextClassroomID.setError(getString(R.string.errorSubjectReference));
+            editTextClassroomID.requestFocus();
+            return;
+        } catch(Exception e) {
+            editTextClassroomID.setError(getString(R.string.errorClassroomConstraint));
+            editTextClassroomID.requestFocus();
+            e.printStackTrace();
             return;
         }
         checkonOptionsItemSelected=1;

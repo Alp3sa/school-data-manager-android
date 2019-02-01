@@ -31,6 +31,7 @@ public class ListTutorships extends AppCompatActivity {
 
         //Including list - Content Provider
         ((Globals) getApplicationContext()).CLASSROOM_TABLE_NAME = "Tutorships";
+        Globals.SERVER_TABLE_NAME = "tutorship";
         TutorshipsListFragment TutorshipsListFragment = new TutorshipsListFragment();
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();

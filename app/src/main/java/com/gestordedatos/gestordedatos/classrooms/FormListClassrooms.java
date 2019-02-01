@@ -135,22 +135,26 @@ public class FormListClassrooms extends AppCompatActivity {
             subject = editTextSubject.getText().toString();
 
             if (subject.trim().equals("")) {
-                editTextSubject.setError(getString(R.string.errorEmptySubject));
+                editTextSubject.setError(getString(R.string.errorEmptyDetails));
                 editTextSubject.requestFocus();
                 return;
             }
 
             //Insert
             Classroom classroom = new Classroom(classroomName, subject, image);
+
             try{
-                ClassroomProvider.insertRecord(getContentResolver(), classroom, this);
+                ClassroomProvider.insertConBitacora(getContentResolver(), classroom, this);
+                //Volley1.addClassroom(classroom,false ,classroom.getID());
             }
             catch(SQLException e){
                 editTextClassroomName.setError(getString(R.string.errorClassroomUnique));
                 editTextClassroomName.requestFocus();
                 return;
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            checkonOptionsItemSelected=1;
+        checkonOptionsItemSelected=1;
             finish();
     }
 

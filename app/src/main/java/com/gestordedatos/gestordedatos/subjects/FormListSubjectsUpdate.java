@@ -3,7 +3,6 @@ package com.gestordedatos.gestordedatos.subjects;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.database.SQLException;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableStringBuilder;
@@ -14,9 +13,9 @@ import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import com.gestordedatos.gestordedatos.Globals;
 import com.gestordedatos.gestordedatos.R;
 import com.gestordedatos.gestordedatos.contentProvider.SubjectProvider;
 import com.gestordedatos.gestordedatos.contentProvider.Contract;
@@ -28,6 +27,7 @@ public class FormListSubjectsUpdate extends AppCompatActivity {
     EditText editTextClassroom;
     Spinner dropdownComienzo;
     Spinner dropdownFin;
+    EditText editTextClassroomID;
 
     String subjectName;
     String teacher;
@@ -41,7 +41,12 @@ public class FormListSubjectsUpdate extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_form_list_subjects);
+        if(Globals.user.getTipoDeMiembro().equals("0")){
+            setContentView(R.layout.activity_form_list_subjects);
+        }
+        else{
+            setContentView(R.layout.activity_form_list_subjects_id);
+        }
 
         editTextSubject = (EditText) findViewById(R.id.editTextSubject);
         editTextTeacher = (EditText) findViewById(R.id.editTextTeacher);
@@ -72,6 +77,11 @@ public class FormListSubjectsUpdate extends AppCompatActivity {
         if (subject.getEndingTime() != null) {
             int spinnerPosition = adapter2.getPosition(subject.getEndingTime());
             dropdownFin.setSelection(spinnerPosition);
+        }
+
+        if(Globals.user.getTipoDeMiembro().equals("1")){
+            editTextClassroomID = (EditText) findViewById(R.id.editTextClassroomID);
+            editTextClassroomID.setText(Integer.toString(subject.getClassroomID()));
         }
     }
 
@@ -128,14 +138,32 @@ public class FormListSubjectsUpdate extends AppCompatActivity {
             return;
         }
 
+        EditText editTextClassroomID = (EditText) findViewById(R.id.editTextClassroomID);
+
+        int classroomID=0;
+        try {
+            classroomID=Integer.parseInt(editTextClassroomID.getText().toString());
+        }
+        catch(NumberFormatException e){
+            editTextClassroomID.setError(getString(R.string.errorSubjectReference));
+            editTextClassroomID.requestFocus();
+            return;
+        }
+
         //Update
-        Subject subject = new Subject(subjectId,subjectName,teacher,classroomName,startTime,endingTime);
+        Subject subject = new Subject(subjectId,subjectName,teacher,classroomName,startTime,endingTime,classroomID);
         try{
-            SubjectProvider.updateRecord(getContentResolver(),subject);
+            //SubjectProvider.updateRecord(getContentResolver(),subject);
+            SubjectProvider.updateConBitacora(getContentResolver(),subject);
         }
         catch(SQLException e){
-            editTextClassroom.setError(getString(R.string.errorClassroomConstraint));
-            editTextClassroom.requestFocus();
+            editTextClassroomID.setError(getString(R.string.errorSubjectReference));
+            editTextClassroomID.requestFocus();
+            return;
+        }
+        catch(Exception e){
+            editTextClassroomID.setError(getString(R.string.errorClassroomConstraint));
+            editTextClassroomID.requestFocus();
             return;
         }
         checkonOptionsItemSelected=1;

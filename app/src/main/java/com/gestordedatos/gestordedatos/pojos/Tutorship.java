@@ -1,5 +1,10 @@
 package com.gestordedatos.gestordedatos.pojos;
 
+import com.gestordedatos.gestordedatos.Globals;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class Tutorship {
     int ID;
     String name;
@@ -7,7 +12,21 @@ public class Tutorship {
     String startTime;
     String endingTime;
 
-    public Tutorship() {
+    int classroomID;
+    int teacherID;
+
+    public Tutorship(){
+
+    }
+
+    /*public Tutorship() {
+        this.ID = Globals.SIN_VALOR_INT;
+        this.name = Globals.SIN_VALOR_STRING;
+        this.classroom = Globals.SIN_VALOR_STRING;
+        this.startTime = Globals.SIN_VALOR_STRING;
+        this.endingTime = Globals.SIN_VALOR_STRING;
+        this.classroomID = Globals.SIN_VALOR_INT;
+        this.teacherID = Globals.SIN_VALOR_INT;
     }
 
     public Tutorship(final String name, final String classroom, final String startTime, final String endingTime) {
@@ -23,6 +42,33 @@ public class Tutorship {
         this.classroom = classroom;
         this.startTime = startTime;
         this.endingTime = endingTime;
+    }
+
+    public Tutorship(int ID, final String name, final String classroom, final String startTime, final String endingTime, final int classroomID, final int teacherID) {
+        this.ID = ID;
+        this.name = name;
+        this.classroom = classroom;
+        this.startTime = startTime;
+        this.endingTime = endingTime;
+        this.classroomID = classroomID;
+        this.teacherID = teacherID;
+    }*/
+
+    public Tutorship(int ID, final String name, final String classroom, final String startTime, final String endingTime, final int classroomID) {
+        this.ID = ID;
+        this.name = name;
+        this.classroom = classroom;
+        this.startTime = startTime;
+        this.endingTime = endingTime;
+        this.classroomID = classroomID;
+    }
+
+    public Tutorship(final String name, final String classroom, final String startTime, final String endingTime, final int classroomID) {
+        this.name = name;
+        this.classroom = classroom;
+        this.startTime = startTime;
+        this.endingTime = endingTime;
+        this.classroomID = classroomID;
     }
 
     public int getID() {
@@ -63,5 +109,39 @@ public class Tutorship {
 
     public void setEndingTime(final String endingTime) {
         this.endingTime = endingTime;
+    }
+
+    public int getClassroomID() {
+        return classroomID;
+    }
+
+    public void setClassroomID(final int classroomID) {
+        this.classroomID = classroomID;
+    }
+
+    public int getTeacherID() {
+        return teacherID;
+    }
+
+    public void setTeacherID(final int teacherID) {
+        this.teacherID = teacherID;
+    }
+
+    public String toJSON(){
+        JSONObject jsonObject= new JSONObject();
+        try {
+            jsonObject.put("ID", this.getID());
+            jsonObject.put("name", this.getName());
+            jsonObject.put("classroom", this.getClassroom());
+            jsonObject.put("startTime", this.getStartTime());
+            jsonObject.put("endingTime", this.getEndingTime());
+            jsonObject.put("classroomID", this.getClassroomID());
+            jsonObject.put("teacherID", this.getClassroomID());
+
+            return jsonObject.toString();
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return "";
+        }
     }
 }

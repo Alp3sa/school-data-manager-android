@@ -30,6 +30,7 @@ public class ListClassrooms extends AppCompatActivity {
 
         //Including list - Content Provider
         ((Globals) getApplicationContext()).CLASSROOM_TABLE_NAME = "Classrooms";
+        Globals.SERVER_TABLE_NAME = "classroom";
         ClassroomsListFragment ClassroomsListFragment = new ClassroomsListFragment();
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -87,7 +88,6 @@ public class ListClassrooms extends AppCompatActivity {
         }
         else if(id == R.id.action_update){
             Intent intent = new Intent(this,FormListClassroomsUpdate.class);
-            System.out.println("CHECK ID: "+Contract.Classroom._ID+" "+rowSelected.getTag());
             intent.putExtra(Contract.Classroom._ID,(Integer) rowSelected.getTag());
 
             startActivity(intent);

@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
+import com.gestordedatos.gestordedatos.Globals;
 import com.gestordedatos.gestordedatos.classrooms.ClassroomsListFragment;
 import com.gestordedatos.gestordedatos.tutorships.ListTutorships;
 import com.gestordedatos.gestordedatos.R;
@@ -111,6 +112,15 @@ public class TutorshipsListFragment extends ListFragment implements LoaderManage
                 toolbar.getMenu().clear();
                 toolbar.inflateMenu(R.menu.delete_modify_menu_tutorships);
 
+                if(Globals.user.getTipoDeMiembro().equals("1")) {
+                    toolbar.getMenu().findItem(R.id.action_delete).setVisible(true);
+                    toolbar.getMenu().findItem(R.id.action_update).setVisible(true);
+                }
+                else{
+                    toolbar.getMenu().findItem(R.id.action_delete).setVisible(false);
+                    toolbar.getMenu().findItem(R.id.action_update).setVisible(false);
+                }
+
                 //pass rowSelected to ListTutorships, using this variable in onOptionsItemSelected
                 rowSelected = view;
                 ListTutorships list = new ListTutorships();
@@ -130,6 +140,13 @@ public class TutorshipsListFragment extends ListFragment implements LoaderManage
             Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
             toolbar.getMenu().clear();
             toolbar.inflateMenu(R.menu.insert_menu);
+
+            if(Globals.user.getTipoDeMiembro().equals("1")) {
+                toolbar.getMenu().findItem(R.id.action_insert).setVisible(true);
+            }
+            else{
+                toolbar.getMenu().findItem(R.id.action_insert).setVisible(false);
+            }
         }
     };
 
@@ -164,7 +181,8 @@ public class TutorshipsListFragment extends ListFragment implements LoaderManage
                 Contract.Tutorship.name,
                 Contract.Tutorship.classroom,
                 Contract.Tutorship.startTime,
-                Contract.Tutorship.endingTime
+                Contract.Tutorship.endingTime,
+                Contract.Tutorship.classroomID
         };
 
         Uri baseUri = Contract.Tutorship.CONTENT_URI;
@@ -213,7 +231,12 @@ public class TutorshipsListFragment extends ListFragment implements LoaderManage
             TextView textviewTeacherTitle = (TextView) view.findViewById(R.id.textviewTitle_tutorship_list_item_teacher);
             textviewTeacherTitle.setText(getResources().getString(R.string.teacherLabel)+" ");
             TextView textviewTeacher = (TextView) view.findViewById(R.id.textview_tutorship_list_item_teacher);
-            textviewTeacher.setText(name);
+            if(Globals.user.getTipoDeMiembro().equals("1")) {
+                textviewTeacher.setText(name + " (ID: " + ID + ")");
+            }
+            else{
+                textviewTeacher.setText(name);
+            }
 
             TextView textviewClassroomTitle = (TextView) view.findViewById(R.id.textviewTitle_tutorship_list_item_classroom);
             textviewClassroomTitle.setText(getResources().getString(R.string.classroomLabel)+" ");

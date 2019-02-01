@@ -183,8 +183,8 @@ public class SignUpPersonalData extends AppCompatActivity {
                     return;
                 }
 
-                //if(dni.trim().equals("") || dni.trim().length()!=9 || !validarNIF(dni)){
-                if(dni.trim().equals("")){
+                if(dni.trim().equals("") || dni.trim().length()!=9 || !validarNIF(dni)){
+                //if(dni.trim().equals("")){
                     if(dni.trim().equals("")){toast = getResources().getString(R.string.toastErrorEmptyDNI);}
                     else if(dni.trim().length()!=9){toast = getResources().getString(R.string.toastErrorShortDNI);}
                     else{toast = getResources().getString(R.string.toastErrorInvalidDNI);}

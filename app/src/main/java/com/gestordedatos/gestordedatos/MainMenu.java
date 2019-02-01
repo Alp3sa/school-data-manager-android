@@ -1,16 +1,22 @@
 package com.gestordedatos.gestordedatos;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentTransaction;
@@ -41,6 +47,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.gestordedatos.gestordedatos.application.AppController;
 import com.gestordedatos.gestordedatos.classrooms.ClassroomsListFragment;
 import com.gestordedatos.gestordedatos.classrooms.FormListClassrooms;
 import com.gestordedatos.gestordedatos.classrooms.FormListClassroomsUpdate;
@@ -49,10 +56,13 @@ import com.gestordedatos.gestordedatos.contentProvider.ClassroomProvider;
 import com.gestordedatos.gestordedatos.contentProvider.Contract;
 import com.gestordedatos.gestordedatos.contentProvider.SubjectProvider;
 import com.gestordedatos.gestordedatos.contentProvider.TutorshipProvider;
+import com.gestordedatos.gestordedatos.pojos.Classroom;
 import com.gestordedatos.gestordedatos.pojos.User;
 import com.gestordedatos.gestordedatos.subjects.FormListSubjects;
 import com.gestordedatos.gestordedatos.subjects.FormListSubjectsUpdate;
 import com.gestordedatos.gestordedatos.subjects.SubjectsListFragment;
+import com.gestordedatos.gestordedatos.sync.Sincronizacion;
+import com.gestordedatos.gestordedatos.sync.SyncAdapter;
 import com.gestordedatos.gestordedatos.tutorships.FormListTutorships;
 import com.gestordedatos.gestordedatos.tutorships.FormListTutorshipsUpdate;
 import com.gestordedatos.gestordedatos.tutorships.TutorshipsListFragment;
@@ -94,8 +104,9 @@ public class MainMenu extends AppCompatActivity
         super.onCreate(savedInstanceState);
 
         //BEGIN TEST - SAVE TIME TO SKIP THE LOGIN SYSTEM
-        User User = new User("",null,null,null,null,null,null,null);
-        ((Globals) getApplicationContext()).User = User;
+        //Globals.user = new User("root","","","","","","1","1","");
+        //Globals.LOGIN=true;
+        //((Globals) getApplicationContext()).User = user;
         //END TEST
 
         //Set layouts
@@ -151,23 +162,28 @@ public class MainMenu extends AppCompatActivity
         //Floating button
         FloatingActionButton floatingActionButton = (FloatingActionButton) findViewById(R.id.action_insert_alternative);
 
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View view) {
-                Intent intent = null;
-                if(Globals.CLASSROOM_TABLE_NAME=="Classrooms") {
-                    intent = new Intent(getBaseContext(), FormListClassrooms.class);
+        if(Globals.user.getTipoDeMiembro().equals("0")){
+            floatingActionButton.setVisibility(View.GONE);
+        }
+        else {
+            floatingActionButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(final View view) {
+                    Intent intent = null;
+                    if (Globals.CLASSROOM_TABLE_NAME == "Classrooms") {
+                        Globals.SERVER_TABLE_NAME = "classroom";
+                        intent = new Intent(getBaseContext(), FormListClassrooms.class);
+                    } else if (Globals.CLASSROOM_TABLE_NAME == "Subjects") {
+                        Globals.SERVER_TABLE_NAME = "subject";
+                        intent = new Intent(getBaseContext(), FormListSubjects.class);
+                    } else if (Globals.CLASSROOM_TABLE_NAME == "Tutorships") {
+                        Globals.SERVER_TABLE_NAME = "tutorship";
+                        intent = new Intent(getBaseContext(), FormListTutorships.class);
+                    }
+                    startActivity(intent);
                 }
-                else if(Globals.CLASSROOM_TABLE_NAME=="Subjects") {
-                    intent = new Intent(getBaseContext(), FormListSubjects.class);
-                }
-                else if(Globals.CLASSROOM_TABLE_NAME=="Tutorships") {
-                    intent = new Intent(getBaseContext(), FormListTutorships.class);
-                }
-                startActivity(intent);
-            }
-        });
-
+            });
+        }
 
 
         searchButton = (ImageButton) findViewById(R.id.searchButton);
@@ -175,6 +191,9 @@ public class MainMenu extends AppCompatActivity
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
+                //Stop sinchronization
+                Globals.subquery=1;
+                Globals.SUBQUERY_OPERATION=true;
                 //Get text from searchBox
                 searchBox = (EditText) findViewById(R.id.textViewSearch);
                 textSearched = searchBox.getText().toString();
@@ -227,6 +246,7 @@ public class MainMenu extends AppCompatActivity
             transaction.add(R.id.fragment, myFragment);
             transaction.addToBackStack(null);
             Globals.CLASSROOM_TABLE_NAME="Subjects";
+            Globals.SERVER_TABLE_NAME = "subject";
             transaction.commit();
         }
         else if(Globals.LAST_TAB==2) {
@@ -256,6 +276,13 @@ public class MainMenu extends AppCompatActivity
         // Inflate the menu; this adds items to the action bar if it is present.
         if(Globals.LAST_TAB>=0 && Globals.LAST_TAB<=2){
             getMenuInflater().inflate(R.menu.insert_menu, menu);
+
+            if(Globals.user.getTipoDeMiembro().equals("1")) {
+                menu.findItem(R.id.action_insert).setVisible(true);
+            }
+            else{
+                menu.findItem(R.id.action_insert).setVisible(false);
+            }
         }
         else{
             getMenuInflater().inflate(R.menu.map_menu, menu);
@@ -265,7 +292,7 @@ public class MainMenu extends AppCompatActivity
         //User User = getIntent().getExtras().getParcelable("User");
         User User = ((Globals) getApplicationContext()).User;
         titleNavigationView = (TextView) findViewById(R.id.navigationView_title);
-        titleNavigationView.setText(User.getNombreUsuario());
+        titleNavigationView.setText(Globals.user.getNombre()+" "+Globals.user.getPrimerApellido()+" "+Globals.user.getSegundoApellido()+" ("+Globals.user.getNombreUsuario()+")");
 
         return true;
     }
@@ -282,36 +309,109 @@ public class MainMenu extends AppCompatActivity
             return true;
         }
         else */
-        if(id == R.id.action_help){
-            showHelp();
-            return true;
-        }
-        else if(id == R.id.action_insert){
-            Intent intent = null;
-            if(Globals.CLASSROOM_TABLE_NAME=="Classrooms") {
-                intent = new Intent(this, FormListClassrooms.class);
+            if(id == R.id.action_help){
+                showHelp();
+                return true;
             }
-            else if(Globals.CLASSROOM_TABLE_NAME=="Subjects") {
-                intent = new Intent(this, FormListSubjects.class);
-            }
-            else if(Globals.CLASSROOM_TABLE_NAME=="Tutorships") {
-                intent = new Intent(this, FormListTutorships.class);
-            }
-            startActivity(intent);
-            return true;
-        }
-        else if(id == R.id.action_delete){
-            //Restore toolbar
-            Toolbar toolbar = (Toolbar) this.findViewById(R.id.toolbar);
-            toolbar.getMenu().clear();
-            toolbar.inflateMenu(R.menu.insert_menu);
-            //Delete record
-            if(Globals.CLASSROOM_TABLE_NAME=="Classrooms") {
-                try {
-                    ClassroomProvider.deleteRecord(this.getContentResolver(), (Integer) ClassroomsListFragment.rowSelected.getTag(), this);
+            else if(id == R.id.action_insert){
+                Intent intent = null;
+                if(Globals.CLASSROOM_TABLE_NAME=="Classrooms") {
+                    intent = new Intent(this, FormListClassrooms.class);
                 }
-                catch (android.database.SQLException e){
-                    String toast = getResources().getString(R.string.errorClassroomUsed);
+                else if(Globals.CLASSROOM_TABLE_NAME=="Subjects") {
+                    intent = new Intent(this, FormListSubjects.class);
+                }
+                else if(Globals.CLASSROOM_TABLE_NAME=="Tutorships") {
+                    intent = new Intent(this, FormListTutorships.class);
+                }
+                startActivity(intent);
+                return true;
+            }
+            else if(id == R.id.action_delete) {
+                //Restore toolbar
+                Toolbar toolbar = (Toolbar) this.findViewById(R.id.toolbar);
+                toolbar.getMenu().clear();
+                toolbar.inflateMenu(R.menu.insert_menu);
+                //Delete record
+                if (Globals.CLASSROOM_TABLE_NAME == "Classrooms") {
+                    try {
+                        //ClassroomProvider.deleteRecord(this.getContentResolver(), (Integer) ClassroomsListFragment.rowSelected.getTag(), this);
+                        ClassroomProvider.deleteConBitacora(this.getContentResolver(), (Integer) ClassroomsListFragment.rowSelected.getTag(), this);
+                    } catch (android.database.SQLException e) {
+                        String toast = getResources().getString(R.string.errorClassroomUsed);
+                        SpannableStringBuilder biggerText = new SpannableStringBuilder(toast);
+                        biggerText.setSpan(new RelativeSizeSpan(1.5f), 0, toast.length(), 0);
+                        Toast errorImage = Toast.makeText(getApplicationContext(), biggerText, Toast.LENGTH_LONG);
+                        errorImage.setGravity(Gravity.BOTTOM, 0, 40);
+                        errorImage.show();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else if (Globals.CLASSROOM_TABLE_NAME == "Subjects") {
+                    try {
+                        SubjectProvider.deleteConBitacora(this.getContentResolver(), (Integer) SubjectsListFragment.rowSelected.getTag(), this);
+                    } catch (android.database.SQLException e) {
+                        String toast = getResources().getString(R.string.errorClassroomUsed);
+                        SpannableStringBuilder biggerText = new SpannableStringBuilder(toast);
+                        biggerText.setSpan(new RelativeSizeSpan(1.5f), 0, toast.length(), 0);
+                        Toast errorImage = Toast.makeText(getApplicationContext(), biggerText, Toast.LENGTH_LONG);
+                        errorImage.setGravity(Gravity.BOTTOM, 0, 40);
+                        errorImage.show();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else if (Globals.CLASSROOM_TABLE_NAME == "Tutorships") {
+                    try {
+                        TutorshipProvider.deleteConBitacora(this.getContentResolver(), (Integer) TutorshipsListFragment.rowSelected.getTag(), this);
+                    } catch (android.database.SQLException e) {
+                        String toast = getResources().getString(R.string.errorClassroomUsed);
+                        SpannableStringBuilder biggerText = new SpannableStringBuilder(toast);
+                        biggerText.setSpan(new RelativeSizeSpan(1.5f), 0, toast.length(), 0);
+                        Toast errorImage = Toast.makeText(getApplicationContext(), biggerText, Toast.LENGTH_LONG);
+                        errorImage.setGravity(Gravity.BOTTOM, 0, 40);
+                        errorImage.show();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                return true;
+            }
+            else if(id == R.id.action_update){
+                Intent intent = null;
+                if(Globals.CLASSROOM_TABLE_NAME=="Classrooms") {
+                    intent = new Intent(this, FormListClassroomsUpdate.class);
+                    intent.putExtra(Contract.Classroom._ID,(Integer) ClassroomsListFragment.rowSelected.getTag());
+                }
+                else if(Globals.CLASSROOM_TABLE_NAME=="Subjects") {
+                    intent = new Intent(this, FormListSubjectsUpdate.class);
+                    intent.putExtra(Contract.Subject._ID,(Integer) SubjectsListFragment.rowSelected.getTag());
+                }
+                else if(Globals.CLASSROOM_TABLE_NAME=="Tutorships") {
+                    intent = new Intent(this, FormListTutorshipsUpdate.class);
+                    intent.putExtra(Contract.Tutorship._ID,(Integer) TutorshipsListFragment.rowSelected.getTag());
+                }
+
+                startActivity(intent);
+                return true;
+            }
+            else if(id == R.id.action_download){
+                CreateJPG();
+            }
+            else if(id == R.id.action_subquery_classrooms){
+                Globals.SUBQUERY_OPERATION=true;
+                Globals.subquery = (Integer) ClassroomsListFragment.rowSelected.getTag();
+                Globals.classroomsSubquery = ClassroomProvider.readRecord(getBaseContext().getContentResolver(),Globals.subquery);
+                int checkSucjects = readRecordFromClassrooms(getBaseContext().getContentResolver(), Globals.classroomsSubquery.getID());
+
+                if(checkSucjects==1){
+                    Globals.LAST_TAB=1;
+                    TabLayout.Tab tab = tabLayout.getTabAt(Globals.LAST_TAB);
+                    tab.select();
+                }
+                else if(checkSucjects==0){
+                    Globals.subquery = -1;
+                    Globals.classroomsSubquery = null;
+                    String toast = getResources().getString(R.string.errorNoSubjectRelated);
                     SpannableStringBuilder biggerText = new SpannableStringBuilder(toast);
                     biggerText.setSpan(new RelativeSizeSpan(1.5f), 0, toast.length(), 0);
                     Toast errorImage = Toast.makeText(getApplicationContext(),biggerText,Toast.LENGTH_LONG);
@@ -319,73 +419,23 @@ public class MainMenu extends AppCompatActivity
                     errorImage.show();
                 }
             }
-            else if(Globals.CLASSROOM_TABLE_NAME=="Subjects") {
-                SubjectProvider.deleteRecord(this.getContentResolver(),(Integer) SubjectsListFragment.rowSelected.getTag());
-            }
-            else if(Globals.CLASSROOM_TABLE_NAME=="Tutorships") {
-                TutorshipProvider.deleteRecord(this.getContentResolver(),(Integer) TutorshipsListFragment.rowSelected.getTag());
-            }
-            return true;
-        }
-        else if(id == R.id.action_update){
-            Intent intent = null;
-            if(Globals.CLASSROOM_TABLE_NAME=="Classrooms") {
-                intent = new Intent(this, FormListClassroomsUpdate.class);
-                intent.putExtra(Contract.Classroom._ID,(Integer) ClassroomsListFragment.rowSelected.getTag());
-            }
-            else if(Globals.CLASSROOM_TABLE_NAME=="Subjects") {
-                intent = new Intent(this, FormListSubjectsUpdate.class);
-                intent.putExtra(Contract.Subject._ID,(Integer) SubjectsListFragment.rowSelected.getTag());
-            }
-            else if(Globals.CLASSROOM_TABLE_NAME=="Tutorships") {
-                intent = new Intent(this, FormListTutorshipsUpdate.class);
-                intent.putExtra(Contract.Tutorship._ID,(Integer) TutorshipsListFragment.rowSelected.getTag());
-            }
-
-            startActivity(intent);
-            return true;
-        }
-        else if(id == R.id.action_download){
-            CreateJPG();
-        }
-        else if(id == R.id.action_subquery_classrooms){
-            Globals.subquery = (Integer) ClassroomsListFragment.rowSelected.getTag();
-            Globals.classroomsSubquery = ClassroomProvider.readRecord(getBaseContext().getContentResolver(),Globals.subquery);
-            int checkSucjects = readRecordFromClassrooms(getBaseContext().getContentResolver(),Globals.classroomsSubquery.getClassroomName());
-
-            if(checkSucjects==1){
-                Globals.LAST_TAB=1;
+            else if(id == R.id.action_subquery_subjects){
+                Globals.SUBQUERY_OPERATION=true;
+                Globals.subquery = (Integer) SubjectsListFragment.rowSelected.getTag();
+                Globals.classrooms1Subquery = SubjectProvider.readRecord(getBaseContext().getContentResolver(),Globals.subquery);
+                Globals.LAST_TAB=0;
                 TabLayout.Tab tab = tabLayout.getTabAt(Globals.LAST_TAB);
                 tab.select();
             }
-            else if(checkSucjects==0){
-                Globals.subquery = -1;
-                Globals.classroomsSubquery = null;
-
-                String toast = getResources().getString(R.string.errorNoSubjectRelated);
-                SpannableStringBuilder biggerText = new SpannableStringBuilder(toast);
-                biggerText.setSpan(new RelativeSizeSpan(1.5f), 0, toast.length(), 0);
-                Toast errorImage = Toast.makeText(getApplicationContext(),biggerText,Toast.LENGTH_LONG);
-                errorImage.setGravity(Gravity.BOTTOM, 0, 40);
-                errorImage.show();
+            else if(id == R.id.action_subquery_tutorships){
+                Globals.SUBQUERY_OPERATION=true;
+                Globals.subquery = (Integer) TutorshipsListFragment.rowSelected.getTag();
+                Globals.classrooms2Subquery = TutorshipProvider.readRecord(getBaseContext().getContentResolver(),Globals.subquery);
+                Globals.LAST_TAB=0;
+                TabLayout.Tab tab = tabLayout.getTabAt(Globals.LAST_TAB);
+                tab.select();
             }
-        }
-        else if(id == R.id.action_subquery_subjects){
-            Globals.subquery = (Integer) SubjectsListFragment.rowSelected.getTag();
-            Globals.classrooms1Subquery = SubjectProvider.readRecord(getBaseContext().getContentResolver(),Globals.subquery);
 
-            Globals.LAST_TAB=0;
-            TabLayout.Tab tab = tabLayout.getTabAt(Globals.LAST_TAB);
-            tab.select();
-        }
-        else if(id == R.id.action_subquery_tutorships){
-            Globals.subquery = (Integer) TutorshipsListFragment.rowSelected.getTag();
-            Globals.classrooms2Subquery = TutorshipProvider.readRecord(getBaseContext().getContentResolver(),Globals.subquery);
-
-            Globals.LAST_TAB=0;
-            TabLayout.Tab tab = tabLayout.getTabAt(Globals.LAST_TAB);
-            tab.select();
-        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -437,7 +487,9 @@ public class MainMenu extends AppCompatActivity
             Globals.subquery=-1;
 
             Intent intent = new Intent(contexto, MainActivity.class);
-            ((Globals) getApplicationContext()).User =null;
+            //((Globals) getApplicationContext()).User =null;
+            Globals.user=null;
+            Globals.LOGIN=false;
             startActivity(intent);
         }
 
@@ -582,6 +634,7 @@ public class MainMenu extends AppCompatActivity
             this.progressDialog=progressDialog;
         }
 
+        @SuppressLint("WrongThread")
         @Override
         protected String doInBackground(final ListView... v) {
 
@@ -688,7 +741,9 @@ public class MainMenu extends AppCompatActivity
     public void setFragments(TabLayout.Tab tab){
         if (tab.getPosition() == 0) {
             Globals.CLASSROOM_TABLE_NAME = "Classrooms";
+            Globals.SERVER_TABLE_NAME = "classroom";
             Globals.LAST_TAB = 0;
+
             ClassroomsListFragment myFragment = new ClassroomsListFragment();
 
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -700,9 +755,23 @@ public class MainMenu extends AppCompatActivity
             findViewById(R.id.footer).setVisibility(View.VISIBLE);
             findViewById(R.id.searchPanel).setVisibility(View.INVISIBLE);
             findViewById(R.id.footer).setBackgroundColor(Color.TRANSPARENT);
+
+            //Los dos primeros condicionales son necesarios para las subconsultas
+            if(Globals.subquery!=-1 && Globals.SUBQUERY_OPERATION==true){
+                Globals.subquery=-1;
+            }
+            else if(Globals.subquery==-1 && Globals.SUBQUERY_OPERATION==true) {
+                Globals.SUBQUERY_OPERATION=false;
+                Sincronizacion.refresh();
+            }
+            else{
+                Sincronizacion.refresh();
+            }
         } else if (tab.getPosition() == 1) {
             Globals.CLASSROOM_TABLE_NAME = "Subjects";
+            Globals.SERVER_TABLE_NAME = "subject";
             Globals.LAST_TAB = 1;
+
             SubjectsListFragment myFragment = new SubjectsListFragment();
 
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -714,8 +783,21 @@ public class MainMenu extends AppCompatActivity
             findViewById(R.id.footer).setVisibility(View.VISIBLE);
             findViewById(R.id.searchPanel).setVisibility(View.INVISIBLE);
             findViewById(R.id.footer).setBackgroundColor(Color.TRANSPARENT);
+
+            //Los dos primeros condicionales son necesarios para las subconsultas
+            if(Globals.subquery!=-1 && Globals.SUBQUERY_OPERATION==true){
+                Globals.subquery=-1;
+            }
+            else if(Globals.subquery==-1 && Globals.SUBQUERY_OPERATION==true) {
+                Globals.SUBQUERY_OPERATION=false;
+                Sincronizacion.refresh();
+            }
+            else{
+                Sincronizacion.refresh();
+            }
         } else if (tab.getPosition() == 2) {
             Globals.CLASSROOM_TABLE_NAME = "Tutorships";
+            Globals.SERVER_TABLE_NAME = "tutorship";
             Globals.LAST_TAB = 2;
             TutorshipsListFragment myFragment = new TutorshipsListFragment();
 
@@ -728,6 +810,18 @@ public class MainMenu extends AppCompatActivity
             findViewById(R.id.footer).setVisibility(View.VISIBLE);
             findViewById(R.id.searchPanel).setVisibility(View.VISIBLE);
             findViewById(R.id.footer).setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+
+            //Los dos primeros condicionales son necesarios para las subconsultas
+            if(Globals.subquery!=-1 && Globals.SUBQUERY_OPERATION==true){
+                Globals.subquery=-1;
+            }
+            else if(Globals.subquery==-1 && Globals.SUBQUERY_OPERATION==true) {
+                Globals.SUBQUERY_OPERATION=false;
+                Sincronizacion.refresh();
+            }
+            else{
+                Sincronizacion.refresh();
+            }
         } else if (tab.getPosition() == 3) {
             Globals.LAST_TAB = 3;
             MapsActivity myFragment = new MapsActivity();

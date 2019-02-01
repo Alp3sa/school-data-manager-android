@@ -64,8 +64,9 @@ public class Connection extends AsyncTask<String,Void,User> {
           String password = arg0[1];
 
           try {
+              String link = "http://192.168.1.33/school-data-manager/connectionDataManager.php";
               //String link = "http://192.168.1.37/gestorDatos/connection.php";
-              String link = "https://pupluns.000webhostapp.com/pupluns/connectionDataManager.php";
+              //String link = "https://pupluns.000webhostapp.com/pupluns/connectionDataManager.php";
               //String link = "https://www.alp3sa.info/pupluns/connectionDataManager.php";
               //192.168.1.35 IPv4
               URL url = new URL(link);
@@ -91,7 +92,6 @@ public class Connection extends AsyncTask<String,Void,User> {
                   out.flush();
                   out.close();
 
-
                 /*BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(ops,"UTF-8"));
                 System.out.println("hola1");
                 String data = URLEncoder.encode("username","UTF-8")+"="+URLEncoder.encode(username,"UTF-8")+"&&"+
@@ -107,12 +107,8 @@ public class Connection extends AsyncTask<String,Void,User> {
                   // Read the BufferedInputStream
                   BufferedReader r = new BufferedReader(new InputStreamReader(ips, "UTF-8"));
 
-                  //String line = r.readLine();
-
                   json = new JSONObject(r.readLine());
-
-                  validation = new User(json.getInt("0"), json.getString("1"), json.getString("2"));
-
+                  validation = new User(json.getInt("0"), json.getString("1"), json.getString("2"), json.getString("3"), json.getString("4"), json.getString("5"), json.getString("6"), json.getString("7"), json.getString("8"), json.getString("9"));
                   r.close();
                   ips.close();
                   client.disconnect();
@@ -145,10 +141,10 @@ public class Connection extends AsyncTask<String,Void,User> {
           String memberType = arg0[6];
           String gender = arg0[7];
           String password = arg0[8];
-            System.out.println("check "+username+" "+name+" "+surname+" "+lastname+" "+age+" "+dni+" "+memberType+" "+gender+" "+password);
-          try {
-              String link = "http://www.alp3sa.info/pupluns/connectionDataManager.php";
 
+          try {
+              //String link = "http://www.alp3sa.info/pupluns/connectionDataManager.php";
+              String link = "http://192.168.1.33/school-data-manager/connectionDataManager.php";
               URL url = new URL(link);
               HttpURLConnection client = (HttpURLConnection) url.openConnection();
 
@@ -164,28 +160,27 @@ public class Connection extends AsyncTask<String,Void,User> {
                   OutputStreamWriter out = new OutputStreamWriter(client.getOutputStream());
 
                   String data = URLEncoder.encode("order", "UTF-8")+"="+URLEncoder.encode("signUp", "UTF-8")+
-                          "&&"+URLEncoder.encode("username", "UTF-8")+"="+URLEncoder.encode(username, "UTF-8")+
-                          "&&"+URLEncoder.encode("name", "UTF-8")+"="+URLEncoder.encode(name, "UTF-8")+
-                          "&&"+URLEncoder.encode("surname", "UTF-8")+"="+URLEncoder.encode(surname, "UTF-8")+
-                          "&&"+URLEncoder.encode("lastname", "UTF-8")+"="+URLEncoder.encode(lastname, "UTF-8")+
-                          "&&"+URLEncoder.encode("age", "UTF-8")+"="+URLEncoder.encode(age, "UTF-8")+
+                          "&&"+URLEncoder.encode("nombreUsuario", "UTF-8")+"="+URLEncoder.encode(username, "UTF-8")+
+                          "&&"+URLEncoder.encode("nombre", "UTF-8")+"="+URLEncoder.encode(name, "UTF-8")+
+                          "&&"+URLEncoder.encode("primerApellido", "UTF-8")+"="+URLEncoder.encode(surname, "UTF-8")+
+                          "&&"+URLEncoder.encode("segundoApellido", "UTF-8")+"="+URLEncoder.encode(lastname, "UTF-8")+
+                          "&&"+URLEncoder.encode("edad", "UTF-8")+"="+URLEncoder.encode(age, "UTF-8")+
                           "&&"+URLEncoder.encode("dni", "UTF-8")+"="+URLEncoder.encode(dni, "UTF-8")+
-                          "&&"+URLEncoder.encode("memberType", "UTF-8")+"="+URLEncoder.encode(memberType, "UTF-8")+
-                          "&&"+URLEncoder.encode("gender", "UTF-8")+"="+URLEncoder.encode(gender, "UTF-8")+
+                          "&&"+URLEncoder.encode("tipoDeMiembro", "UTF-8")+"="+URLEncoder.encode(memberType, "UTF-8")+
+                          "&&"+URLEncoder.encode("genero", "UTF-8")+"="+URLEncoder.encode(gender, "UTF-8")+
                           "&&"+URLEncoder.encode("password", "UTF-8")+"="+URLEncoder.encode(password, "UTF-8");
 
                   out.write(data);
                   out.flush();
                   out.close();
-                  System.out.println("check: "+data);
+
                   InputStream ips = new BufferedInputStream(client.getInputStream());
 
                   // Read the BufferedInputStream
                   BufferedReader r = new BufferedReader(new InputStreamReader(ips, "UTF-8"));
 
-                  //String line = r.readLine();
                   json = new JSONObject(r.readLine());
-                  validation = new User(json.getInt("0"), json.getString("1"), json.getString("2"));
+                  validation = new User(json.getInt("0"), json.getString("1"), json.getString("2"), json.getString("3"), json.getString("4"), json.getString("5"), json.getString("6"), json.getString("7"), json.getString("8"), json.getString("9"));
                   r.close();
                   ips.close();
                   client.disconnect();

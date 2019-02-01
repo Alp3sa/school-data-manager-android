@@ -31,6 +31,7 @@ public class ListSubjects extends AppCompatActivity {
 
         //Including list - Content Provider
         ((Globals) getApplicationContext()).CLASSROOM_TABLE_NAME = "Subjects";
+        Globals.SERVER_TABLE_NAME = "subject";
         SubjectsListFragment SubjectsListFragment = new SubjectsListFragment();
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -90,7 +91,6 @@ public class ListSubjects extends AppCompatActivity {
             Intent intent = new Intent(this,FormListSubjectsUpdate.class);
 
             intent.putExtra(Contract.Subject._ID,(Integer) rowSelected.getTag());
-
             startActivity(intent);
             return true;
         }
