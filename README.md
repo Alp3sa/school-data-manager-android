@@ -2,7 +2,7 @@
 
 El objeto de este proyecto ha sido la creación de una aplicación para Android que permita gestionar los datos de un centro de estudios. Entre otras funcionalidades permite a estudiantes y profesores acceder a los horarios de asignaturas, tutorías e información sobre las aulas disponibles. Incluye además un sistema de autentificación de usuarios mediante PHP. Implementa también la sincronización entre la base de datos local y la del servidor. A lo largo de este documento se muestra gran parte de la documentación relativa al diseño final de la aplicación. A continuación se incluyen los enlaces la plataforma SCRUM utilizada para la realización del proyecto, junto con los enlaces a tres demos que muestran el funcionamiento de la aplicación.
 
-Enlace la la plataforma SCRUM: https://tree.taiga.io/project/alp3sa-school-data-manager/timeline
+Enlace de la plataforma SCRUM: https://tree.taiga.io/project/alp3sa-school-data-manager/timeline
 
 Demos del sistema de autentificación: https://tree.taiga.io/project/alp3sa-school-data-manager/issue/6
 
