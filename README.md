@@ -33,7 +33,7 @@ Por un lado están los alumnos que sólo pueden consultar información y realiza
 
 Se han eliminado de este cuadro dos elementos. Uno de ellos es la capacidad de los usuarios de disponer de los datos personales que le son propios. El otro hacía referencia a la capacidad de modificar los datos personales. Esto último es algo que se estima se añadirá en un futuro, si se permite la posibilidad de añadir datos muy variables como puede ser el email del usuario. De cualquier forma estos dos puntos se ha preferido omitirlos por el momento, puesto que no son prioritarios. E incluso se podría decir que son innecesarios en cierta medida. Antes cabría mejor otorgar la posibilidad al usuario de recuperar su contraseña de forma segura.
 
-# 3.	Diagrama de usos.
+# 3.	Diagrama de casos de uso.
 
 A continuación, sirviendo como desarrollo del apartado anterior y en base a las modificaciones realizadas, se presenta el diagrama de casos de uso. En él veremos de manera más gráfica y simplificada los tipos de usuarios que pueden ya hacer uso de nuestra aplicación:
 
